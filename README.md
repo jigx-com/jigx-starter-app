@@ -1,2 +1,2 @@
 # jigx-starter-app
-Jigx sample apps
+Jigx starter app
