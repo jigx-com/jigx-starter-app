@@ -1,0 +1,74 @@
+title: Name
+description: Description of your Jig
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+# onFocus:
+#   type: action.action-list
+#   options:
+#     actions:
+#       - type: action.sync-entities
+#         options:
+#           provider: 
+#           entities:
+#             - entity: 
+
+datasources:        
+  calendar: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/calendar
+  
+      query: |
+        SELECT 
+          id, 
+          '$.seminarTitle', 
+          '$.seminarDescription',
+          '$.speakerName',
+          '$.speakerAvatar',
+          '$.startDateTime',
+          '$.endDateTime',
+          '$.seminarRoomId'
+        FROM [default/calendar] 
+        
+children:
+  - type: component.entity
+    options:
+      children:
+        - type: component.entity-field
+          options:
+            label: now
+            value: =$now()
+        - type: component.entity-field
+          options:
+            label: now date
+            value: =($substring($now(), 0, 11))
+        # - type: component.entity-field
+        #   options:
+        #     label: time
+            # value: =@ctx.current.item.id = 1 ? $substring($now(), 0, 11) & '09:00:00.000Z' :@ctx.current.item.startDateTime
+        - type: component.entity-field
+          options:
+            label: built time
+            value: =$substring($now(), 0, 11) & '09:00:00.000Z')
+
+  - type: component.list
+    options:
+      data: =@ctx.datasources.calendar
+      maximumItemsToRender: 8
+      item: 
+        type: component.list-item
+        options:
+          title: =@ctx.current.item.id = '1' ? $substring($now(), 0, 11) & '09:00:00.000Z' :@ctx.current.item.startDateTime

@@ -1,0 +1,7 @@
+title: Navigation
+type: jig.document
+icon: location
+
+source:
+  documentType: HTML
+  uri: https://www.google.com/maps/dir/?api=1&destination=Showbox+SoDo,+1700+1st+Ave+S,+Seattle,+WA+98134

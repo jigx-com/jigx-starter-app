@@ -1,0 +1,377 @@
+title: Event Feedback
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1496861083958-175bb1bd5702?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvd2VyJTIwZmllbGR8ZW58MHwwfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60
+
+# onFocus:
+#   type: action.action-list
+#   options:
+#     actions:
+#       - type: action.reset-state
+#         options:
+#           state: =@ctx.solution.state.rating
+
+# datasources:
+#   mydata: 
+
+children:
+  - type: component.section
+    options:
+      title: Rating
+      children:
+        - type: component.layout
+          options:
+            isRow: false
+            hasBackground: true
+            borderRadius: large
+            padding: none
+            gap: none
+            children:
+              - type: component.layout
+                options:
+                  isRow: false
+                  flexChildren: 0
+                  justifyContent: flex-start
+                  padding: regular
+                  gap: minimal
+                  children:
+                    - type: component.text
+                      options:
+                        text: "Rate the Event on a scale form 1 to 5"
+                        alighn: left
+                        fontsize: medium
+              - type: component.layout
+                instanceId: rating
+                options:
+                  isRow: true
+                  gap: none
+                  children:
+                    - type: component.layout
+                      options:
+                        padding: small
+                        isRow: false
+                        hasBackground: =@ctx.solution.state.chosen1 = true ? true:false
+                        borderRadius: regular
+                        backgroundColor:
+                          - when: =@ctx.solution.state.chosen1 = true
+                            color: color10
+                        onPress:
+                          type: action.action-list
+                          options:
+                            actions:
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.rating
+                                  value: ="1"
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen1
+                                  value: true
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen2
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen3
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen4
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen5
+                                  value: false
+                          # type: action.set-state
+                          # options:
+                          #   state: =@ctx.solution.state.rating
+                          #   value: ="1"
+                        children: 
+                          - type: component.icon
+                            options:
+                              icon: =@ctx.solution.state.chosen1 = true ? 'checkbox-checked':'checkbox-unchecked'
+                              width: 40
+                              # color:
+                              #   - when: =@ctx.solution.state.chosen1 = true
+                              #     color: color1
+                          - type: component.text
+                            options:
+                              text: "1"
+                              align: center
+                              isSubtle: true
+                              fontSize: medium
+                    - type: component.layout
+                      options:
+                        padding: small
+                        isRow: false
+                        hasBackground: =@ctx.solution.state.chosen2 = true ? true:false
+                        borderRadius: regular
+                        backgroundColor:
+                          - when: =@ctx.solution.state.chosen2 = true
+                            color: color10
+                        onPress:
+                          type: action.action-list
+                          options:
+                            actions:
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.rating
+                                  value: ="2"
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen1
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen2
+                                  value: true
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen3
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen4
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen5
+                                  value: false
+                        # onPress:
+                        #   type: action.set-state
+                        #   options:
+                        #     state: =@ctx.solution.state.rating
+                        #     value: ="2"
+                        children: 
+                          - type: component.icon
+                            options:
+                              icon: =@ctx.solution.state.chosen2 = true ? 'checkbox-checked':'checkbox-unchecked'
+                              width: 40
+                              # color:
+                              #   - when: =@ctx.solution.state.chosen2 = true
+                              #     color: color1
+                          - type: component.text
+                            options:
+                              text: "2"
+                              align: center
+                              isSubtle: true
+                              fontSize: medium
+                    - type: component.layout
+                      options:
+                        padding: small
+                        isRow: false
+                        hasBackground: =@ctx.solution.state.chosen3 = true ? true:false
+                        borderRadius: regular
+                        backgroundColor:
+                          - when: =@ctx.solution.state.chosen3 = true
+                            color: color10
+                        onPress:
+                          type: action.action-list
+                          options:
+                            actions:
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.rating
+                                  value: ="3"
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen1
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen2
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen3
+                                  value: true
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen4
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen5
+                                  value: false
+                        # onPress:
+                        #   type: action.set-state
+                        #   options:
+                        #     state: =@ctx.solution.state.rating
+                        #     value: ="3"
+                        children: 
+                          - type: component.icon
+                            options:
+                              icon: =@ctx.solution.state.chosen3 = true ? 'checkbox-checked':'checkbox-unchecked'
+                              width: 40
+                              # color:
+                              #   - when: =@ctx.solution.state.chosen3 = true
+                              #     color: color1
+                          - type: component.text
+                            options:
+                              text: "3"
+                              align: center
+                              isSubtle: true
+                              fontSize: medium        
+                    - type: component.layout
+                      options:
+                        padding: small
+                        isRow: false
+                        hasBackground: =@ctx.solution.state.chosen4 = true ? true:false
+                        borderRadius: regular
+                        backgroundColor:
+                          - when: =@ctx.solution.state.chosen4 = true
+                            color: color10
+                        onPress:
+                          type: action.action-list
+                          options:
+                            actions:
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.rating
+                                  value: ="4"
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen1
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen2
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen3
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen4
+                                  value: true
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen5
+                                  value: false
+                        # onPress:
+                        #   type: action.set-state
+                        #   options:
+                        #     state: =@ctx.solution.state.rating
+                        #     value: ="4"
+                        children: 
+                          - type: component.icon
+                            options:
+                              icon: =@ctx.solution.state.chosen4 = true ? 'checkbox-checked':'checkbox-unchecked'
+                              width: 40
+                              # color:
+                              #   - when: =@ctx.solution.state.chosen4 = true
+                              #     color: color1
+                          - type: component.text
+                            options:
+                              text: "4"
+                              align: center
+                              isSubtle: true
+                              fontSize: medium
+                    - type: component.layout
+                      options:
+                        padding: small
+                        isRow: false
+                        hasBackground: =@ctx.solution.state.chosen5 = true ? true:false
+                        borderRadius: regular
+                        backgroundColor:
+                          - when: =@ctx.solution.state.chosen5 = true
+                            color: color10
+                        onPress:
+                          type: action.action-list
+                          options:
+                            actions:
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.rating
+                                  value: ="5"
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen1
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen2
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen3
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen4
+                                  value: false
+                              - type: action.set-state
+                                options:
+                                  state: =@ctx.solution.state.chosen5
+                                  value: true
+                        # onPress:
+                        #   type: action.set-state
+                        #   options:
+                        #     state: =@ctx.solution.state.rating
+                        #     value: ="5"
+                        children: 
+                          - type: component.icon
+                            options:
+                              icon: =@ctx.solution.state.chosen5 = true ? 'checkbox-checked':'checkbox-unchecked'
+                              width: 40
+                              # color:
+                              #   - when: =@ctx.solution.state.chosen5 = true
+                              #     color: color1
+                          - type: component.text
+                            options:
+                              text: "5"
+                              align: center
+                              isSubtle: true
+                              fontSize: medium
+  - type: component.section
+    options:
+      title: Feedback
+      children:
+        - type: component.form
+          instanceId: eventFeedback
+          options:
+            isDiscardChangesAlertEnabled: false
+            children:
+              - type: component.text-field
+                instanceId: mostEffective
+                options:
+                  label: What was most effective?
+                  textArea: small
+              - type: component.text-field
+                instanceId: leastEffective
+                options:
+                  label: What was least effective?
+                  textArea: small
+              - type: component.text-field
+                instanceId: improve
+                options:
+                  label: What can be improved?
+                  textArea: small
+
+actions:
+  - children:
+      - type: action.execute-entity
+        options:
+          title: Submit Feedback
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/eventFeedback
+          method: create
+          goBack: previous
+          data:
+            rating: =@ctx.solution.state.rating
+            mostEffective: =@ctx.components.mostEffective.state.value
+            leastEffective: =@ctx.components.leastEffective.state.value
+            improve: =@ctx.components.improve.state.value
+          onSuccess: 
+            title: Sucessfully submitted
+            description: Thank you for your feedback

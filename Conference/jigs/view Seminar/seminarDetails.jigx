@@ -1,0 +1,133 @@
+title: Speaker
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+# onFocus:
+#   type: action.action-list
+#   options:
+#     actions:
+#       - type: action.sync-entities
+#         options:
+#           provider: 
+#           entities:
+#             - entity: 
+
+datasources:
+  seminarDetails: 
+    type: datasource.sqlite
+    options:
+      isDocument: true
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/calendar
+  
+      query: |
+        SELECT 
+          C.id as Cid, 
+          R.id as Sid,
+          json_extract(C.data, '$.seminarTitle') as seminarTitle, 
+          json_extract(C.data, '$.seminarDescription') as seminarDescription,
+          json_extract(C.data, '$.speakerName') as speakerName,
+          json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
+          json_extract(C.data, '$.startDateTime') as startDateTime,
+          json_extract(C.data, '$.endDateTime') as endDateTime,
+          json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
+          json_extract(R.data, '$.seminarRoom') as serminarRoom
+        FROM [default/calendar] as C
+        JOIN [default/seminarRooms] as R on Sid = seminarRoomId
+        WHERE Cid = @seminarId
+        ORDER BY startDateTime
+      queryParameters:
+        seminarId: =@ctx.jig.inputs.seminarId
+
+children:
+  - type: component.layout
+    options:
+      isRow: false
+      hasBackground: true 
+      flexChildren: 0
+      gap: small
+      justifyContent: center
+      alignItems: stretch  
+      borderRadius: regular
+      children:
+        - type: component.layout
+          options:
+            isRow: true
+            justifyContent: flex-start
+            padding: xSmall
+            alignItems: center
+            flexChildren: 0
+            children:
+              - type: component.icon
+                options:
+                  size: 24
+                  icon: calendar-3
+                  color:
+                    - when: true
+                      color: color14
+              - type: component.layout
+                options:
+                  isRow: false
+                  padding: none
+                  gap: minimal
+                  flex: 1
+                  children:
+                    - type: component.text
+                      options:
+                        text: =@ctx.datasources.seminarDetails.speakerName
+                        isBold: true
+                    - type: component.layout
+                      options:
+                        isRow: true
+                        padding: none
+                        gap: minimal
+                        children:
+                          - type: component.text
+                            options:
+                              text: ='Time' & ':' & ' ' & ($fromMillis($toMillis(@ctx.datasources.seminarDetails.startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.seminarDetails.endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset))
+                              align: left
+                              isSubtle: true
+                              fontSize: small
+                          - type: component.text 
+                            options:
+                              text: =' Seminar Room' & ':' & ' ' & @ctx.datasources.seminarDetails.serminarRoom
+                              # align: right
+                              isSubtle: true
+                              fontSize: small
+                              
+        - type: component.image
+          options:
+            source:
+              uri: =@ctx.datasources.seminarDetails.speakerAvatar
+  
+  # - type: component.avatar
+  #   options:
+  #     text: =$uppercase($substring(@ctx.datasources.seminarDetails.speakerName, 0,1))
+  #     uri: =@ctx.datasources.seminarDetails.speakerAvatar
+  #     align: center
+  #     size: large
+  # - type: component.entity
+  #   options:
+  #     children:
+  #       - type: component.field-row
+  #         options:
+  #           children:
+  #             - type: component.entity-field
+  #               options:
+  #                 label: Speaker
+  #                 value: =@ctx.datasources.seminarDetails.speakerName
+  #             - type: component.entity-field
+  #               options:
+  #                 label: Time
+  #                 value: =$fromMillis($toMillis(@ctx.datasources.seminarDetails.startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.seminarDetails.endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)

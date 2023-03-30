@@ -1,0 +1,101 @@
+title: Calendar
+type: jig.calendar
+
+onFocus:
+  type: action.action-list
+  options:
+    actions:
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entities:
+            - entity: default/calendar
+
+datasources:        
+  calendar: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/calendar
+  
+      query: |
+        SELECT 
+          id, 
+          '$.seminarTitle', 
+          '$.seminarDescription',
+          '$.speakerName',
+          '$.speakerAvatar',
+          '$.startDateTime',
+          '$.endDateTime',
+          '$.seminarRoomId'
+        FROM [default/calendar] 
+  
+  story: 
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          title: "Welcome to AI Horizons: Exploring the Cutting-Edge of AI"
+          image: https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8QUklMjB0ZWNobm9sb2d5fGVufDB8MXwwfHw%3D&auto=format&fit=crop&w=500&q=60
+        
+stories:
+  type: component.story-group
+  options:
+    groupName: Welcome
+    actionButtonTitle: Show Calendar
+    data: =@ctx.datasources.story
+    item: 
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.current.item.image
+        title: =@ctx.current.item.title
+
+# data: =@ctx.datasources.calendar
+# item:
+#   type: component.event
+#   options:
+#     from: =$substring($now(), 0, 11) & '09:00:00.000Z'
+#     to: =$substring($now(), 0, 11) & '10:00:00.000Z'
+#     title: =@ctx.current.item.seminarTitle
+#     description: =@ctx.current.item.seminarDescription
+#     people: "=[{'fullName':@ctx.current.item.speakerName, 'avatarUrl': @ctx.current.item.speakerAvatar}]"
+#     # onButtonPress: 
+#     #   type: action.execute-entity
+#     #   options:
+#     #     title: Sign up for Seminar
+#     #     provider: DATA_PROVIDER_DYNAMIC
+#     #     entity: default/seminarAttendees
+#     #     method: create
+#     #     goBack: previous
+#     #     data:
+#     #       seminarId: =@ctx.current.item.id
+#     #       attendeeName: =@ctx.user.displayName
+#     #       attendeeEmail: =@ctx.user.email
+#     #       attendeeId: =@ctx.user.id
+
+data: =@ctx.datasources.calendar
+item:
+  type: component.event
+  options:
+    from: =@ctx.current.item.id = '1' ? $substring($now(), 0, 11) & '09:00:00.000Z' :@ctx.current.item.startDateTime
+    to: =@ctx.current.item.id = '1' ? $substring($now(), 0, 11) & '10:00:00.000Z' :@ctx.current.item.endDateTime
+    title: =@ctx.current.item.seminarTitle
+    description: =@ctx.current.item.seminarDescription
+    people: "=[{'fullName':@ctx.current.item.speakerName, 'avatarUrl': @ctx.current.item.speakerAvatar}]"
+    onButtonPress: 
+      type: action.execute-entity
+      options:
+        title: Sign up for Seminar
+        provider: DATA_PROVIDER_DYNAMIC
+        entity: default/seminarAttendees
+        method: create
+        goBack: previous
+        data:
+          seminarId: =@ctx.current.item.id
+          attendeeName: =@ctx.user.displayName
+          attendeeEmail: =@ctx.user.email
+          attendeeId: =@ctx.user.id
+    

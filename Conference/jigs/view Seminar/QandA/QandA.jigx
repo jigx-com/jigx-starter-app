@@ -1,0 +1,124 @@
+title: Q&A
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1496861083958-175bb1bd5702?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvd2VyJTIwZmllbGR8ZW58MHwwfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60
+    
+datasources:
+  QandA: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/QandA
+  
+      query: |
+        SELECT 
+          id, 
+          '$.question', 
+          '$.userDisplayName',
+          '$.seminarId',
+          '$.userEmail',
+          '$.answered'
+        FROM [default/QandA] 
+        WHERE '$.seminarId' LIKE @seminarId
+      queryParameters:
+        seminarId: =@ctx.jig.inputs.seminarId
+  
+  CountQandA:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/QandA
+  
+      query: |
+        SELECT 
+          id, 
+          '$.seminarId',
+          COUNT(json_extract(data, '$.seminarId')) as count
+        FROM [default/QandA] 
+        WHERE '$.seminarId' LIKE @seminarId
+     # GROUP BY
+        #   '$.seminarId'
+      queryParameters:
+        seminarId: =@ctx.jig.inputs.seminarId
+
+placeholders:
+  - title: 'No Questions'
+    icon: missing-data
+    when: =(@ctx.datasources.CountQandA.count = 0 ? true:false)
+
+children:
+  - type: component.list
+    options:
+      data: =@ctx.datasources.QandA
+      maximumItemsToRender: 500
+      item: 
+        type: component.list-item
+        options:
+          title: =@ctx.current.item.userDisplayName
+          description: =@ctx.current.item.question
+
+          label:
+            title: =(@ctx.current.item.answered = 'true' ? 'answered':'')
+            color:
+              - when: true
+                color: color2
+          
+          onPress: 
+            type: action.go-to
+            options:
+              linkTo: view-question
+              parameters:
+                userName: =@ctx.current.item.userDisplayName
+                userEmail: =@ctx.current.item.userEmail
+                question: =@ctx.current.item.question
+                id: =@ctx.current.item.id
+        # THESE SHOULD ONLY BE ACTIVE FOR THE SPEAKER
+          swipeable:
+            left:
+              # - label: View
+              #   icon: view-1
+              #   color: primary
+              #   onPress: 
+              #     type: action.go-to
+              #     options:
+              #       linkTo: view-question
+              #       parameters:
+              #         userName: =@ctx.current.item.userDisplayName
+              #         userEmail: =@ctx.current.item.userEmail
+              #         question: =@ctx.current.item.question
+              #         id: =@ctx.current.item.id
+              - label: Answered
+                icon: check-1
+                color: warning
+                onPress: 
+                  type: action.execute-entity
+                  options:
+                    provider: DATA_PROVIDER_DYNAMIC
+                    entity: default/QandA
+                    method: update
+                    goBack: stay
+                    data:
+                      id: =@ctx.current.item.id
+                      answered: 'true'
+            
+actions:
+  - children:
+      - type: action.go-to
+        options:
+          title: Ask a Question
+          linkTo: submit-question
+          parameters:
+            seminarId: =@ctx.jig.inputs.seminarId
+          

@@ -1,3 +1,9 @@
-# tables:
-#   table1:
-#   table2:
+tables:
+  calendar:
+  seminarAttendees: 
+  videos: 
+  eventFeedback: 
+  seminarFeedback:
+  seminarRooms: 
+  QandA:
+    

@@ -1,0 +1,67 @@
+title: =@ctx.datasources.seminarDetails.seminarTitle
+description: =@ctx.datasources.seminarDetails.seminarDescription
+type: jig.composite
+
+# onFocus:
+#   type: action.action-list
+#   options:
+#     actions:
+#       - type: action.sync-entities
+#         options:
+#           provider: 
+#           entities:
+#             - entity: 
+
+datasources:
+  seminarDetails: 
+    type: datasource.sqlite
+    options:
+      isDocument: true
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/calendar
+  
+      query: |
+        SELECT 
+          id, 
+          '$.seminarTitle', 
+          '$.seminarDescription',
+          '$.speakerName',
+          '$.speakerAvatar',
+          '$.startDateTime',
+          '$.endDateTime',
+          '$.seminarRoomId'
+        FROM [default/calendar] 
+        WHERE id = @seminarId
+      queryParameters:
+        seminarId: =@ctx.jig.inputs.seminarId
+  
+  
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1496861083958-175bb1bd5702?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvd2VyJTIwZmllbGR8ZW58MHwwfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60
+
+children:
+  - jigId: seminarDetails
+    inputs:
+      seminarId: =@ctx.jig.inputs.seminarId
+  - jigId: QandA
+    inputs:
+      seminarId: =@ctx.jig.inputs.seminarId
+      
+actions:
+  # - children:
+  #     - type: action.go-to
+  #       options:
+  #         title: Provide Feedback
+  #         linkTo: seminarFeedback
+  #         parameters:
+  #           seminarId: =@ctx.datasources.seminarDetails.id
