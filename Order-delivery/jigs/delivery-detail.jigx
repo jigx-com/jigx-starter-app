@@ -1,0 +1,108 @@
+title: Delivery detail
+description: ='Tracking id ' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dTrackingId
+type: jig.default
+
+actions:
+  - children:
+      - type: action.go-to
+        options:
+          title: Complete delivery
+          linkTo: delivery-completion-form
+          parameters:
+            deliveryId: =@ctx.jig.inputs.deliveryId
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1614018453562-77f6180ce036?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8ZGVsaXZlcnklMjBib3h8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60
+
+children:
+  - type: component.section
+    options:
+      title: Contact details
+      children:
+        - type: component.entity
+          options:
+            isCompact: true
+            children:
+              - type: component.entity-field
+                options:
+                  label: Contact person
+                  value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dCustomerName
+              - type: component.entity-field
+                options:
+                  label: Phone
+                  value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dCustomerPhone
+                  contentType: phone
+              - type: component.entity-field
+                options:
+                  label: Email
+                  value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dCustomerEmail
+                  contentType: email
+
+  - type: component.section
+    options:
+      title: Location details
+      children:
+        - type: component.entity
+          options:
+            isCompact: true
+            children:
+              - type: component.entity-field
+                options:
+                  label: Time
+                  value: =$fromMillis($toMillis(@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dDeliveryTime), '[h#1]:[m01][P]')
+              - type: component.entity-field
+                options:
+                  label: From
+                  value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lStreetFrom & ', ' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lCountyFrom
+              - type: component.entity-field
+                options:
+                  label: To
+                  value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lStreetTo & ', ' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lCountyTo
+        - type: component.location
+          options:
+            address: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lStreetTo & ', ' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lCountyTo
+            zoomLevel: 12
+        - type: component.layout
+          options:
+            padding: none
+            children:
+              - type: component.button
+                options:
+                  title: Navigate
+                  isCompact: false
+                  preset: primary
+                  
+                  onPress: 
+                    type: action.open-url
+                    options:
+                      url: ='https://www.google.com/maps/dir/' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lStreetFrom & ', ' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lCountyFrom & '/' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lStreetTo & ', ' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lCountyTo & '/'
+
+  - type: component.section
+    options:
+      title: Product details
+      children:
+        - type: component.entity
+          options:
+            isCompact: true
+            children:
+              - type: component.entity-field
+                options:
+                  label: Tracking id
+                  value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dTrackingId
+              - type: component.entity-field
+                options:
+                  label: Number of packages
+                  value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dPackages
+              - type: component.entity-field
+                options:
+                  label: Product
+                  value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dProductName
+
+          

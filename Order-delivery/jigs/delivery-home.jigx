@@ -1,0 +1,243 @@
+title: Order Delivery
+type: jig.default
+
+datasources:
+  current-delivery-with-address:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - default/deliveries
+        - default/locations
+  
+      query: |
+        SELECT 
+          a.id as deliveryId,
+          json_extract(a.data, '$.trackingId') as dTrackingId,
+          json_extract(a.data, '$.customerName') as dCustomerName,
+          json_extract(a.data, '$.deliveryTime') as dDeliveryTime,
+          json_extract(a.data, '$.category') as dCategory,
+          b.id as locationId,
+          json_extract(b.data, '$.streetFrom') as lStreetFrom,
+          json_extract(b.data, '$.streetTo') as lStreetTo,
+          json_extract(b.data, '$.countyFrom') as lCountyFrom,
+          json_extract(b.data, '$.countyTo') as lCountyTo,
+          json_extract(b.data, '$.trackingId') as lTrackingId
+        FROM [default/deliveries] a LEFT JOIN  [default/locations] b ON json_extract(a.data, '$.trackingId') = json_extract(b.data, '$.trackingId') 
+        WHERE json_extract(a.data, '$.category') = 'In Progress' 
+        ORDER BY json_extract(a.data, '$.deliveryTime')
+        LIMIT 1
+
+
+
+children:
+  - type: component.layout
+    options:
+      alignItems: center
+      gap: small
+      hasBackground: true
+      backgroundColor:
+        - when: true
+          color: color9
+      children:
+        - type: component.text
+          options:
+            text: Hello John!
+            isBold: true
+            isHeaderRegular: true
+        - type: component.icon
+          options: 
+            align: center
+            size: 28
+            icon: delivery-truck-5
+
+        - type: component.text
+          options:
+            text:  =$count(@ctx.datasources.all-deliveries[dCategory = "In Progress"].deliveryId) != 1 ? $count(@ctx.datasources.all-deliveries[dCategory = "In Progress"].deliveryId) = 0 ? "You have completed all the deliveries for today" :"You have " & $count(@ctx.datasources.all-deliveries[dCategory = "In Progress"].deliveryId) &" deliveries scheduled for today" :"You have " & $count(@ctx.datasources.all-deliveries[dCategory = "In Progress"].deliveryId) &" delivery scheduled for today"
+            fontSize: regular
+
+
+        - type: component.button
+          options:
+            title: =$count(@ctx.datasources.all-deliveries.deliveryId) > 0 ? 'Show all' :'Enjoy the rest of your day'
+            preset: primary
+            isCompact: true
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: deliveries-list
+            # pridaj [category="uncompleted"] aby sme pracovali len s nedokoncenymi zasielkami         
+
+  - type: component.section
+    options:
+      title: =$count(@ctx.datasources.all-deliveries.deliveryId) > 0 ? "Current delivery":""
+      children:
+        - type: component.layout
+          options:
+            isVisible: =$count(@ctx.datasources.all-deliveries.deliveryId) > 0 
+            hasBackground: true
+            padding: none
+            gap: none
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: delivery-detail
+                parameters:
+                  deliveryId: =@ctx.datasources.current-delivery-with-address.deliveryId
+            children:
+              - type: component.layout
+                options:
+                  isRow: true
+                  flexChildren: 0
+                  flex: 1
+                  justifyContent: space-evenly
+                  padding: large
+                  
+                  children:
+                    - type: component.icon
+                      options:
+                        icon: calendar
+                        size: 22
+                    - type: component.layout
+                      options:
+                        gap: small
+                        padding: none
+                        children:
+                          - type: component.text
+                            options:
+                              text: =@ctx.datasources.current-delivery-with-address.dTrackingId
+                              isBold: true
+                          - type: component.text
+                            options:
+                              text: =@ctx.datasources.current-delivery-with-address.dCustomerName
+                              isSubtle: true
+                              fontSize: small
+                          - type: component.text
+                            options:
+                              text: =$fromMillis($toMillis(@ctx.datasources.current-delivery-with-address.dDeliveryTime), '[h#1]:[m01][P]')
+                              
+                              isBold: true
+                           
+              - type: component.layout
+                options:
+                  padding: none
+                  gap: none
+                  children:
+                    - type: component.text
+                      options:
+                        text: "    ________________________________________________  "
+                        isSubtle: true
+                        color:
+                          - when: true
+                            color: color14
+
+              - type: component.layout
+                options:
+                  padding: medium
+                  children: 
+                    - type: component.layout
+                      options:
+                        isRow: true
+                        flexChildren: 0
+                        justifyContent: flex-start
+                        gap: none
+                        padding: none
+                        children:
+                          - type: component.layout
+                            options:
+                              padding: small
+                              children:
+                                - type: component.icon
+                                  options:
+                                    icon: circle
+                                    color:
+                                    - when: true
+                                      color: color14
+                                    size: 17
+                          - type: component.layout
+                            options:
+                              padding: small
+                              gap: none
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: "From:" 
+                                    isSubtle: true
+                                    fontSize: small
+                                - type: component.text
+                                  options:
+                                    text: =@ctx.datasources.current-delivery-with-address.lStreetFrom & ", " & @ctx.datasources.current-delivery-with-address.lCountyFrom
+                                    isBold: true
+                                          
+              - type: component.layout
+                options:
+                  padding: medium
+                  children: 
+                    - type: component.layout
+                      options:
+                        isRow: true
+                        flexChildren: 0
+                        justifyContent: flex-start
+                        gap: none
+                        padding: none
+                        children:
+                          - type: component.layout
+                            options:
+                              padding: small
+                              children:
+                                - type: component.icon
+                                  options:
+                                    icon: pin
+                                    color:
+                                    - when: true
+                                      color: color14
+                                    size: 17
+                          - type: component.layout
+                            options:
+                              padding: small
+                              gap: none
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: "To:" 
+                                    isSubtle: true
+                                    fontSize: small
+                                - type: component.text
+                                  options:
+                                    text: =@ctx.datasources.current-delivery-with-address.lStreetTo & ", " & @ctx.datasources.current-delivery-with-address.lCountyTo
+                                    isBold: true
+              - type: component.layout
+                options:
+                  gap: none
+                  padding: 
+                  
+                  children:
+                    - type: component.layout
+                      options:
+                        
+                        children:
+                          - type: component.location
+                            options:
+                              address: =@ctx.datasources.current-delivery-with-address.lStreetTo & ", " & @ctx.datasources.current-delivery-with-address.lCountyTo
+                              isAnimationDisabled: true
+                              zoomLevel: 12
+                    - type: component.layout
+                      options:
+                        hasBackground: true
+                        backgroundColor:
+                          - when: true
+                            color: color9
+                        flex: 0
+                        flexChildren: 0
+                        alignItems: center
+                      
+                        onPress: 
+                          type: action.open-url
+                          options:
+                            url: ='https://www.google.com/maps/dir/' & @ctx.datasources.current-delivery-with-address.lStreetFrom & ', ' & @ctx.datasources.current-delivery-with-address.lCountyFrom & '/' & @ctx.datasources.current-delivery-with-address.lStreetTo & ', ' & @ctx.datasources.current-delivery-with-address.lCountyTo & '/'
+                        children:
+                          - type: component.text 
+                            options:
+                              text: Navigate
+

@@ -1,0 +1,27 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_LOCAL
+
+  entities:
+    - default/deliveries
+    - default/locations
+
+  query: |
+        SELECT 
+          a.id as deliveryId,
+          json_extract(a.data, '$.trackingId') as dTrackingId,
+          json_extract(a.data, '$.customerName') as dCustomerName,
+          json_extract(a.data, '$.deliveryTime') as dDeliveryTime,
+          json_extract(a.data, '$.category') as dCategory,
+          json_extract(a.data, '$.customerEmail') as dCustomerEmail,
+          json_extract(a.data, '$.customerPhone') as dCustomerPhone,
+          json_extract(a.data, '$.productName') as dProductName,
+          json_extract(a.data, '$.packages') as dPackages,
+          b.id as locationId,
+          json_extract(b.data, '$.streetFrom') as lStreetFrom,
+          json_extract(b.data, '$.streetTo') as lStreetTo,
+          json_extract(b.data, '$.countyFrom') as lCountyFrom,
+          json_extract(b.data, '$.countyTo') as lCountyTo,
+          json_extract(b.data, '$.trackingId') as lTrackingId
+        FROM [default/deliveries] a LEFT JOIN  [default/locations] b ON json_extract(a.data, '$.trackingId') = json_extract(b.data, '$.trackingId') 
+        ORDER BY json_extract(a.data, '$.deliveryTime')

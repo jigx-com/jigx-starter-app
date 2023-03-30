@@ -1,0 +1,121 @@
+title: Complete delivery
+type: jig.default
+
+actions:
+  - children:
+      -  type: action.action-list
+         options:
+           title: Complete delivery
+           actions:
+            - type: action.submit-form
+              options:
+                formId: complete-delivery-form
+                provider: DATA_PROVIDER_LOCAL
+                entity: default/deliveries
+                method: update
+                goBack: home
+                onSuccess: 
+                  title: Delivery completed
+
+  #  - options:
+  #               state: =@ctx.solution.state.delivery
+  #             type: action.reset-state
+children:
+    - type: component.layout
+      options:
+        hasBackground: false
+        padding: minimal
+        children:
+          - type: component.layout
+            options:
+              padding: minimal
+              gap: small
+              children:
+                - type: component.text 
+                  options:
+                    align: center
+                    text: ="Tracking id:" & " " 
+                    isSubtle: true
+                    fontSize: small
+                - type: component.text 
+                  options:
+                    align: center
+                    text: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dTrackingId
+                    isHeaderRegular: true
+           
+    - type: component.layout
+      options:
+        gap: small
+        hasBackground: true
+        backgroundColor:
+          - when: true
+            color: color14
+        children:
+          - type: component.layout
+            options:
+              isRow: true
+              flexChildren: 0
+              gap: large
+              padding: large
+              children:
+                - type: component.icon
+                  options:
+                    icon: pencil-2
+                - type: component.text
+                  options:
+                    text: Please add following details to complete the delivery
+
+    - type: component.form
+      instanceId: complete-delivery-form
+      options:
+        children:
+          - type: component.text-field
+            instanceId: id
+            options:
+              isHidden: true
+              label: id
+              initialValue: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].deliveryId
+          - type: component.text-field
+            instanceId: category
+            options:
+              label: Category
+              isHidden: true
+              initialValue: Completed
+          - type: component.media-field
+            instanceId: photo
+            options:
+              label: Photo
+              mediaType: image
+          - type: component.signature-field
+            instanceId: signature
+            options:
+              label: Signature
+          
+          
+          
+          
+        #           - instanceId: id
+        #   options:
+        #     initialValue: =@ctx.datasources.customer[id = @ctx.jig.inputs.id].id
+        #     isHidden: true
+        #     label: id
+        #   type: component.text-field
+        # - instanceId: complete
+        #   options:
+        #     initialValue: 1
+        #     isHidden: true
+        #     label: complete
+        #   type: component.number-field
+        # - instanceId: image
+        #   options:
+        #     isOptionalLabelHidden: true
+        #     isRequired: false
+        #     label: Photo
+        #     mediaType: image
+        #   type: component.media-field
+        # - instanceId: signature
+        #   options:
+        #     label: Signature
+        #   type: component.signature-field
+              
+  
