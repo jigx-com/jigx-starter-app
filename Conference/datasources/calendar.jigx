@@ -1,0 +1,56 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/calendar
+
+  query: |
+    SELECT
+      id,
+      DATE('now', '-1 day') AS calcDate,
+      '$.seminarTitle',
+      '$.seminarDescription',
+      '$.speakerName',
+      '$.speakerAvatar',
+      '$.fromTime',
+      '$.toTime',
+      '$.seminarRoomId'
+    FROM
+      [default/calendar]
+    WHERE
+      id > '0'
+      AND id < '05'
+    UNION
+    SELECT
+      id,
+      DATE('now') AS calcDate,
+      '$.seminarTitle',
+      '$.seminarDescription',
+      '$.speakerName',
+      '$.speakerAvatar',
+      '$.fromTime',
+      '$.toTime',
+      '$.seminarRoomId'
+    FROM
+      [default/calendar]
+    WHERE
+      id > '04'
+      AND id < '11'
+    UNION
+    SELECT
+      id,
+      DATE('now', '+1 day') AS calcDate,
+      '$.seminarTitle',
+      '$.seminarDescription',
+      '$.speakerName',
+      '$.speakerAvatar',
+      '$.fromTime',
+      '$.toTime',
+      '$.seminarRoomId'
+    FROM
+      [default/calendar]
+    WHERE
+      id > '10'
+      AND id < '16'
+      

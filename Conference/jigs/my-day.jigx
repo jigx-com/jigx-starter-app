@@ -4,7 +4,7 @@ widgets:
   "4x2": 
     type: widget.list
     options:
-      data: =@ctx.datasources.nextUp
+      data: =@ctx.datasources.mySeminar
       item: 
         type: component.list-item
         options:
@@ -16,10 +16,10 @@ widgets:
             uri: =@ctx.current.item.speakerAvatar
             
           label:
-            title: =$fromMillis($toMillis(@ctx.current.item.startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.current.item.endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)
+            title: =@ctx.current.item.fromTime & ' - ' & @ctx.current.item.toTime
         
-          style:
-            isDisabled: =$now() > @ctx.current.item.endDateTime ? true :false
+          # style:
+          #   isDisabled: =$now() > @ctx.current.item.endDateTime ? true :false
           
           divider: solid
 
@@ -33,71 +33,7 @@ header:
         source:
           uri: https://images.unsplash.com/photo-1496861083958-175bb1bd5702?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvd2VyJTIwZmllbGR8ZW58MHwwfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60
   
-datasources:
-  nextUp: 
-    type: datasource.sqlite
-    options:
-      provider: DATA_PROVIDER_DYNAMIC
-  
-      entities:
-        - default/calendar
-        - default/seminarAttendees
-        - default/seminarRooms
-  
-      query: |
-        SELECT 
-          C.id as Cid, 
-          R.id as Sid,
-          json_extract(C.data, '$.seminarTitle') as seminarTitle, 
-          json_extract(C.data, '$.seminarDescription') as seminarDescription,
-          json_extract(C.data, '$.speakerName') as speakerName,
-          json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
-          json_extract(C.data, '$.startDateTime') as startDateTime,
-          json_extract(C.data, '$.endDateTime') as endDateTime,
-          json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
-          json_extract(A.data, '$.seminarId') as seminarId,
-          json_extract(A.data, '$.attendeeEmail') as attendeeEmail,
-          json_extract(R.data, '$.seminarRoom') as serminarRoom
-        FROM [default/calendar] as C
-        JOIN [default/seminarAttendees] as A on Cid = seminarId
-        JOIN [default/seminarRooms] as R on Sid = seminarRoomId
-        WHERE attendeeEmail = @userEmail
-        ORDER BY startDateTime
-      queryParameters:
-        userEmail: =@ctx.user.email
-        
-  # mySeminars: 
-  #   type: datasource.sqlite
-  #   options:
-  #     provider: DATA_PROVIDER_DYNAMIC
-  
-  #     entities:
-  #       - default/calendar
-  
-  #     query: |
-  #       SELECT 
-  #         C.id as Cid, 
-  #         R.id as Sid,
-  #         json_extract(C.data, '$.seminarTitle') as seminarTitle, 
-  #         json_extract(C.data, '$.seminarDescription') as seminarDescription,
-  #         json_extract(C.data, '$.speakerName') as speakerName,
-  #         json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
-  #         json_extract(C.data, '$.startDateTime') as startDateTime,
-  #         json_extract(C.data, '$.endDateTime') as endDateTime,
-  #         json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
-  #         json_extract(A.data, '$.seminarId') as seminarId,
-  #         json_extract(A.data, '$.attendeeEmail') as attendeeEmail,
-  #         json_extract(R.data, '$.seminarRoom') as serminarRoom
-  #       FROM [default/calendar] as C
-  #       JOIN [default/seminarAttendees] as A on Cid = seminarId
-  #       JOIN [default/seminarRooms] as R on Sid = seminarRoomId
-  #       WHERE (attendeeEmail = @userEmail) and (Cid != @nextUpCal)
-  #       ORDER BY startDateTime
-  #     queryParameters:
-  #       userEmail: =@ctx.user.email
-  #       nextUpCal: =@ctx.datasources.nextUp.Cid
-  
-data: =@ctx.datasources.nextUp
+data: =@ctx.datasources.mySeminar
 item:
   type: component.list-item
   options:
@@ -109,10 +45,10 @@ item:
       uri: =@ctx.current.item.speakerAvatar
       
     label:
-      title: =$fromMillis($toMillis(@ctx.current.item.startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.current.item.endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)
+      title: =@ctx.current.item.fromTime & ' - ' & @ctx.current.item.toTime
   
-    style:
-      isDisabled: =$now() > @ctx.current.item.endDateTime ? true :false
+    # style:
+    #   isDisabled: =$now() > @ctx.current.item.toTime ? true :false
     
     divider: solid
     onPress: 

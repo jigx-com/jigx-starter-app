@@ -36,23 +36,24 @@ datasources:
   
       query: |
         SELECT 
-          C.id as Cid, 
-          R.id as Sid,
-          json_extract(C.data, '$.seminarTitle') as seminarTitle, 
+          C.id as Cid,
+          R.id as Rid,
+          DATE('now') AS calcDate,
+          json_extract(C.data, '$.seminarTitle') as seminarTitle,
           json_extract(C.data, '$.seminarDescription') as seminarDescription,
           json_extract(C.data, '$.speakerName') as speakerName,
           json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
-          json_extract(C.data, '$.startDateTime') as startDateTime,
-          json_extract(C.data, '$.endDateTime') as endDateTime,
+          json_extract(C.data, '$.fromTime') as fromTime,
+          json_extract(C.data, '$.toTime') as toTime,
           json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
-          json_extract(A.data, '$.seminarId') as seminarId,
-          json_extract(A.data, '$.attendeeEmail') as attendeeEmail,
+          json_extract(SA.data, '$.seminarId') as seminarId,
+          json_extract(SA.data, '$.attendeeEmail') as attendeeEmail,
           json_extract(R.data, '$.seminarRoom') as serminarRoom
         FROM [default/calendar] as C
-        JOIN [default/seminarAttendees] as A on Cid = seminarId
-        JOIN [default/seminarRooms] as R on Sid = seminarRoomId
+        JOIN [default/seminarAttendees] as SA on Cid = seminarId
+        JOIN [default/seminarRooms] as R on Rid = seminarRoomId
         WHERE attendeeEmail = @userEmail
-        ORDER BY startDateTime
+        ORDER BY fromTime
         LIMIT 1
       queryParameters:
         userEmail: =@ctx.user.email
@@ -69,23 +70,24 @@ datasources:
   
       query: |
         SELECT 
-          C.id as Cid, 
-          R.id as Sid,
-          json_extract(C.data, '$.seminarTitle') as seminarTitle, 
+          C.id as Cid,
+          R.id as Rid,
+          DATE('now') AS calcDate,
+          json_extract(C.data, '$.seminarTitle') as seminarTitle,
           json_extract(C.data, '$.seminarDescription') as seminarDescription,
           json_extract(C.data, '$.speakerName') as speakerName,
           json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
-          json_extract(C.data, '$.startDateTime') as startDateTime,
-          json_extract(C.data, '$.endDateTime') as endDateTime,
+          json_extract(C.data, '$.fromTime') as fromTime,
+          json_extract(C.data, '$.toTime') as toTime,
           json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
-          json_extract(A.data, '$.seminarId') as seminarId,
-          json_extract(A.data, '$.attendeeEmail') as attendeeEmail,
+          json_extract(SA.data, '$.seminarId') as seminarId,
+          json_extract(SA.data, '$.attendeeEmail') as attendeeEmail,
           json_extract(R.data, '$.seminarRoom') as serminarRoom
         FROM [default/calendar] as C
-        JOIN [default/seminarAttendees] as A on Cid = seminarId
-        JOIN [default/seminarRooms] as R on Sid = seminarRoomId
+        JOIN [default/seminarAttendees] as SA on Cid = seminarId
+        JOIN [default/seminarRooms] as R on Rid = seminarRoomId
         WHERE (attendeeEmail = @userEmail) and (Cid != @nextUpCal)
-        ORDER BY startDateTime
+        ORDER BY fromTime
       queryParameters:
         userEmail: =@ctx.user.email
         nextUpCal: =@ctx.datasources.nextUp.Cid
@@ -157,7 +159,8 @@ children:
                         children:
                           - type: component.text
                             options:
-                              text: ='Time' & ':' & ' ' & ($fromMillis($toMillis(@ctx.datasources.nextUp.startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.nextUp.endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset))
+                              text: ='Time:' & ' ' & @ctx.datasources.nextUp.fromTime & ' - ' & @ctx.datasources.nextUp.toTime
+                              # text: ='Time' & ':' & ' ' & ($fromMillis($toMillis(@ctx.datasources.nextUp.startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.nextUp.endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset))
                               align: left
                               isSubtle: true
                               fontSize: small
@@ -226,7 +229,8 @@ children:
                         isBold: true
                     - type: component.text 
                       options:
-                        text: ='Time' & ':' & ' ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[0].startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[0].endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)
+                        text: ='Time:' & ' ' & @ctx.datasources.mySeminars[0].fromTime & ' - ' & @ctx.datasources.mySeminars[0].toTime
+                        # text: ='Time' & ':' & ' ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[0].startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[0].endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)
                         fontSize: small
                         align: center
                         isSubtle: true
@@ -272,7 +276,8 @@ children:
                         isBold: true
                     - type: component.text 
                       options:
-                        text: ='Time' & ':' & ' ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[1].startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[1].endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)
+                        text: ='Time:' & ' ' & @ctx.datasources.mySeminars[1].fromTime & ' - ' & @ctx.datasources.mySeminars[1].toTime
+                        # text: ='Time' & ':' & ' ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[1].startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[1].endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)
                         fontSize: small
                         align: center
                         isSubtle: true

@@ -1,0 +1,33 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/calendar
+    - default/seminarAttendees
+
+  query: |
+    SELECT
+      C.id as Cid,
+      R.id as Rid,
+      DATE('now') AS calcDate,
+      json_extract(C.data, '$.seminarTitle') as seminarTitle,
+      json_extract(C.data, '$.seminarDescription') as seminarDescription,
+      json_extract(C.data, '$.speakerName') as speakerName,
+      json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
+      json_extract(C.data, '$.fromTime') as fromTime,
+      json_extract(C.data, '$.toTime') as toTime,
+      json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
+      json_extract(SA.data, '$.seminarId') as seminarId,
+      json_extract(SA.data, '$.attendeeEmail') as attendeeEmail,
+      json_extract(R.data, '$.seminarRoom') as serminarRoom
+    FROM
+      [default/calendar] as C
+      JOIN [default/seminarAttendees] as SA on Cid = seminarId
+      JOIN [default/seminarRooms] as R on Rid = seminarRoomId
+    WHERE
+      Cid > '04'
+      AND Cid < '11'
+      AND attendeeEmail = @userEmail
+  queryParameters:
+    userEmail: =@ctx.user.email

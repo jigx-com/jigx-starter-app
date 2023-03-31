@@ -1,5 +1,5 @@
-name: event-starter-app
-title: event-starter-app
+name: conference-starter-app
+title: Conference - Starter App
 category: business
 stories:
   - calendar
@@ -22,5 +22,10 @@ widgets:
     jigId: testing
 
 home:
-  - instanceId: eventHome
+  - when: =$contains(@ctx.datasources.checkIfSeminar.attendeeEmail, @ctx.user.email) = true ? true:false
+    instanceId: eventHome
     jigId: home
+
+  - when: =$contains(@ctx.datasources.checkIfSeminar.attendeeEmail, @ctx.user.email) = true ? false:true
+    instanceId: calendarHome
+    jigId: calendar

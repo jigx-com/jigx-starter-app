@@ -21,17 +21,54 @@ datasources:
         - default/calendar
   
       query: |
-        SELECT 
-          id, 
-          '$.seminarTitle', 
+        SELECT
+          id,
+          DATE('now', '-1 day') AS calcDate,
+          '$.seminarTitle',
           '$.seminarDescription',
           '$.speakerName',
           '$.speakerAvatar',
-          '$.startDateTime',
-          '$.endDateTime',
+          '$.fromTime',
+          '$.toTime',
           '$.seminarRoomId'
-        FROM [default/calendar] 
-  
+        FROM
+          [default/calendar]
+        WHERE
+          id > '0'
+          AND id < '05'
+        UNION
+        SELECT
+          id,
+          DATE('now') AS calcDate,
+          '$.seminarTitle',
+          '$.seminarDescription',
+          '$.speakerName',
+          '$.speakerAvatar',
+          '$.fromTime',
+          '$.toTime',
+          '$.seminarRoomId'
+        FROM
+          [default/calendar]
+        WHERE
+          id > '04'
+          AND id < '11'
+        UNION
+        SELECT
+          id,
+          DATE('now', '+1 day') AS calcDate,
+          '$.seminarTitle',
+          '$.seminarDescription',
+          '$.speakerName',
+          '$.speakerAvatar',
+          '$.fromTime',
+          '$.toTime',
+          '$.seminarRoomId'
+        FROM
+          [default/calendar]
+        WHERE
+          id > '10'
+          AND id < '16'
+          
   story: 
     type: datasource.static
     options:
@@ -53,46 +90,25 @@ stories:
           uri: =@ctx.current.item.image
         title: =@ctx.current.item.title
 
-# data: =@ctx.datasources.calendar
-# item:
-#   type: component.event
-#   options:
-#     from: =$substring($now(), 0, 11) & '09:00:00.000Z'
-#     to: =$substring($now(), 0, 11) & '10:00:00.000Z'
-#     title: =@ctx.current.item.seminarTitle
-#     description: =@ctx.current.item.seminarDescription
-#     people: "=[{'fullName':@ctx.current.item.speakerName, 'avatarUrl': @ctx.current.item.speakerAvatar}]"
-#     # onButtonPress: 
-#     #   type: action.execute-entity
-#     #   options:
-#     #     title: Sign up for Seminar
-#     #     provider: DATA_PROVIDER_DYNAMIC
-#     #     entity: default/seminarAttendees
-#     #     method: create
-#     #     goBack: previous
-#     #     data:
-#     #       seminarId: =@ctx.current.item.id
-#     #       attendeeName: =@ctx.user.displayName
-#     #       attendeeEmail: =@ctx.user.email
-#     #       attendeeId: =@ctx.user.id
-
 data: =@ctx.datasources.calendar
 item:
   type: component.event
   options:
-    from: =@ctx.current.item.id = '1' ? $substring($now(), 0, 11) & '09:00:00.000Z' :@ctx.current.item.startDateTime
-    to: =@ctx.current.item.id = '1' ? $substring($now(), 0, 11) & '10:00:00.000Z' :@ctx.current.item.endDateTime
+    from: =@ctx.current.item.calcDate & ' ' & @ctx.current.item.fromTime & '-07:00'
+    to: =@ctx.current.item.calcDate & ' ' & @ctx.current.item.toTime & '-07:00'
     title: =@ctx.current.item.seminarTitle
     description: =@ctx.current.item.seminarDescription
     people: "=[{'fullName':@ctx.current.item.speakerName, 'avatarUrl': @ctx.current.item.speakerAvatar}]"
     onButtonPress: 
       type: action.execute-entity
       options:
+        # style:
+        #   isDisabled: =@ctx.current.item.calcDate < $substring($now(), 0, 10) ?  true:false
         title: Sign up for Seminar
         provider: DATA_PROVIDER_DYNAMIC
         entity: default/seminarAttendees
         method: create
-        goBack: previous
+        goBack: home
         data:
           seminarId: =@ctx.current.item.id
           attendeeName: =@ctx.user.displayName

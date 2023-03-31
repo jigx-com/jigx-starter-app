@@ -24,20 +24,19 @@ datasources:
   
       query: |
         SELECT 
-          id, 
-          '$.seminarTitle', 
+          id,
+          DATE('now') AS calcDate,
+          '$.seminarTitle',
           '$.seminarDescription',
           '$.speakerName',
           '$.speakerAvatar',
-          '$.startDateTime',
-          '$.endDateTime',
+          '$.fromTime',
+          '$.toTime',
           '$.seminarRoomId'
         FROM [default/calendar] 
         WHERE id = @seminarId
       queryParameters:
         seminarId: =@ctx.jig.inputs.seminarId
-  
-  
 
 header:
   type: component.jig-header
@@ -57,7 +56,7 @@ children:
     inputs:
       seminarId: =@ctx.jig.inputs.seminarId
       
-actions:
+# actions:
   # - children:
   #     - type: action.go-to
   #       options:

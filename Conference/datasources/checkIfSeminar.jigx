@@ -1,0 +1,23 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/calendar
+    - default/seminarAttendees
+
+  query: |
+    SELECT
+      C.id as Cid,
+      json_extract(SA.data, '$.seminarId') as seminarId,
+      json_extract(SA.data, '$.attendeeEmail') as attendeeEmail
+    FROM
+      [default/calendar] as C
+      JOIN [default/seminarAttendees] as SA on Cid = seminarId
+    WHERE
+      Cid > '04'
+      AND Cid < '11'
+      AND attendeeEmail = @userEmail
+    Limit 1
+  queryParameters:
+    userEmail: =@ctx.user.email

@@ -30,23 +30,26 @@ datasources:
   
       entities:
         - default/calendar
+        - default/seminarRooms
   
       query: |
         SELECT 
-          C.id as Cid, 
-          R.id as Sid,
-          json_extract(C.data, '$.seminarTitle') as seminarTitle, 
+          C.id as Cid,
+          R.id as Rid,
+          DATE('now') AS calcDate,
+          json_extract(C.data, '$.seminarTitle') as seminarTitle,
           json_extract(C.data, '$.seminarDescription') as seminarDescription,
           json_extract(C.data, '$.speakerName') as speakerName,
           json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
-          json_extract(C.data, '$.startDateTime') as startDateTime,
-          json_extract(C.data, '$.endDateTime') as endDateTime,
+          json_extract(C.data, '$.fromTime') as fromTime,
+          json_extract(C.data, '$.toTime') as toTime,
           json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
           json_extract(R.data, '$.seminarRoom') as serminarRoom
-        FROM [default/calendar] as C
-        JOIN [default/seminarRooms] as R on Sid = seminarRoomId
+        FROM
+          [default/calendar] as C
+          JOIN [default/seminarRooms] as R on Rid = seminarRoomId
         WHERE Cid = @seminarId
-        ORDER BY startDateTime
+        ORDER BY fromTime
       queryParameters:
         seminarId: =@ctx.jig.inputs.seminarId
 
@@ -95,7 +98,7 @@ children:
                         children:
                           - type: component.text
                             options:
-                              text: ='Time' & ':' & ' ' & ($fromMillis($toMillis(@ctx.datasources.seminarDetails.startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.seminarDetails.endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset))
+                              text: ='Time:' & ' ' & @ctx.datasources.seminarDetails.fromTime & ' - ' & @ctx.datasources.seminarDetails.toTime
                               align: left
                               isSubtle: true
                               fontSize: small
