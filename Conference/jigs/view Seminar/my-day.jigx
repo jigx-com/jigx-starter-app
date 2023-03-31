@@ -31,7 +31,7 @@ header:
       type: component.image
       options:
         source:
-          uri: https://images.unsplash.com/photo-1496861083958-175bb1bd5702?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvd2VyJTIwZmllbGR8ZW58MHwwfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60
+          uri: https://images.unsplash.com/photo-1507878866276-a947ef722fee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60
   
 data: =@ctx.datasources.mySeminar
 item:
