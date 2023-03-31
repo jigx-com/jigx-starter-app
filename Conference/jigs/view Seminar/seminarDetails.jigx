@@ -11,15 +11,16 @@ header:
         source:
           uri: https://builder.jigx.com/assets/images/header.jpg
 
-# onFocus:
-#   type: action.action-list
-#   options:
-#     actions:
-#       - type: action.sync-entities
-#         options:
-#           provider: 
-#           entities:
-#             - entity: 
+onFocus:
+  type: action.action-list
+  options:
+    actions:
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entities:
+            - entity: default/calendar
+            - entity: default/seminarRooms
 
 datasources:
   seminarDetails: 
@@ -105,7 +106,6 @@ children:
                           - type: component.text 
                             options:
                               text: =' Seminar Room' & ':' & ' ' & @ctx.datasources.seminarDetails.serminarRoom
-                              # align: right
                               isSubtle: true
                               fontSize: small
                               
@@ -113,24 +113,4 @@ children:
           options:
             source:
               uri: =@ctx.datasources.seminarDetails.speakerAvatar
-  
-  # - type: component.avatar
-  #   options:
-  #     text: =$uppercase($substring(@ctx.datasources.seminarDetails.speakerName, 0,1))
-  #     uri: =@ctx.datasources.seminarDetails.speakerAvatar
-  #     align: center
-  #     size: large
-  # - type: component.entity
-  #   options:
-  #     children:
-  #       - type: component.field-row
-  #         options:
-  #           children:
-  #             - type: component.entity-field
-  #               options:
-  #                 label: Speaker
-  #                 value: =@ctx.datasources.seminarDetails.speakerName
-  #             - type: component.entity-field
-  #               options:
-  #                 label: Time
-  #                 value: =$fromMillis($toMillis(@ctx.datasources.seminarDetails.startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.seminarDetails.endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)
+            height: 155

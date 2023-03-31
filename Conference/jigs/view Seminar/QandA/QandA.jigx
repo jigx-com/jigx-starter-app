@@ -48,8 +48,6 @@ datasources:
           COUNT(json_extract(data, '$.seminarId')) as count
         FROM [default/QandA] 
         WHERE '$.seminarId' LIKE @seminarId
-     # GROUP BY
-        #   '$.seminarId'
       queryParameters:
         seminarId: =@ctx.jig.inputs.seminarId
 
@@ -87,18 +85,6 @@ children:
         # THESE SHOULD ONLY BE ACTIVE FOR THE SPEAKER
           swipeable:
             left:
-              # - label: View
-              #   icon: view-1
-              #   color: primary
-              #   onPress: 
-              #     type: action.go-to
-              #     options:
-              #       linkTo: view-question
-              #       parameters:
-              #         userName: =@ctx.current.item.userDisplayName
-              #         userEmail: =@ctx.current.item.userEmail
-              #         question: =@ctx.current.item.question
-              #         id: =@ctx.current.item.id
               - label: Answered
                 icon: check-1
                 color: warning
@@ -112,13 +98,7 @@ children:
                     data:
                       id: =@ctx.current.item.id
                       answered: 'true'
-            
-actions:
-  - children:
-      - type: action.go-to
-        options:
-          title: Ask a Question
-          linkTo: submit-question
-          parameters:
-            seminarId: =@ctx.jig.inputs.seminarId
+          rightElement: 
+            element: icon
+            name: arrow-left
           

@@ -1,0 +1,32 @@
+title: Indoor Navigation
+type: jig.default
+icon: location
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+children:
+  - type: component.interactive-image
+    options:
+      source:
+        uri: https://www.dropbox.com/s/k70u6n45wnh2k3f/floorplan-2.png?raw=1
+      imageHeight: 650
+      # item:
+      #   type: component.interactive-image-item
+      #   options:
+      #     id: 1
+      #     title: Starbucks
+      #     percentageCoordinates:
+      #       x: .5
+      #       y: .5
+      #     icon: location
+      #     color: primary
+          
+      

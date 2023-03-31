@@ -10,16 +10,16 @@ widgets:
     jigId: my-day
   - size: 2x2
     jigId: food
-  - size: 1x1 # choose size of the widget on the home hub
-    jigId: calendar
   - size: 1x1
-    jigId: navigation
+    jigId: calendar
+  # - size: 1x1
+  #   jigId: navigation
   - size: 1x1
     jigId: videos
   - size: "1x1"
     jigId: eventFeedback
   - size: "1x1"
-    jigId: testing
+    jigId: floor-plan
 
 home:
   - when: =$contains(@ctx.datasources.checkIfSeminar.attendeeEmail, @ctx.user.email) = true ? true:false

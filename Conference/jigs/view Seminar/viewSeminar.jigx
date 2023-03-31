@@ -2,15 +2,15 @@ title: =@ctx.datasources.seminarDetails.seminarTitle
 description: =@ctx.datasources.seminarDetails.seminarDescription
 type: jig.composite
 
-# onFocus:
-#   type: action.action-list
-#   options:
-#     actions:
-#       - type: action.sync-entities
-#         options:
-#           provider: 
-#           entities:
-#             - entity: 
+onFocus:
+  type: action.action-list
+  options:
+    actions:
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entities:
+            - entity: default/calendar
 
 datasources:
   seminarDetails: 
@@ -55,12 +55,19 @@ children:
   - jigId: QandA
     inputs:
       seminarId: =@ctx.jig.inputs.seminarId
-      
-# actions:
-  # - children:
-  #     - type: action.go-to
-  #       options:
-  #         title: Provide Feedback
-  #         linkTo: seminarFeedback
-  #         parameters:
-  #           seminarId: =@ctx.datasources.seminarDetails.id
+
+actions:
+  - children:
+      - type: action.go-to
+        options:
+          title: Ask a Question
+          linkTo: submit-question
+          parameters:
+            seminarId: =@ctx.jig.inputs.seminarId
+      - type: action.go-to
+        options:
+          title: Provide Feedback
+          linkTo: seminarFeedback
+          parameters:
+            seminarId: =@ctx.datasources.seminarDetails.id
+          icon: feedback

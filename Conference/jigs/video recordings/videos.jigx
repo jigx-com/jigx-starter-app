@@ -11,20 +11,15 @@ header:
       options:
         source:
           uri: https://images.unsplash.com/photo-1496861083958-175bb1bd5702?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvd2VyJTIwZmllbGR8ZW58MHwwfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60
+
+onFocus: 
+  type: action.sync-entities
+  options:
+    provider: DATA_PROVIDER_DYNAMIC
+    entities:
+      - entity: default/videos
           
-datasources:
-  # image:
-  #   type: datasource.sqlite
-  #   options:
-  #     provider: DATA_PROVIDER_DYNAMIC
-  
-  #     entities:
-  #       - default/images
-  
-  #     query: SELECT id, '$.image' FROM [default/images] WHERE id = @myParam
-  #     queryParameters:
-  #       myParam: 'f66bd155-27d1-47fb-905a-547dcbc2e600'
-        
+datasources:      
   videos: 
     type: datasource.sqlite
     options:

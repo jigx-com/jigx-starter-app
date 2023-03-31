@@ -1,5 +1,6 @@
 title: Event Feedback
 type: jig.default
+icon: pencil-write
 
 header:
   type: component.jig-header
@@ -10,17 +11,6 @@ header:
       options:
         source:
           uri: https://images.unsplash.com/photo-1496861083958-175bb1bd5702?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvd2VyJTIwZmllbGR8ZW58MHwwfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60
-
-# onFocus:
-#   type: action.action-list
-#   options:
-#     actions:
-#       - type: action.reset-state
-#         options:
-#           state: =@ctx.solution.state.rating
-
-# datasources:
-#   mydata: 
 
 children:
   - type: component.section
@@ -62,7 +52,7 @@ children:
                         borderRadius: regular
                         backgroundColor:
                           - when: =@ctx.solution.state.chosen1 = true
-                            color: color10
+                            color: color3
                         onPress:
                           type: action.action-list
                           options:
@@ -91,18 +81,11 @@ children:
                                 options:
                                   state: =@ctx.solution.state.chosen5
                                   value: false
-                          # type: action.set-state
-                          # options:
-                          #   state: =@ctx.solution.state.rating
-                          #   value: ="1"
                         children: 
                           - type: component.icon
                             options:
                               icon: =@ctx.solution.state.chosen1 = true ? 'checkbox-checked':'checkbox-unchecked'
                               width: 40
-                              # color:
-                              #   - when: =@ctx.solution.state.chosen1 = true
-                              #     color: color1
                           - type: component.text
                             options:
                               text: "1"
@@ -117,7 +100,7 @@ children:
                         borderRadius: regular
                         backgroundColor:
                           - when: =@ctx.solution.state.chosen2 = true
-                            color: color10
+                            color: color3
                         onPress:
                           type: action.action-list
                           options:
@@ -146,19 +129,11 @@ children:
                                 options:
                                   state: =@ctx.solution.state.chosen5
                                   value: false
-                        # onPress:
-                        #   type: action.set-state
-                        #   options:
-                        #     state: =@ctx.solution.state.rating
-                        #     value: ="2"
                         children: 
                           - type: component.icon
                             options:
                               icon: =@ctx.solution.state.chosen2 = true ? 'checkbox-checked':'checkbox-unchecked'
                               width: 40
-                              # color:
-                              #   - when: =@ctx.solution.state.chosen2 = true
-                              #     color: color1
                           - type: component.text
                             options:
                               text: "2"
@@ -173,7 +148,7 @@ children:
                         borderRadius: regular
                         backgroundColor:
                           - when: =@ctx.solution.state.chosen3 = true
-                            color: color10
+                            color: color3
                         onPress:
                           type: action.action-list
                           options:
@@ -202,19 +177,11 @@ children:
                                 options:
                                   state: =@ctx.solution.state.chosen5
                                   value: false
-                        # onPress:
-                        #   type: action.set-state
-                        #   options:
-                        #     state: =@ctx.solution.state.rating
-                        #     value: ="3"
                         children: 
                           - type: component.icon
                             options:
                               icon: =@ctx.solution.state.chosen3 = true ? 'checkbox-checked':'checkbox-unchecked'
                               width: 40
-                              # color:
-                              #   - when: =@ctx.solution.state.chosen3 = true
-                              #     color: color1
                           - type: component.text
                             options:
                               text: "3"
@@ -229,7 +196,7 @@ children:
                         borderRadius: regular
                         backgroundColor:
                           - when: =@ctx.solution.state.chosen4 = true
-                            color: color10
+                            color: color3
                         onPress:
                           type: action.action-list
                           options:
@@ -258,19 +225,11 @@ children:
                                 options:
                                   state: =@ctx.solution.state.chosen5
                                   value: false
-                        # onPress:
-                        #   type: action.set-state
-                        #   options:
-                        #     state: =@ctx.solution.state.rating
-                        #     value: ="4"
                         children: 
                           - type: component.icon
                             options:
                               icon: =@ctx.solution.state.chosen4 = true ? 'checkbox-checked':'checkbox-unchecked'
                               width: 40
-                              # color:
-                              #   - when: =@ctx.solution.state.chosen4 = true
-                              #     color: color1
                           - type: component.text
                             options:
                               text: "4"
@@ -285,7 +244,7 @@ children:
                         borderRadius: regular
                         backgroundColor:
                           - when: =@ctx.solution.state.chosen5 = true
-                            color: color10
+                            color: color3
                         onPress:
                           type: action.action-list
                           options:
@@ -314,19 +273,11 @@ children:
                                 options:
                                   state: =@ctx.solution.state.chosen5
                                   value: true
-                        # onPress:
-                        #   type: action.set-state
-                        #   options:
-                        #     state: =@ctx.solution.state.rating
-                        #     value: ="5"
                         children: 
                           - type: component.icon
                             options:
                               icon: =@ctx.solution.state.chosen5 = true ? 'checkbox-checked':'checkbox-unchecked'
                               width: 40
-                              # color:
-                              #   - when: =@ctx.solution.state.chosen5 = true
-                              #     color: color1
                           - type: component.text
                             options:
                               text: "5"

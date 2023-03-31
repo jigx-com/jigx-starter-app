@@ -160,7 +160,6 @@ children:
                           - type: component.text
                             options:
                               text: ='Time:' & ' ' & @ctx.datasources.nextUp.fromTime & ' - ' & @ctx.datasources.nextUp.toTime
-                              # text: ='Time' & ':' & ' ' & ($fromMillis($toMillis(@ctx.datasources.nextUp.startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.nextUp.endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset))
                               align: left
                               isSubtle: true
                               fontSize: small
@@ -230,7 +229,6 @@ children:
                     - type: component.text 
                       options:
                         text: ='Time:' & ' ' & @ctx.datasources.mySeminars[0].fromTime & ' - ' & @ctx.datasources.mySeminars[0].toTime
-                        # text: ='Time' & ':' & ' ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[0].startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[0].endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)
                         fontSize: small
                         align: center
                         isSubtle: true
@@ -277,7 +275,86 @@ children:
                     - type: component.text 
                       options:
                         text: ='Time:' & ' ' & @ctx.datasources.mySeminars[1].fromTime & ' - ' & @ctx.datasources.mySeminars[1].toTime
-                        # text: ='Time' & ':' & ' ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[1].startDateTime), '[H01]:[m01]', @ctx.system.timezone.offset) & ' - ' & $fromMillis($toMillis(@ctx.datasources.mySeminars[1].endDateTime), '[H01]:[m01]', @ctx.system.timezone.offset)
                         fontSize: small
                         align: center
                         isSubtle: true
+
+  - type: component.layout
+    options:
+      isRow: true
+      padding: none  
+      children:                                        
+        - type: component.layout
+          options: 
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: food
+            hasBackground: true
+            # backgroundColor: 
+            #   - when: =@ctx.solution.state.mood = 'Sad'
+            #     color: primary
+            borderRadius: regular
+            padding: medium
+            children: 
+              - type: component.image
+                options:
+                  source:
+                    uri: https://cdn-icons-png.flaticon.com/128/562/562678.png
+                  resizeMode: contain
+                  height: 48
+              - type: component.text
+                options:
+                  text: Food
+                  isBold: true
+                  align: center
+
+        - type: component.layout
+          options: 
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: floor-plan
+            hasBackground: true
+            # backgroundColor: 
+            #   - when: =@ctx.solution.state.mood = 'Happy'
+            #     color: primary            
+            borderRadius: regular
+            padding: medium
+            children: 
+              - type: component.image
+                options:
+                  source:
+                    uri: https://cdn-icons-png.flaticon.com/128/5604/5604573.png
+                  resizeMode: contain
+                  height: 48
+              - type: component.text
+                options:
+                  text: Navigation
+                  isBold: true
+                  align: center
+        
+        - type: component.layout
+          options: 
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: calendar
+            hasBackground: true
+            # backgroundColor: 
+            #   - when: =@ctx.solution.state.mood = 'Happy'
+            #     color: primary            
+            borderRadius: regular
+            padding: medium
+            children: 
+              - type: component.image
+                options:
+                  source:
+                    uri: https://cdn-icons-png.flaticon.com/128/2370/2370264.png
+                  resizeMode: contain
+                  height: 48
+              - type: component.text
+                options:
+                  text: Calendar
+                  isBold: true
+                  align: center
