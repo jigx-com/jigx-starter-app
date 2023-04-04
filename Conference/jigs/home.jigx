@@ -113,7 +113,6 @@ children:
                 options:
                   text: Your Next Upcoming Events
                   isBold: true
-                  isHeaderBig: true
               
   - type: component.layout
     options:
