@@ -67,7 +67,8 @@ children:
                   value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lStreetTo & ', ' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lCountyTo
         - type: component.location
           options:
-            address: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lStreetTo & ', ' & @ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lCountyTo
+            pathsData:
+               =[{'lat':@ctx.system.geolocation.coords.latitude,'lng':@ctx.system.geolocation.coords.longitude},{'lat':$number(@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lLatitude),'lng':$number(@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].lLongitude)}]
             zoomLevel: 12
         - type: component.layout
           options:

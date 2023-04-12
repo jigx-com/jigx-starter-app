@@ -1,6 +1,6 @@
 type: datasource.sqlite
 options:
-  provider: DATA_PROVIDER_LOCAL
+  provider: DATA_PROVIDER_DYNAMIC
 
   entities:
     - default/deliveries
@@ -22,6 +22,8 @@ options:
           json_extract(b.data, '$.streetTo') as lStreetTo,
           json_extract(b.data, '$.countyFrom') as lCountyFrom,
           json_extract(b.data, '$.countyTo') as lCountyTo,
-          json_extract(b.data, '$.trackingId') as lTrackingId
+          json_extract(b.data, '$.trackingId') as lTrackingId,
+          json_extract(b.data, '$.latitude') as lLatitude,
+          json_extract(b.data, '$.longitude') as lLongitude
         FROM [default/deliveries] a LEFT JOIN  [default/locations] b ON json_extract(a.data, '$.trackingId') = json_extract(b.data, '$.trackingId') 
         ORDER BY json_extract(a.data, '$.deliveryTime')

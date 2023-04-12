@@ -3,23 +3,19 @@ type: jig.default
 
 actions:
   - children:
-      -  type: action.action-list
-         options:
-           title: Complete delivery
-           actions:
-            - type: action.submit-form
-              options:
-                formId: complete-delivery-form
-                provider: DATA_PROVIDER_LOCAL
-                entity: default/deliveries
-                method: update
-                goBack: home
-                onSuccess: 
-                  title: Delivery completed
-
-  #  - options:
-  #               state: =@ctx.solution.state.delivery
-  #             type: action.reset-state
+      - type: action.execute-entity
+        options:
+          title: Complete delivery
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/deliveries
+          method: update
+          goBack: previous
+          data:
+            id: =@ctx.components.id.state.value
+            category: =@ctx.components.category.state.value
+            photo: =@ctx.components.photo.state.base64
+            signature: =@ctx.components.signature.state.base64
+            
 children:
     - type: component.layout
       options:
@@ -68,13 +64,14 @@ children:
     - type: component.form
       instanceId: complete-delivery-form
       options:
+        isDiscardChangesAlertEnabled: false
         children:
           - type: component.text-field
             instanceId: id
             options:
               isHidden: true
               label: id
-              initialValue: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].deliveryId
+              initialValue: =@ctx.jig.inputs.deliveryId
           - type: component.text-field
             instanceId: category
             options:
@@ -90,32 +87,3 @@ children:
             instanceId: signature
             options:
               label: Signature
-          
-          
-          
-          
-        #           - instanceId: id
-        #   options:
-        #     initialValue: =@ctx.datasources.customer[id = @ctx.jig.inputs.id].id
-        #     isHidden: true
-        #     label: id
-        #   type: component.text-field
-        # - instanceId: complete
-        #   options:
-        #     initialValue: 1
-        #     isHidden: true
-        #     label: complete
-        #   type: component.number-field
-        # - instanceId: image
-        #   options:
-        #     isOptionalLabelHidden: true
-        #     isRequired: false
-        #     label: Photo
-        #     mediaType: image
-        #   type: component.media-field
-        # - instanceId: signature
-        #   options:
-        #     label: Signature
-        #   type: component.signature-field
-              
-  

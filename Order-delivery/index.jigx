@@ -1,31 +1,11 @@
 name: starter-app-delivery
 title: starter-app-delivery
 category: business
-
-onLoad: 
-  type: action.action-list
-  options:
-    actions:
-      - type: action.sync-entities
-        options:
-          provider: DATA_PROVIDER_DYNAMIC
-          entities:
-            - entity: default/deliveries
-      - type: action.sync-entities
-        options:
-          provider: DATA_PROVIDER_DYNAMIC
-          entities:
-            - entity: default/locations
               
 widgets:
   - size: 1x1 
     jigId: delivery-home
-  # - size: "1x1"
-  #   jigId: delivery-completion-form
-  # - size: "1x1"
-  #   jigId: delivery-detail
-  # - size: "1x1"
-  #   jigId: deliveries-list
+
 home:
   - instanceId: delivery-home
     jigId: delivery-home

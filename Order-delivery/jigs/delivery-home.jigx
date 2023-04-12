@@ -1,11 +1,86 @@
 title: Order Delivery
 type: jig.default
 
+onFocus: 
+  type: action.action-list
+  options:
+    actions:
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entities:
+            - entity: default/deliveries
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entities:
+            - entity: default/locations
+              
+onRefresh: 
+  type: action.action-list
+  options:
+    actions:
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/deliveries
+          method: update
+          goBack: stay
+          data:
+            id: "371e2324-78cc-4f39-bcc0-81b414f2eed8"
+            category: 'In Progress'
+            photo: ""
+            signature: ""
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/deliveries
+          method: update
+          goBack: stay
+          data:
+            id: "717bb74f-2fa9-4eae-bce6-95be4a200e3c"
+            category: 'In Progress'
+            photo: ""
+            signature: ""
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/deliveries
+          method: update
+          goBack: stay
+          data:
+            id: "83f45a01-9390-410c-bea0-dd2184676fb0"
+            category: 'In Progress'
+            photo: ""
+            signature: ""
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/deliveries
+          method: update
+          goBack: stay
+          data:
+            id: "234db509-3df3-4b28-918a-5d0433c672dd"
+            category: 'In Progress'
+            photo: ""
+            signature: ""
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entities:
+            - entity: default/deliveries
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entities:
+            - entity: default/locations
+              
+              
 datasources:
   current-delivery-with-address:
     type: datasource.sqlite
     options:
-      provider: DATA_PROVIDER_LOCAL
+      provider: DATA_PROVIDER_DYNAMIC
   
       entities:
         - default/deliveries
@@ -23,7 +98,9 @@ datasources:
           json_extract(b.data, '$.streetTo') as lStreetTo,
           json_extract(b.data, '$.countyFrom') as lCountyFrom,
           json_extract(b.data, '$.countyTo') as lCountyTo,
-          json_extract(b.data, '$.trackingId') as lTrackingId
+          json_extract(b.data, '$.trackingId') as lTrackingId,
+          json_extract(b.data, '$.latitude') as lLatitude,
+          json_extract(b.data, '$.longitude') as lLongitude
         FROM [default/deliveries] a LEFT JOIN  [default/locations] b ON json_extract(a.data, '$.trackingId') = json_extract(b.data, '$.trackingId') 
         WHERE json_extract(a.data, '$.category') = 'In Progress' 
         ORDER BY json_extract(a.data, '$.deliveryTime')
@@ -43,7 +120,7 @@ children:
       children:
         - type: component.text
           options:
-            text: Hello John!
+            text:  Hello John!
             isBold: true
             isHeaderRegular: true
         - type: component.icon
@@ -60,22 +137,21 @@ children:
 
         - type: component.button
           options:
-            title: =$count(@ctx.datasources.all-deliveries.deliveryId) > 0 ? 'Show all' :'Enjoy the rest of your day'
+            title: =$exists(@ctx.datasources.current-delivery-with-address.deliveryId) ? 'Show all' :'Enjoy the rest of your day'
             preset: primary
             isCompact: true
             onPress: 
               type: action.go-to
               options:
                 linkTo: deliveries-list
-            # pridaj [category="uncompleted"] aby sme pracovali len s nedokoncenymi zasielkami         
 
   - type: component.section
     options:
-      title: =$count(@ctx.datasources.all-deliveries.deliveryId) > 0 ? "Current delivery":""
+      title: =$count(@ctx.datasources.current-delivery-with-address.deliveryId) > 0 ? "Current delivery":""
       children:
         - type: component.layout
           options:
-            isVisible: =$count(@ctx.datasources.all-deliveries.deliveryId) > 0 
+            isVisible: =$exists(@ctx.datasources.current-delivery-with-address.deliveryId)
             hasBackground: true
             padding: none
             gap: none
