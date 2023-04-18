@@ -74,6 +74,10 @@ item:
           color: color6
         - when: =@ctx.current.item.category = 'Maintenance'
           color: color9
+    onPress: 
+      type: action.go-to
+      options:
+        linkTo: room-detail-composite
 
     
 
