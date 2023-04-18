@@ -1,0 +1,16 @@
+title: Room detail
+type: jig.composite
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children: 
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1602002418153-3e900b530e7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fG1hbGRpdmVzJTIwaG90ZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60
+
+children:
+  - jigId: room-detail-img
+  - jigId: room-detail

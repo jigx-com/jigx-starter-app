@@ -1,0 +1,34 @@
+title: =@ctx.solution.state.issueCategory != null ? "Issue details":" "
+type: jig.default
+
+placeholders:
+  - when: =@ctx.solution.state.issueCategory != null ? false :true
+    title: Please select an issue from the map
+    icon: loading-data
+    
+onRefresh: 
+  type: action.reset-state
+  options:
+    state: =@ctx.solution.state.issueCategory
+
+children:
+  - type: component.entity
+    options:
+      isCompact: true
+      children:
+        - type: component.entity-field
+          options:
+            label: Category
+            value: =@ctx.solution.state.issueCategory
+            
+
+        - type: component.entity-field
+          options:
+            label: Area
+            value: =@ctx.solution.state.issueArea
+        - type: component.entity-field
+          options:
+            label: Description
+            value: =@ctx.solution.state.issueDescription
+            
+            

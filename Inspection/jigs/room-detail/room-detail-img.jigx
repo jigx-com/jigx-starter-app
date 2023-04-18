@@ -1,0 +1,83 @@
+title: Map of issues
+type: jig.default
+
+    
+datasources:
+  interactive-photo: 
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          xCoordinates: 25
+          yCoordinates: 53
+          name: Dirt on the table
+          area: Living room area
+          category: Cleanliness
+          description: The presence of dust and dirt on the coffee table
+        - id: 2
+          xCoordinates: 54
+          yCoordinates: 68
+          name: Strains on the bedding
+          area: Bedroom area
+          category: Cleanliness
+          description: The presence of stains or debris on the bedding
+        - id: 3
+          xCoordinates: 73
+          yCoordinates: 45
+          name: Slow draining shower
+          area: Bathroom area
+          category: Maintenance
+          description: Slow draining shower
+          
+      
+
+children:
+  - type: component.interactive-image
+    options:
+      imageHeight: 2200
+      source: 
+        uri: https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80
+
+          
+      data: =@ctx.datasources.interactive-photo
+      # pointColor: =@ctx.solution.state.imageState = 1 ? 'color3' :'color1'
+      # =@ctx.component.state.selected = true ? 'color3':'color1'
+
+      item:
+        type: component.interactive-image-item
+        instanceId: =@ctx.current.item.id
+        options:
+          id: =@ctx.current.item.id
+          title: =@ctx.current.item.name
+          icon: =@ctx.current.item.name = @ctx.solution.state.issueName ? 'check' :'alert-triangle'
+          onPress: 
+            type: action.action-list
+            options:
+              actions:
+                # - type: action.set-state
+                #   options:
+                #     state: =@ctx.solution.state.imageState
+                #     value: 1
+                - type: action.set-state
+                  options:
+                    state: =@ctx.solution.state.issueName
+                    value: =@ctx.current.item.name
+                - type: action.set-state
+                  options:
+                    state: =@ctx.solution.state.issueDescription
+                    value: =@ctx.current.item.description
+                - type: action.set-state
+                  options:
+                    state: =@ctx.solution.state.issueArea
+                    value: =@ctx.current.item.area
+                - type: action.set-state
+                  options:
+                    state: =@ctx.solution.state.issueCategory
+                    value: =@ctx.current.item.category
+          
+          
+          percentageCoordinates:
+            x: =@ctx.current.item.xCoordinates
+            y: =@ctx.current.item.yCoordinates
+            
+            

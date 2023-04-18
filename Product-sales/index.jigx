@@ -1,6 +1,0 @@
-name: starter-app
-title: starter-app
-category: business
-widgets:
-  - size: 1x1 # choose size of the widget on the home hub
-    jigId: myfirstjig

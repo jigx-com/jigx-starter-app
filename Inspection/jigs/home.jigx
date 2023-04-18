@@ -1,0 +1,111 @@
+title: Home Hub
+type: jig.default
+
+children:
+  - type: component.image
+    options:
+      source:
+        uri:  https://images.unsplash.com/photo-1573843981267-be1999ff37cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bWFsZGl2ZXMlMjBob3RlbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60
+      title: Maldives Resort
+      subtitle: Addu City, Maldives
+      height: 200
+      onPress: 
+        type: action.go-to
+        options:
+          linkTo: hotel-preview
+          
+  - type: component.layout
+    options:
+      gap: small
+      
+      hasBackground: true
+      # backgroundColor: 
+      #   - when: true
+      #     color: color14
+      children:
+        - type: component.layout
+          options:
+            flexChildren: 0
+            gap: small
+            padding: none
+            isRow: true
+            children: 
+              - type: component.icon
+                options:
+                  icon: rating-star
+                  size: 24
+              - type: component.text
+                options:
+                  text: 4.7 / 5
+                  isHeaderBig: true
+        - type: component.text
+          options:
+            text: 'Reviews: 1508'
+            align: center
+
+              
+  - type: component.layout
+    options:
+      padding: none
+      
+      children:
+        - type: component.text
+          options:
+            text: Last weeks issue overview
+            align: center
+            isBold: true
+            spaceTop: large             
+              
+              
+  - type: component.layout
+    options:
+      padding: none
+      onPress: 
+        type: action.go-to
+        options:
+          linkTo: issue-list-with-filter
+      children:
+        - type: component.line-chart
+          options:
+            
+            yAxis:
+              max: 10
+              min: 0
+            xAxis:
+              categories:
+                - 1
+                - 2
+                - 3
+                - 4
+            series:
+              - data: =[{"x":"", "y":2, "color":"color9"}, {"x":"", "y":4, "color":"color9"}, {"x":"", "y":6, "color":"color9"}, {"x":"", "y":3, "color":"color9"}]
+                name: Cleanliness
+                animation:
+                    direction: left-to-right
+                layout: area-gradient
+                dataLabels:
+                  - isEnabled: true
+              - data: =[{"x":"", "y":1, "color":"color3"}, {"x":"", "y":6, "color":"color3"}, {"x":"", "y":2, "color":"color3"}, {"x":"", "y":3, "color":"color3"}]
+                name: Maintenance
+                animation:
+                    direction: left-to-right
+                layout: area-gradient
+                dataLabels:
+                  - isEnabled: true      
+            legend:
+              isHidden: false
+    
+        
+        
+  - type: component.layout
+    options:
+      padding: none
+      children:
+        - type: component.button
+          options:
+            preset: primary
+            
+            title: Start inspection
+            style:
+              isPrimary: true
+  

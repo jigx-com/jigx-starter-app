@@ -1,0 +1,25 @@
+name: starter-app-inspection
+title: starter-app-inspection
+category: business
+              
+widgets:
+  - size: "1x1"
+    jigId: hotel-preview
+  - size: "1x1"
+    jigId: room-detail-composite
+  - size: "1x1"
+    jigId: issue-list-with-filter
+    
+home:
+  - instanceId: Home_hub
+    jigId: home
+# assets:
+#   images:
+#     - "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bWFsZGl2ZXMlMjBob3RlbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60"
+#     - "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
+#     - "https://images.unsplash.com/photo-1602002418153-3e900b530e7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fG1hbGRpdmVzJTIwaG90ZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60"
+#     - "https://images.unsplash.com/photo-1610374792793-f016b77ca51a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bWVldGluZyUyMHJvb218ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60"
+    # - "https://images.unsplash.com/photo-1570126646281-5ec88111777f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8bWVldGluZyUyMHJvb218ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60"
+    # - "https://images.unsplash.com/photo-1566195992011-5f6b21e539aa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8aG90ZWwlMjBzdWl0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60"
+
+

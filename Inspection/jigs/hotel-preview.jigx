@@ -1,0 +1,177 @@
+title: Maldives Resort
+type: jig.default
+
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children: 
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1573843981267-be1999ff37cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bWFsZGl2ZXMlMjBob3RlbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60
+        title: Maldives Resort
+        subtitle: Addu City, Maldives
+
+
+children: 
+  - type: component.layout
+    options:
+      gap: small
+      
+      hasBackground: true
+      backgroundColor: 
+        - when: true
+          color: color9
+      children:
+        - type: component.layout
+          options:
+            flexChildren: 0
+            gap: small
+            padding: none
+            isRow: true
+            children: 
+              - type: component.icon
+                options:
+                  icon: rating-star
+                  size: 24
+              - type: component.text
+                options:
+                  text: 4.7 (1508)
+                  isHeaderBig: true
+        - type: component.text
+          options:
+            text: Fabulous
+            align: center
+  - type: component.layout
+    options:
+      isRow: true
+      gap: small
+      padding: none
+      children:
+        - type: component.layout
+          options:
+            gap: small
+            padding: small
+            hasBackground: true
+            children:
+            - type: component.text
+              options:
+                text: Staff
+                align: center
+                color:
+                  - when: true
+                    color: color9
+            - type: component.text
+              options:
+                text: 4.8
+                align: center
+        - type: component.layout
+          options:
+            gap: small
+            padding: small
+            hasBackground: true
+            children:
+              - type: component.text
+                options:
+                  text: Location
+                  align: center
+                  color:
+                  - when: true
+                    color: color9
+              - type: component.text
+                options:
+                  text: 4.7
+                  align: center
+        - type: component.layout
+          options:
+            gap: small
+            padding: small
+            hasBackground: true
+            children:
+              - type: component.text
+                options:
+                  text: Cleanliness
+                  align: center
+                  color:
+                  - when: true
+                    color: color9
+              - type: component.text
+                options:
+                  text: 4.4
+                  align: center
+             
+  - type: component.layout
+    options:
+      padding: none
+      children:
+        - type: component.text
+          options:
+            text: General
+            isHeaderRegular: true
+            spaceTop: large
+  - type: component.entity
+    options:
+      isCompact: true
+      children:
+        - type: component.entity-field
+          options:
+            label: Number of rooms
+            value: 25
+        - type: component.entity-field
+          options:
+            label: Last reviewed
+            value: =$fromMillis(1510067557121, '[M01]/[D01]/[Y0001]')
+        - type: component.entity-field
+          options:
+            label: Main issues
+            value: Cleanliness
+            
+  - type: component.layout
+    options:
+      padding: none
+      children:
+        - type: component.text
+          options:
+            text: Location
+            isHeaderRegular: true  
+            spaceTop: large             
+  - type: component.layout
+    options:
+      padding: none
+      
+      children: 
+        - type: component.text
+          options:
+            text: 93JX+3GM, Addu City, Maldives
+            align: left
+            isSubtle: true
+  - type: component.layout
+    options:
+      padding: none
+      children:
+        - type: component.location
+          options:
+            address: 93JX+3GM, Addu City, Maldives
+            isAnimationDisabled: true
+            zoomLevel: 13
+  - type: component.layout
+    options:
+      hasBackground: true
+      backgroundColor:
+        - when: true
+          color: color9
+      flex: 0
+      flexChildren: 0
+      alignItems: center
+    
+      onPress: 
+        type: action.open-url
+        options:
+          url: 'https://www.google.com/maps/dir/C3CQ+7XG, Addu City, Maldives/93JX+3GM, Addu City, Maldives/'
+          # url: ='https://www.google.com/maps/dir/' & @ctx.datasources.current-delivery-with-address.lStreetFrom & ', ' & @ctx.datasources.current-delivery-with-address.lCountyFrom & '/' & @ctx.datasources.current-delivery-with-address.lStreetTo & ', ' & @ctx.datasources.current-delivery-with-address.lCountyTo & '/'
+      children:
+        - type: component.text 
+          options:
+            text: Navigate
