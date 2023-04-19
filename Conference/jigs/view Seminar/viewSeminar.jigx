@@ -2,15 +2,16 @@ title: =@ctx.datasources.seminarDetails.seminarTitle
 description: =@ctx.datasources.seminarDetails.seminarDescription
 type: jig.composite
 
-onFocus:
-  type: action.action-list
+header:
+  type: component.jig-header
   options:
-    actions:
-      - type: action.sync-entities
-        options:
-          provider: DATA_PROVIDER_DYNAMIC
-          entities:
-            - entity: default/calendar
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.datasources.image.images
+
 
 datasources:
   seminarDetails: 
@@ -37,16 +38,18 @@ datasources:
         WHERE id = @seminarId
       queryParameters:
         seminarId: =@ctx.jig.inputs.seminarId
-
-header:
-  type: component.jig-header
-  options:
-    height: small
-    children:
-      type: component.image
-      options:
-        source:
-          uri: https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8dGVjaCUyMGNvbmZlcmVuY2V8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60
+  
+  image:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'view-seminar'
 
 children:
   - jigId: seminarDetails

@@ -1,0 +1,99 @@
+title: Event Merchandise
+type: jig.list
+icon: contact
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.datasources.image.images
+
+datasources:
+  merch: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+    
+      entities:
+        - default/merchandise
+    
+      query: |
+        SELECT 
+          id, 
+          '$.title', 
+          '$.image',
+          '$.price',
+          '$.amount'
+        FROM [default/merchandise] 
+        ORDER BY '$.title'
+        
+  image:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'merch'
+        
+data: =@ctx.datasources.merch
+item:
+  type: component.product-item
+  options:
+    title: =@ctx.current.item.title
+    image:
+      uri: =@ctx.current.item.image
+    price:
+      value: =@ctx.current.item.price
+      format:
+        numberStyle: currency
+    amountControl:
+      value: =@ctx.current.item.amount
+      onChange: 
+        type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/merchandise
+          method: update
+          data:
+            id: =@ctx.current.item.id
+            amount: =@ctx.current.state.amount
+          goBack: stay
+          
+summary:
+  children:
+    type: component.summary
+    options: 
+      layout: default
+      leftIcon:
+        element: icon
+        name: shopping-cart-empty-1
+      title: Purchase Total
+      subtitle: ='$' & ($sum([@ctx.datasources.merch.amount].$number())) * 10
+  
+actions:
+  - children:
+      - type: action.execute-entity
+        options:
+          title: Purchase Merchandise
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/merchPurchases
+          method: create
+          goBack: previous
+          data:
+            userEmail: =@ctx.user.email
+            total: =($sum([@ctx.datasources.merch.amount].$number())) * 10
+          onSuccess: 
+            title: Purchase Successful
+            
+            
+      
+          
+    

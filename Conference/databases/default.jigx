@@ -1,9 +1,14 @@
 tables:
   calendar:
   seminarAttendees: 
-  videos: 
+  # videos: 
   eventFeedback: 
   seminarFeedback:
   seminarRooms: 
   QandA:
+  eventAttendees:
+  merchandise:
+  merchPurchases:
+  pointsOfInterest:
+  images:
     

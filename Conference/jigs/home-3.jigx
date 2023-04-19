@@ -1,0 +1,628 @@
+title: home
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+          
+datasources:        
+  upcomingSeminars: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/calendar
+        - default/seminarAttendees
+        - default/seminarRooms
+  
+      query: |
+        SELECT 
+          C.id as Cid,
+          R.id as Rid,
+          DATE('now') AS calcDate,
+          json_extract(C.data, '$.seminarTitle') as seminarTitle,
+          json_extract(C.data, '$.seminarDescription') as seminarDescription,
+          json_extract(C.data, '$.speakerName') as speakerName,
+          json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
+          json_extract(C.data, '$.fromTime') as fromTime,
+          json_extract(C.data, '$.toTime') as toTime,
+          json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
+          json_extract(SA.data, '$.seminarId') as seminarId,
+          json_extract(SA.data, '$.attendeeEmail') as attendeeEmail,
+          json_extract(R.data, '$.seminarRoom') as serminarRoom
+        FROM [default/calendar] as C
+        JOIN [default/seminarAttendees] as SA on Cid = seminarId
+        JOIN [default/seminarRooms] as R on Rid = seminarRoomId
+        WHERE (attendeeEmail = @userEmail)
+        ORDER BY fromTime
+      queryParameters:
+        userEmail: =@ctx.user.email     
+
+  banner:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'banner'
+
+  image:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'poi'
+
+          
+children:
+  - type: component.layout
+    options:
+      isRow: true
+      padding: none  
+      gap: medium
+      flexChildren: 0
+## user name ###
+      children:
+        - type: component.layout
+          options:
+            isRow: false
+            padding: none  
+            gap: xSmall
+            flex: 1
+            children:
+              - type: component.text
+                options:
+                  isHeaderBig: true
+                  text: ='Hello, ' & $substringBefore(@ctx.user.displayName, ' ')
+              - type: component.text
+                options:
+                  isHeaderBig: false
+                  text: 'Welcome to AI Horizon'
+                  fontSize: regular
+
+## 4x2 ##            
+  - type: component.layout
+    options:
+      onPress:
+        type: action.go-to
+        options:
+          linkTo: conference-details
+      isRow: false
+      justifyContent: stretch 
+      padding: small
+      hasBackground: true
+      # backgroundColor: 
+      #   - when: true
+      #     color: color6
+      borderRadius: small
+      gap: small
+      children:
+        - type: component.image
+          options:
+            source:
+              uri: =@ctx.datasources.banner.images
+            height: 150
+        - type: component.layout
+          options:
+            isRow: false
+            justifyContent: flex-start 
+            padding: small
+            gap: none
+            children:
+              - type: component.text 
+                options:
+                  text: Conference Day 2
+                  isSubtle: true
+              - type: component.text 
+                options:
+                  text: Exploring the Cutting-Edge of AI
+                  isSubtle: false
+                  isBold: false
+              # - type: component.text 
+              #   options:
+              #     text: Other Info? TBD
+              #     isSubtle: true
+          
+## bar 1##
+  - type: component.layout
+    options:
+      isRow: true
+      # justifyContent: stretch 
+      padding: xSmall
+      hasBackground: false
+      # backgroundColor: 
+      #   - when: true
+      #     color: color6
+      borderRadius: small
+      gap: small
+      children: 
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            backgroundColor: 
+              - when: true
+                color: color11
+            borderRadius: small
+            gap: small
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: calendar
+            children:
+              - type: component.icon
+                options:
+                  icon: calendar-3
+                  isDuotone: true
+                  isContained: true
+                  size: 30
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            backgroundColor: 
+              - when: true
+                color: color11
+            borderRadius: small
+            gap: small
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: attendees
+            children:
+              - type: component.icon
+                options:
+                  icon: person
+                  isDuotone: true
+                  isContained: true
+                  size: 30         
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            backgroundColor: 
+              - when: true
+                color: color11
+            borderRadius: small
+            gap: small
+            onPress: 
+              type: action.open-url
+              options:
+                url: https://www.google.com/maps/dir//2600+International+Pkwy,+Virginia+Beach,+VA+23452
+            children:
+              - type: component.icon
+                options:
+                  icon: pin
+                  isDuotone: true
+                  isContained: true
+                  size: 30          
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            backgroundColor: 
+              - when: true
+                color: color11
+            borderRadius: small
+            gap: small
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: merch
+            children:
+              - type: component.icon
+                options:
+                  icon: shopping-cart-empty-1
+                  isDuotone: true
+                  isContained: true
+                  size: 30          
+                  
+## My Day ##
+  - type: component.layout
+    options: 
+      isRow: false 
+      padding: xSmall
+      children:
+        - type: component.text 
+          options: 
+            text: My Day
+            isBold: true
+            isHeaderRegular: true
+
+  # - type: component.section
+  #   options:
+  #     title: My Day
+  #     children:
+  - type: component.layout
+    options:
+      hasBackground: false
+      isRow: true
+      padding: none
+      gap: small
+      children:
+      ## LEFT - Keynote Speaker ##
+        - type: component.layout
+          options:
+            onPress:
+              type: action.go-to
+              options:
+                linkTo: viewSeminar
+                parameters:
+                  seminarId: =@ctx.datasources.upcomingSeminars[0].seminarId
+            isRow: false 
+            hasBackground: true 
+            borderRadius: small
+            backgroundColor: 
+              - when: true 
+                color: color1
+            padding: small
+            gap: small
+            children:
+              - type: component.layout
+                options:
+                  isRow: false 
+                  hasBackground: false 
+                  padding: none
+                  gap: small
+                  children:
+                    - type: component.text 
+                      options:
+                        text: Keynote Speaker 
+                        align: center
+                    - type: component.image
+                      options:
+                        source:
+                          uri: =@ctx.datasources.upcomingSeminars[0].speakerAvatar
+                        height: 125
+
+              - type: component.layout
+                options:
+                  isRow: false 
+                  hasBackground: false 
+                  padding: none
+                  gap: none
+                  children:   
+                    - type: component.text 
+                      options:
+                        text: Topic
+                        align: left 
+                        isSubtle: true 
+                        fontSize: small 
+                    - type: component.text 
+                      options:
+                        text: =@ctx.datasources.upcomingSeminars[0].seminarTitle
+                        align: left 
+                        fontSize: regular
+                        
+              - type: component.layout
+                options:
+                  isRow: false 
+                  hasBackground: false 
+                  padding: none
+                  gap: none
+                  children:   
+                    - type: component.text 
+                      options:
+                        text: Seminar Description 
+                        align: left 
+                        isSubtle: true 
+                        fontSize: small   
+                    - type: component.text 
+                      options:
+                        text: =@ctx.datasources.upcomingSeminars[0].seminarDescription
+                        align: left 
+                        fontSize: regular
+                        
+              - type: component.layout
+                options:
+                  isRow: false 
+                  hasBackground: false 
+                  padding: none
+                  gap: none
+                  children:   
+                    - type: component.text 
+                      options:
+                        text: Speaker Name 
+                        align: left 
+                        isSubtle: true 
+                        fontSize: small   
+                    - type: component.text 
+                      options:
+                        text: =@ctx.datasources.upcomingSeminars[0].speakerName 
+                        align: left 
+                        fontSize: regular
+              
+              - type: component.layout
+                options:
+                  isRow: true 
+                  hasBackground: false 
+                  padding: none
+                  gap: none
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: false 
+                        padding: none
+                        gap: none
+                        children:
+                          - type: component.text 
+                            options:
+                              text: Time
+                              align: left 
+                              isSubtle: true 
+                              fontSize: small 
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.upcomingSeminars[0].fromTime & ' - ' & @ctx.datasources.upcomingSeminars[0].toTime
+                              align: left 
+                              fontSize: regular
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: false 
+                        padding: none
+                        gap: none
+                        children:
+                          - type: component.text 
+                            options:
+                              text: Room
+                              align: left 
+                              isSubtle: true 
+                              fontSize: small 
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.upcomingSeminars[0].serminarRoom
+                              align: left 
+                              fontSize: regular
+      
+      ## RIGHT - next 2 upcoming ##
+        - type: component.layout
+          options:
+            isRow: false 
+            hasBackground: false
+            padding: none
+            gap: small
+            children:
+              - type: component.layout
+                options:
+                  isRow: false 
+                  hasBackground: true 
+                  borderRadius: small
+                  backgroundColor: 
+                    - when: true 
+                      color: color14
+                  padding: small
+                  gap: xSmall
+                  children:
+                    - type: component.text 
+                      options:
+                        text: Next Up on your Agenda
+                        align: center 
+                        fontSize: regular
+                        isBold: true
+              - type: component.layout
+                options:
+                  onPress:
+                    type: action.go-to
+                    options:
+                      linkTo: viewSeminar
+                      parameters:
+                        seminarId: =@ctx.datasources.upcomingSeminars[1].seminarId
+                  isRow: false 
+                  hasBackground: true 
+                  borderRadius: small
+                  backgroundColor: 
+                    - when: true 
+                      color: color14
+                  padding: small
+                  gap: xSmall
+                  children:
+                    - type: component.image
+                      options:
+                        source:
+                          uri: =@ctx.datasources.upcomingSeminars[1].speakerAvatar
+                        height: 100
+                    - type: component.text 
+                      options:
+                        text: =@ctx.datasources.upcomingSeminars[1].seminarTitle
+                        align: center
+                        isBold: true
+                    - type: component.text 
+                      options:
+                        text: =@ctx.datasources.upcomingSeminars[1].fromTime & ' - ' & @ctx.datasources.upcomingSeminars[1].toTime
+                        align: center
+                        isBold: false
+                        
+              - type: component.layout
+                options:
+                  onPress:
+                    type: action.go-to
+                    options:
+                      linkTo: viewSeminar
+                      parameters:
+                        seminarId: =@ctx.datasources.upcomingSeminars[2].seminarId
+                  isRow: false 
+                  hasBackground: true 
+                  borderRadius: small
+                  backgroundColor: 
+                    - when: true 
+                      color: color14
+                  padding: small
+                  gap: xSmall
+                  children:
+                    - type: component.image
+                      options:
+                        source:
+                          uri: =@ctx.datasources.upcomingSeminars[2].speakerAvatar
+                        height: 100
+                    - type: component.text 
+                      options:
+                        text: =@ctx.datasources.upcomingSeminars[2].seminarTitle
+                        align: center
+                        isBold: true
+                    - type: component.text 
+                      options:
+                        text: =@ctx.datasources.upcomingSeminars[2].fromTime & ' - ' & @ctx.datasources.upcomingSeminars[2].toTime
+                        align: center
+                        isBold: false
+
+  ## bar 2 ##
+  - type: component.layout
+    options:
+      isRow: true
+      padding: xSmall
+      hasBackground: false
+      borderRadius: small
+      gap: small
+      children: 
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            borderRadius: small
+            gap: small
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: agenda
+            children:
+              - type: component.icon
+                options:
+                  icon: calendar
+                  isDuotone: true
+                  isContained: true
+                  size: 30
+              - type: component.text 
+                options:
+                  text: Agenda
+                  fonsize: small 
+                  align: center
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            borderRadius: small
+            gap: small
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: eventFeedback
+            children:
+              - type: component.icon
+                options:
+                  icon: feedback
+                  isDuotone: true
+                  isContained: true
+                  size: 30       
+              - type: component.text 
+                options:
+                  text: Feedback
+                  fonsize: small   
+                  align: center
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            borderRadius: small
+            gap: small
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: food
+            children:
+              - type: component.icon
+                options:
+                  icon: chat
+                  isDuotone: true
+                  isContained: true
+                  size: 30  
+              - type: component.text 
+                options:
+                  text: Forum
+                  fonsize: small     
+                  align: center
+
+
+## 4x2 ##   
+  # - type: component.section
+  #   options:
+  #     title: Points of interest 
+  #     children:
+  #       - type: component.layout
+  #         options:
+  #           onPress: 
+  #             type: action.go-to
+  #             options:
+  #               linkTo: points-of-interest
+  #           isRow: false
+  #           justifyContent: stretch 
+  #           padding: small
+  #           hasBackground: true
+  #           borderRadius: small
+  #           gap: small
+  #           children:
+  #             - type: component.text 
+  #               options:
+  #                 text: Things to do in Seattle
+  #                 align: left
+  #                 isBold: true
+  #                 isHeaderRegular: true
+  #             - type: component.image
+  #               options:
+  #                 source:
+  #                   uri: https://images.unsplash.com/photo-1589481169991-40ee02888551?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80
+  #                 height: 150
+
+  - type: component.layout
+    options: 
+      isRow: false 
+      padding: xSmall
+      children:
+        - type: component.text 
+          options: 
+            text: Things to do in Seattle
+            isBold: true
+            isHeaderRegular: true
+
+        
+  - type: component.layout
+    options:
+      onPress: 
+        type: action.go-to
+        options:
+          linkTo: points-of-interest
+      isRow: false
+      justifyContent: stretch 
+      padding: small
+      hasBackground: true
+      borderRadius: small
+      gap: small
+      children:
+        # - type: component.text 
+        #   options:
+        #     text: Things to do in Seattle
+        #     align: left
+        #     isBold: true
+        #     isHeaderRegular: true
+        - type: component.image
+          options:
+            source:
+              uri: =@ctx.datasources.image.images
+            height: 150

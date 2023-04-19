@@ -10,6 +10,7 @@ options:
     SELECT
       C.id as Cid,
       R.id as Rid,
+      SA.id as SAid,
       DATE('now') AS calcDate,
       json_extract(C.data, '$.seminarTitle') as seminarTitle,
       json_extract(C.data, '$.seminarDescription') as seminarDescription,
@@ -18,6 +19,7 @@ options:
       json_extract(C.data, '$.fromTime') as fromTime,
       json_extract(C.data, '$.toTime') as toTime,
       json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
+      json_extract(C.data, '$.keynote') as keynote,
       json_extract(SA.data, '$.seminarId') as seminarId,
       json_extract(SA.data, '$.attendeeEmail') as attendeeEmail,
       json_extract(R.data, '$.seminarRoom') as serminarRoom
@@ -29,5 +31,6 @@ options:
       Cid > '04'
       AND Cid < '11'
       AND attendeeEmail = @userEmail
+    ORDER BY fromTime
   queryParameters:
     userEmail: =@ctx.user.email

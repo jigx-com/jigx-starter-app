@@ -1,15 +1,15 @@
 title: Calendar
 type: jig.calendar
 
-onFocus:
-  type: action.action-list
+header:
+  type: component.jig-header
   options:
-    actions:
-      - type: action.sync-entities
-        options:
-          provider: DATA_PROVIDER_DYNAMIC
-          entities:
-            - entity: default/calendar
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.datasources.image.images
 
 datasources:        
   calendar: 
@@ -69,26 +69,36 @@ datasources:
           id > '10'
           AND id < '16'
           
-  story: 
-    type: datasource.static
+  image:
+    type: datasource.sqlite
     options:
-      data:
-        - id: 1
-          title: "Welcome to AI Horizons: Exploring the Cutting-Edge of AI"
-          image: https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8QUklMjB0ZWNobm9sb2d5fGVufDB8MXwwfHw%3D&auto=format&fit=crop&w=500&q=60
-        
-stories:
-  type: component.story-group
-  options:
-    groupName: Welcome
-    actionButtonTitle: Show Calendar
-    data: =@ctx.datasources.story
-    item: 
-      type: component.image
-      options:
-        source:
-          uri: =@ctx.current.item.image
-        title: =@ctx.current.item.title
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'calendar'
+          
+  # checkIfUserExist:
+  #   type: datasource.sqlite
+  #   options:
+  #     provider: DATA_PROVIDER_DYNAMIC
+  
+  #     entities:
+  #       - default/seminarAttendees
+  
+  #     query: |
+  #       SELECT 
+  #       id, 
+  #       '$.attendeeEmail', 
+  #       '$.seminarId' 
+  #       FROM [default/seminarAttendees] 
+  #       WHERE ('$.attendeeEmail' = @myEmail) AND ('$.seminarId' = @seminar)
+  #     queryParameters:
+  #       myEmail: =@ctx.user.email
+        # seminar: =@ctx.solution.state.seminar
 
 data: =@ctx.datasources.calendar
 item:
@@ -99,9 +109,16 @@ item:
     title: =@ctx.current.item.seminarTitle
     description: =@ctx.current.item.seminarDescription
     people: "=[{'fullName':@ctx.current.item.speakerName, 'avatarUrl': @ctx.current.item.speakerAvatar}]"
+    # onPress: 
+      # type: action.set-state
+      # options:
+      #   state: =@ctx.solution.state.seminar
+      #   value: =@ctx.current.item.id
     onButtonPress: 
       type: action.execute-entity
       options:
+        # style:
+        #   isDisabled: =@ctx.datasources.checkIfUserExist.attendeeEmail != @ctx.user.email ? false:true
         # style:
         #   isDisabled: =@ctx.current.item.calcDate < $substring($now(), 0, 10) ?  true:false
         title: Sign up for Seminar

@@ -1,0 +1,219 @@
+title: Event Attendees
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.datasources.image.images
+
+datasources:
+  eventAttendees:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+    
+      entities:
+        - default/eventAttendees
+    
+      query: |
+        SELECT 
+          id, 
+          '$.color',
+          '$.company_name',
+          '$.email',
+          '$.first_name',
+          '$.last_name',
+          '$.phone1',
+          '$.web',
+          '$.city',
+          '$.region',
+          '$.state'
+        FROM [default/eventAttendees] 
+        WHERE ('$.company_name' = @filterCompanyName or @filterCompanyName IS NULL) 
+        AND ('$.region' = @filterRegion or @filterRegion IS NULL)
+        AND ('$.first_name' LIKE @filterSearch||'%' 
+        OR '$.last_name' LIKE @filterSearch||'%'
+        OR @filterSearch IS NULL)
+        ORDER BY '$.first_name'
+      queryParameters:
+        filterCompanyName: =@ctx.components.company.state.value
+        filterSearch: =@ctx.components.search.state.value
+        filterRegion: =@ctx.components.region.state.value
+        
+  companyName:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+    
+      entities:
+        - default/eventAttendees
+    
+      query: |
+        SELECT 
+          id,
+          '$.company_name'
+        FROM [default/eventAttendees] 
+        WHERE '$.company_name' LIKE @companyDropdownSearch||'%' OR @companyDropdownSearch IS NULL
+      queryParameters:
+        companyDropdownSearch: =@ctx.components.company.state.searchText
+        
+  region:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+    
+      entities:
+        - default/eventAttendees
+    
+      query: |
+        SELECT 
+          id,
+          '$.region'
+        FROM [default/eventAttendees] 
+        GROUP BY '$.region'
+        
+  image:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'attendees'
+
+children:
+  - type: component.expander
+    options:      
+      header:
+        centerElement: 
+          type: component.titles
+          options:
+            title: Filters
+            icon: filter-1
+            iconColor: color14
+    
+      children:
+        - type: component.form
+          instanceId: filters
+          options:
+            isDiscardChangesAlertEnabled: false
+            children:
+              - type: component.dropdown
+                instanceId: company
+                options:
+                  isRequired: false
+                  isOptionalLabelHidden: true
+                  label: Company Name
+                  data: =@ctx.datasources.companyName
+                  isSearchable: true
+                  item:
+                    type: component.dropdown-item
+                    options:
+                      title: =@ctx.current.item.company_name
+                      value: =@ctx.current.item.company_name
+              - type: component.dropdown
+                instanceId: region
+                options:
+                  isRequired: false
+                  isOptionalLabelHidden: true
+                  label: Company Region
+                  data: =@ctx.datasources.region
+                  item:
+                    type: component.dropdown-item
+                    options:
+                      title: =@ctx.current.item.region
+                      value: =@ctx.current.item.region
+              - type: component.text-field
+                instanceId: search
+                options:
+                  isOptionalLabelHidden: true
+                  isRequired: false
+                  label: Search
+                  
+  - type: component.layout
+    options:
+      isRow: true
+      padding: 0
+      gap: small
+      isVisible: =@ctx.components.filters.state.isDirty ? true:false
+      alignItems: center
+      justifyContent: flex-end
+      flexChildren: 0
+      children:
+        # - type: component.layout
+        #   options:
+        #     flex: 1       
+        #     flexChildren: 0  
+        #     children:        
+        #       - type: component.text
+        #         options:
+        #           text: TBD
+        #           # text: =$count(@ctx.datasources.contacts.accountID) & ' accounts filtered'
+        - type: component.layout
+          options:
+            isRow: true
+            onPress: 
+              type: action.reset-state
+              options:
+                state: =@ctx.components.filters.state.data
+            hasBackground: true 
+            flexChildren: 0
+            justifyContent: center
+            alignItems: stretch   
+            borderRadius: regular      
+            gap: small        
+            children:
+              - type: component.icon
+                options:
+                  size: 12
+                  icon: remove     
+              - type: component.text
+                options:
+                  text: Reset filter
+                  align: center
+                  isBold: true
+
+  - type: component.list
+    options:
+      data: =@ctx.datasources.eventAttendees
+      maximumItemsToRender: 20
+      
+      item:
+        type: component.list-item
+        options:
+          
+          title: =@ctx.current.item.first_name & ' ' & @ctx.current.item.last_name
+          subtitle: =@ctx.current.item.company_name
+          
+          leftElement: 
+            element: avatar
+            text: =$substring(@ctx.current.item.first_name, 0, 1) & $substring(@ctx.current.item.last_name, 0, 1)
+            # uri: https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=999&q=80
+            
+          rightElement: 
+            element: icon
+            name: arrow-right
+          
+          label:
+            title: =@ctx.current.item.region
+            color:
+              - when: true
+                color: =@ctx.current.item.color
+          
+          divider: solid
+          
+          onPress: 
+            type: action.go-to
+            options:
+              linkTo: attendee-info
+              parameters:
+                info: =@ctx.current.item
+          

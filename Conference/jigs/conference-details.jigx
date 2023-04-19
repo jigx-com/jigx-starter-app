@@ -1,0 +1,248 @@
+title: Conference Details 
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.datasources.banner.images
+          
+datasources:
+  banner:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'banner'
+
+children:
+## TOP TWO CARDS ##
+  - type: component.layout
+    options:
+      isRow: true
+      padding: none  
+      flexChildren: 0
+      children:            
+      ## DATE TIME ##                            
+        - type: component.layout
+          options: 
+            hasBackground: true
+            borderRadius: medium
+            gap: xSmall
+            justifyContent: center
+            alignItems: center
+            flexChildren: 0
+            flex: 1
+            padding: regular
+            children: 
+              - type: component.text
+                options:
+                  text: =$fromMillis($toMillis($now()) - 86400000, '[M01]/[D01]') & ' - ' & $fromMillis($toMillis($now()) + 86400000, '[M01]/[D01]')
+              - type: component.text
+                options:
+                  text: Conference Dates
+                  isBold: true
+                  fontSize: small
+      ## Speaker Count ##
+        - type: component.layout
+          options: 
+            hasBackground: true   
+            backgroundColor:
+              - when: true
+                color: color11
+            borderRadius: medium
+            gap: xSmall
+            justifyContent: center
+            alignItems: center
+            flexChildren: 0
+            padding: regular
+            children: 
+              - type: component.text
+                options:
+                  text: 15
+                  isHeaderRegular: true
+              - type: component.text
+                options:
+                  text: Conference Speakers
+                  isBold: true
+                  fontSize: small     
+      # ## REMAINING TICKETS ##
+      #   - type: component.layout
+      #     options: 
+      #       hasBackground: true   
+      #       backgroundColor:
+      #         - when: true
+      #           color: color11
+      #       borderRadius: medium
+      #       gap: xSmall
+      #       justifyContent: center
+      #       alignItems: center
+      #       flexChildren: 0
+      #       padding: regular
+      #       children: 
+      #         - type: component.text
+      #           options:
+      #             text: 15
+      #             isHeaderRegular: true
+      #         - type: component.text
+      #           options:
+      #             text: Speakers
+      #             isBold: true
+      #             fontSize: small         
+             
+## EVENT DETAILS CARD ##                  
+  - type: component.layout
+    options:
+      isRow: false
+      hasBackground: true
+      borderRadius: medium  
+      padding: regular 
+      gap: large         
+      children:     
+      ## DESCRIPTION ##                                   
+        - type: component.layout
+          options: 
+            padding: none
+            gap: xSmall  
+            children: 
+              - type: component.text
+                options:
+                  text: Description
+                  isBold: true
+                  # isSubtle: true
+                  align: left
+                  fontSize: small
+              - type: component.text
+                options:
+                  text: 'AI Horizon: Exploring the Cutting-Edge of Artificial Intelligence is a two-day conference that will bring together experts from academia, industry, and government to explore the latest advancements and applications of artificial intelligence. The conference will feature a wide range of topics, including machine learning, natural language processing, computer vision, robotics, and more.'
+                  isBold: false
+                  align: left
+        ## Keynote Speakers ##
+        - type: component.layout
+          options: 
+            padding: none
+            gap: xSmall 
+            children:                   
+              - type: component.text
+                options:
+                  text: 'Keynote Speakers:'
+                  isBold: true
+                  # isSubtle: true
+                  align: left
+                  fontSize: small
+              - type: component.text
+                options:
+                  text: Lisa Kim, Data Scientist
+                  isBold: false
+                  align: left
+              - type: component.text
+                options:
+                  text: Emily Brown, Machine Learning Engineer
+                  isBold: false
+                  align: left
+              - type: component.text
+                options:
+                  text: David Kim, Robotic Engineer
+                  isBold: false
+                  align: left
+        ## Conference contact info ##
+        - type: component.layout
+          options:
+            padding: none
+            gap: xSmall
+            children: 
+              - type: component.text
+                options:
+                  text: 'Conference Contact Info:'
+                  isBold: true
+                  # isSubtle: true
+                  align: left
+                  fontSize: small
+              - type: component.entity
+                options:
+                  isCompact: true
+                  children:
+                    - type: component.entity-field
+                      options:
+                        label: Phone
+                        value: 486-348-5561
+                        contentType: phone
+                    - type: component.entity-field
+                      options:
+                        label: Email
+                        value: conference@info.com
+                        contentType: email
+                    - type: component.entity-field
+                      options:
+                        label: Website
+                        value: =$substringAfter('https://seattleconventioncenter.com/', 'https://')
+                        contentType: link
+
+## AMP CARD ##
+  - type: component.layout
+    options:
+      isRow: false
+      hasBackground: true
+      gap: large
+      borderRadius: medium
+      children:
+        - type: component.layout
+          options:
+            isRow: false
+            padding: none
+            gap: medium       
+            children:
+            ## MAP ##
+              - type: component.location
+                options:
+                  address: 35016 SE Ridge St, Snoqualmie, WA 98065    
+            ## ADDRESS ##
+              - type: component.layout
+                options:
+                  isRow: true
+                  justifyContent: flex-start
+                  alignItems: center
+                  flexChildren: 0
+                  padding: none
+                  gap: xSmall
+                  children:                  
+                    - type: component.icon
+                      options:
+                        size: 16
+                        icon: pin
+                        color:
+                          - when: true
+                            color: color14                                 
+                    - type: component.text
+                      options:
+                        text: 35016 SE Ridge St, Snoqualmie, WA 98065
+                        isBold: false
+                        fontSize: small
+                        isSubtle: true
+
+        ## NAVIGATION BUTTON ##                                                       
+        - type: component.layout
+          options: 
+            onPress: 
+              type: action.open-url
+              options:
+                url: https://www.google.com/maps/dir//2600+International+Pkwy,+Virginia+Beach,+VA+23452
+            hasBackground: true
+            backgroundColor: 
+              - when: true
+                color: primary
+            borderRadius: medium
+            children: 
+              - type: component.text
+                options:
+                  text: Navigate to Event Location
+                  align: center

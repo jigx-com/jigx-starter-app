@@ -9,7 +9,20 @@ header:
       type: component.image
       options:
         source:
-          uri: https://images.unsplash.com/photo-1496861083958-175bb1bd5702?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zmxvd2VyJTIwZmllbGR8ZW58MHwwfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60
+          uri: =@ctx.datasources.image.images
+
+datasources:
+  image:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'question'
 
 children:
   - type: component.form
@@ -20,7 +33,7 @@ children:
           instanceId: question
           options:
             label: Question
-            textArea: dynamic
+            textArea: medium
             isMultiline: true
         - type: component.text-field
           instanceId: seminarId

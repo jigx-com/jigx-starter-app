@@ -1,0 +1,213 @@
+title: Attendee Details
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.datasources.image.images
+
+datasources:
+  image:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'attendee-detail'
+
+children:
+  - type: component.layout
+    options:
+      backgroundColor:
+        - color: color9
+          when: true
+      borderRadius: small
+      gap: small
+      hasBackground: true
+      padding: regular
+      children:
+        ## TOP ##
+        - type: component.layout
+          options:
+            alignItems: flex-start
+            flexChildren: 0
+            gap: xsmall
+            isRow: true
+            justifyContent: flex-start
+            padding: none
+            children:
+            ## LOGO ##
+              - type: component.layout
+                options:
+                  flex: 0
+                  gap: none
+                  padding: none
+                  children:
+                    - type: component.image
+                      options:
+                        height: 57
+                        width: 100
+                        resizeMode: cover
+                        source:
+                          uri: https://www.dropbox.com/s/xe6xlmqiw2isdtl/color-dark-tm.png?raw=1
+
+        ## NAME AND AVATAR ##  
+        - type: component.layout
+          options:
+            flexChildren: 0
+            hasBackground: false
+            isRow: true
+            justifyContent: center
+            padding: none
+            children:
+              ## NAME AND TITLE ##
+              - type: component.layout
+                options:
+                  flex: 1
+                  flexChildren: 0
+                  gap: xSmall
+                  isRow: false
+                  padding: none
+                  children:
+                    - type: component.text
+                      options:
+                        isBold: true
+                        isHeaderRegular: true
+                        text: =@ctx.jig.inputs.info.first_name & ' ' & @ctx.jig.inputs.info.last_name
+                    # - type: component.text 
+                    #   options:
+                    #     isSubtle: true
+                    #     text: 'Company:'
+                    #     fontSize: small
+                    - type: component.text
+                      options:
+                        isBold: false
+                        text: =@ctx.jig.inputs.info.company_name
+                      
+              ## AVATAR ##
+              - type: component.layout
+                options:
+                  flex: 0
+                  flexChildren: 0
+                  gap: none
+                  isRow: false
+                  padding: none
+                  children:
+                    - type: component.avatar
+                      options:
+                        text: sdf
+                        uri: https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=999&q=80
+                        align: center
+                        size: 100
+
+        ## BOTTOM ##
+        - type: component.layout
+          options:
+            gap: none
+            isRow: true
+            justifyContent: space-between
+            padding: none
+            children:
+              - type: component.layout
+                options:
+                  alignItems: center
+                  flexChildren: 0
+                  gap: xsmall
+                  isRow: true
+                  justifyContent: flex-start
+                  padding: none
+                  children:
+                    - type: component.text
+                      options:
+                        fontSize: tiny
+                        text: =@ctx.jig.inputs.info.city & ', ' & @ctx.jig.inputs.info.state
+                        
+  - type: component.layout
+    options:
+      gap: small
+      isRow: true
+      hasBackground: false
+      padding: none
+      children:
+        - type: component.layout
+          options: 
+            onPress:
+              type: action.open-url
+              options:
+                url: https://www.linkedin.com/in/dennis-parker-4a992b/
+            isRow: false 
+            # padding: regular
+            hasBackground: true
+            backgroundColor: 
+              - when: true 
+                color: color1
+            borderRadius: medium
+            children:
+              - type: component.text
+                options:
+                  text: LinkedIn
+                  align: center
+        - type: component.layout
+          options: 
+            onPress:
+              type: action.open-url
+              options:
+                url: =@ctx.jig.inputs.info.web
+            isRow: false 
+            hasBackground: true
+            backgroundColor: 
+              - when: true 
+                color: color1
+            borderRadius: medium
+            children:
+              - type: component.text 
+                options:
+                  text: Company Website 
+                  align: center 
+                      
+## CONTACT DETAILS ##                 
+  - type: component.section
+    options:
+      title: Contact Details
+      children:
+        - type: component.entity
+          options:
+            isCompact: true
+            children:
+              # - type: component.entity-field
+              #   options:
+              #     label: Website
+              #     value: =$substringAfter(@ctx.jig.inputs.info.web, 'http://')
+              #     href: =@ctx.jig.inputs.info.web
+              #     contentType: link
+              - type: component.entity-field
+                options:
+                  label: Phone
+                  value: =@ctx.jig.inputs.info.phone1
+                  contentType: phone
+              - type: component.entity-field
+                options:
+                  label: Email
+                  value: =@ctx.jig.inputs.info.email
+                  contentType: email
+              # - type: component.entity-field
+              #   options:
+              #     label: Linked In
+              #     value: https://www.linkedin.com/in/dennis-parker-4a992b/
+              #     contentType: link
+              
+actions:
+  - children:
+      - type: action.go-to
+        options:
+          title: Request a Meeting 
+          linkTo: attendee-info

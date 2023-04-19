@@ -1,0 +1,68 @@
+title: Your Day 2 Agenda
+type: jig.list
+icon: contact
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.datasources.image.images
+
+datasources:
+  image:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'calendar'
+
+data: =@ctx.datasources.mySeminar
+item:
+  type: component.list-item
+  options:
+    title: =@ctx.current.item.seminarTitle
+    subtitle: =@ctx.current.item.speakerName
+    description: ='Seminar Room:' & ' ' & @ctx.current.item.serminarRoom
+    label:
+      title: =@ctx.current.item.fromTime & ' - ' & @ctx.current.item.toTime
+    
+    divider: solid
+    
+    leftElement: 
+      element: avatar
+      text: ''
+      uri: =@ctx.current.item.speakerAvatar
+      
+    swipeable:
+      left:
+        - label: Remove
+          icon: delete
+          color: negative
+          onPress: 
+            type: action.execute-entity
+            options:
+              provider: DATA_PROVIDER_DYNAMIC
+              entity: default/seminarAttendees
+              method: delete
+              goBack: previous
+              data:
+                id: =@ctx.current.item.SAid
+              onSuccess: 
+                title: Successfully Removed 
+    
+    onPress: 
+      type: action.go-to
+      options:
+        linkTo: viewSeminar
+        parameters:
+          seminarId: =@ctx.current.item.Cid
+                
