@@ -131,4 +131,3 @@ item:
           attendeeName: =@ctx.user.displayName
           attendeeEmail: =@ctx.user.email
           attendeeId: =@ctx.user.id
-    

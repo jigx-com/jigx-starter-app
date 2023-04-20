@@ -42,22 +42,22 @@ item:
       text: ''
       uri: =@ctx.current.item.speakerAvatar
       
-    swipeable:
-      left:
-        - label: Remove
-          icon: delete
-          color: negative
-          onPress: 
-            type: action.execute-entity
-            options:
-              provider: DATA_PROVIDER_DYNAMIC
-              entity: default/seminarAttendees
-              method: delete
-              goBack: previous
-              data:
-                id: =@ctx.current.item.SAid
-              onSuccess: 
-                title: Successfully Removed 
+    # swipeable:
+    #   left:
+    #     - label: Remove
+    #       icon: delete
+    #       color: negative
+    #       onPress: 
+    #         type: action.execute-entity
+    #         options:
+    #           provider: DATA_PROVIDER_DYNAMIC
+    #           entity: default/seminarAttendees
+    #           method: delete
+    #           goBack: previous
+    #           data:
+    #             id: =@ctx.current.item.SAid
+    #           onSuccess: 
+    #             title: Successfully Removed 
     
     onPress: 
       type: action.go-to

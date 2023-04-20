@@ -1,0 +1,35 @@
+title: ask question
+description: Description of your Jig
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+# onFocus:
+#   type: action.action-list
+#   options:
+#     actions:
+#       - type: action.sync-entities
+#         options:
+#           provider: 
+#           entities:
+#             - entity: 
+
+# datasources:
+#   mydata: 
+
+children:
+  - type: component.entity
+    options:
+      children:
+        - type: component.entity-field
+          options:
+            label: tbd
+            value: tbd

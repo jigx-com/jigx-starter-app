@@ -10,7 +10,46 @@ header:
       options:
         source:
           uri: https://builder.jigx.com/assets/images/header.jpg
-          
+    
+onFocus: 
+  type: action.action-list
+  when: =@ctx.datasources.countMySeminar.count < 3
+  options:
+    actions:
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/seminarAttendees
+          method: create
+          goBack: stay
+          data:
+            attendeeEmail: =@ctx.user.email
+            attendeeId: =@ctx.user.id
+            attendeeName: =@ctx.user.displayName
+            seminarId: '06'
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/seminarAttendees
+          method: create
+          goBack: stay
+          data:
+            attendeeEmail: =@ctx.user.email
+            attendeeId: =@ctx.user.id
+            attendeeName: =@ctx.user.displayName
+            seminarId: '07'
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/seminarAttendees
+          method: create
+          goBack: stay
+          data:
+            attendeeEmail: =@ctx.user.email
+            attendeeId: =@ctx.user.id
+            attendeeName: =@ctx.user.displayName
+            seminarId: '08'
+
 datasources:        
   upcomingSeminars: 
     type: datasource.sqlite
@@ -545,7 +584,7 @@ children:
             onPress: 
               type: action.go-to
               options:
-                linkTo: food
+                linkTo: forum
             children:
               - type: component.icon
                 options:

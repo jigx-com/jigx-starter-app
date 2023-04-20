@@ -1,0 +1,21 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/seminarAttendees
+
+  query: |
+    SELECT
+      count(id) as count,
+      '$.attendeeEmail',
+      '$.attendeeId',
+      '$.attendeeName',
+      '$.seminarId'
+    FROM [default/seminarAttendees]
+    WHERE
+      '$.seminarId' > '04'
+      AND '$.seminarId' < '11'
+      AND '$.attendeeEmail' = @userEmail
+  queryParameters:
+    userEmail: =@ctx.user.email
