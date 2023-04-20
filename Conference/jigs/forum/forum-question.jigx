@@ -1,35 +1,77 @@
-title: ask question
-description: Description of your Jig
+title: Type a new Message
 type: jig.default
 
 header:
   type: component.jig-header
   options:
-    height: medium
+    height: small
     children:
       type: component.image
       options:
         source:
           uri: https://builder.jigx.com/assets/images/header.jpg
 
-# onFocus:
-#   type: action.action-list
-#   options:
-#     actions:
-#       - type: action.sync-entities
-#         options:
-#           provider: 
-#           entities:
-#             - entity: 
-
 # datasources:
 #   mydata: 
 
 children:
-  - type: component.entity
+  - type: component.form
+    instanceId: forumMessage
     options:
       children:
-        - type: component.entity-field
+        - type: component.text-field
+          instanceId: question
           options:
-            label: tbd
-            value: tbd
+            label: Type a new message
+            textArea: medium
+            isMultiline: true
+        - type: component.text-field
+          instanceId: displayName
+          options:
+            label: displayName
+            initialValue: =@ctx.user.displayName
+            isHidden: true 
+        - type: component.text-field
+          instanceId: email
+          options:
+            label: email
+            initialValue: =@ctx.user.email
+            isHidden: true
+        - type: component.text-field
+          instanceId: laugh
+          options:
+            label: laugh
+            initialValue: '0'
+            isHidden: true
+        - type: component.text-field
+          instanceId: like
+          options:
+            label: like
+            initialValue: '0'
+            isHidden: true
+        - type: component.text-field
+          instanceId: thumbs
+          options:
+            label: thumbs
+            initialValue: '0'
+            isHidden: true
+        - type: component.text-field
+          instanceId: timeStamps
+          options:
+            label: timeStamp
+            initialValue: =$now()
+            isHidden: true
+            
+actions:
+  - children:
+      - type: action.submit-form
+        options:
+          formId: forumMessage
+          provider: DATA_PROVIDER_DYNAMIC
+          title: Send Message
+          entity: default/forum
+          method: create
+          goBack: previous
+          onSuccess: 
+            title: Sucessfully submitted
+            

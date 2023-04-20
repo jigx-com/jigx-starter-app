@@ -12,3 +12,4 @@ tables:
   pointsOfInterest:
   images:
   forum: 
+  replyForum: 

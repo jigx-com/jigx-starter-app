@@ -11,16 +11,6 @@ header:
         source:
           uri: https://images.unsplash.com/photo-1568992687947-868a62a9f521?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8ZGlzY3Vzc2lvbnxlbnwwfDB8MHx8&auto=format&fit=crop&w=800&q=60
 
-# onFocus:
-#   type: action.action-list
-#   options:
-#     actions:
-#       - type: action.sync-entities
-#         options:
-#           provider: 
-#           entities:
-#             - entity: 
-
 datasources:
   forum: 
     type: datasource.sqlite
@@ -39,9 +29,10 @@ datasources:
           '$.question',
           '$.like',
           '$.thumbs',
-          '$.laugh' 
+          '$.laugh',
+          '$.timeStamps'
         FROM [default/forum] 
-        ORDER BY '$.displayName'
+        ORDER BY '$.timeStamps'
       
   reactions:
     type: datasource.static
@@ -55,6 +46,28 @@ datasources:
           reaction: ❓
         - id: 4
           reaction: 👍
+  
+  reply:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/replyForum
+  
+      query: |
+        SELECT
+          F.id AS Fid,
+          json_extract(F.data, '$.displayName') AS qDisplayName,
+          json_extract(F.data, '$.question') AS question,
+          json_extract(RF.data, '$.avatar') AS rAvatar,
+          json_extract(RF.data, '$.qId') AS qId,
+          json_extract(RF.data, '$.reply') AS reply,
+          json_extract(RF.data, '$.displayName') AS rDisplayName,
+          json_extract(RF.data, '$.timeStamps') AS rtimeStamps
+        FROM
+          [default/forum] AS F
+          JOIN [default/replyForum] AS RF ON Fid = qId
 
 children:
 ### QUESTION ONE ###
@@ -121,11 +134,12 @@ children:
                           - type: component.layout
                             options:
                               isRow: true
-                              padding: none
+                              padding: xSmall
                               hasBackground: false
+                              borderRadius: large
                               flex: 0
                               flexChildren: 0
-                              gap: xSmall
+                              gap: small
                               children:
                                 - type: component.text 
                                   options:
@@ -140,11 +154,12 @@ children:
                           - type: component.layout
                             options:
                               isRow: true
-                              padding: none
+                              padding: xSmall
                               hasBackground: false
+                              borderRadius: large
                               flex: 0
                               flexChildren: 0
-                              gap: xSmall
+                              gap: small
                               children:
                                 - type: component.text 
                                   options:
@@ -159,11 +174,12 @@ children:
                           - type: component.layout
                             options:
                               isRow: true
-                              padding: none
+                              padding: xSmall
                               hasBackground: false
+                              borderRadius: large
                               flex: 0
                               flexChildren: 0
-                              gap: xSmall
+                              gap: small
                               children:
                                 - type: component.text 
                                   options:
@@ -192,7 +208,7 @@ children:
                               hasBackground: true 
                               backgroundColor: 
                                 - when: true 
-                                  color: color9
+                                  color: color14
                               padding: xSmall
                               children: 
                                 - type: component.text
@@ -207,7 +223,7 @@ children:
                               hasBackground: false
                               backgroundColor: 
                                 - when: true 
-                                  color: color9
+                                  color: color14
                               padding: xSmall
                               onPress: 
                                 type: action.go-to
@@ -289,11 +305,12 @@ children:
                           - type: component.layout
                             options:
                               isRow: true
-                              padding: none
+                              padding: xSmall
                               hasBackground: false
+                              borderRadius: large
                               flex: 0
                               flexChildren: 0
-                              gap: xSmall
+                              gap: small
                               children:
                                 - type: component.text 
                                   options:
@@ -308,11 +325,12 @@ children:
                           - type: component.layout
                             options:
                               isRow: true
-                              padding: none
+                              padding: xSmall
                               hasBackground: false
+                              borderRadius: large
                               flex: 0
                               flexChildren: 0
-                              gap: xSmall
+                              gap: small
                               children:
                                 - type: component.text 
                                   options:
@@ -361,7 +379,7 @@ children:
                               hasBackground: true 
                               backgroundColor: 
                                 - when: true 
-                                  color: color9
+                                  color: color14
                               padding: xSmall
                               children: 
                                 - type: component.text
@@ -380,7 +398,7 @@ children:
                               hasBackground: true 
                               backgroundColor: 
                                 - when: true 
-                                  color: color9
+                                  color: color14
                               padding: xSmall
                               children: 
                                 - type: component.text
@@ -389,7 +407,73 @@ children:
                                     # isHeaderRegular: true
                                     align: center
                                     justifyContent: center
-          
+
+### REPLY ONE ###
+  ## Container for Avatar and whole question section
+  - type: component.layout
+    options:
+      isRow: true
+      justifyContent: flex-start
+      gap: small
+      flex: 1
+      flexChildren: 0
+      hasBackground: false
+      padding: none
+      children:
+        ## container for question and reaction section ##
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            isRow: false
+            flex: 1
+            flexChildren: 1
+            gap: xSmall
+            children:
+              - type: component.layout
+                options:
+                  padding: small
+                  hasBackground: true
+                  borderRadius: small
+                  isRow: false
+                  gap: none
+                  children:
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reply[0].qDisplayName
+                        isBold: true
+                        isSubtle: true
+                    - type: component.text
+                      options:
+                        text: =@ctx.datasources.reply[0].question
+                        isSubtle: true
+       
+              - type: component.layout
+                options:
+                  padding: xSmall
+                  hasBackground: false
+                  isRow: false
+                  gap: none
+                  children:
+                    # - type: component.text
+                    #   options: 
+                    #     text: '|'
+                    #     isBold: false
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reply[0].rDisplayName
+                        isBold: true
+                    - type: component.text
+                      options:
+                        text: =@ctx.datasources.reply[0].reply
+        ## avatar ##
+        - type: component.avatar
+          options:
+            text: sdf
+            uri: =@ctx.datasources.reply[0].rAvatar
+            # align: center
+            size: 40
+
 ### QUESTION THREE ###
   ## Container for Avatar and whole question section
   - type: component.layout
@@ -457,60 +541,69 @@ children:
                           - type: component.layout
                             options:
                               isRow: true
-                              padding: none
+                              padding: xSmall
                               hasBackground: false
+                              borderRadius: large
                               flex: 0
                               flexChildren: 0
-                              gap: xSmall
+                              gap: small
                               children:
                                 - type: component.text 
                                   options:
-                                    text: ' '
+                                    text: ''
+                                    # text: =@ctx.datasources.reactions[0].reaction
                                     isHeaderRegular: false
                                     align: left
                                 - type: component.text
                                   options: 
-                                    text: ' '
+                                    text: ''
+                                    # text: =@ctx.datasources.forum[2].laugh
                                     align: left
                           ## like ##         
                           - type: component.layout
                             options:
                               isRow: true
-                              padding: none
+                              padding: xSmall
                               hasBackground: false
+                              borderRadius: large
                               flex: 0
                               flexChildren: 0
-                              gap: xSmall
+                              gap: small
                               children:
                                 - type: component.text 
                                   options:
-                                    text: ' '
+                                    text: ''
+                                    # text: =@ctx.datasources.reactions[1].reaction
                                     isHeaderRegular: false
                                     align: left
                                 - type: component.text
                                   options: 
-                                    text: ' '
+                                    text: ''
+                                    # text: =@ctx.datasources.forum[2].like
                                     # fontSize: tiny
                           ## thumbs up ## 
-                          # - type: component.layout
-                          #   options:
-                          #     isRow: true
-                          #     padding: none
-                          #     hasBackground: false
-                          #     flex: 0
-                          #     flexChildren: 0
-                          #     gap: small
-                          #     children:
-                          #       - type: component.text 
-                          #         options:
-                          #           text: =@ctx.datasources.reactions[3].reaction
-                          #           # text: =@ctx.datasources.forum[1].thumbs = 0 ? ' ':@ctx.datasources.reactions[3].reaction
-                          #           isHeaderRegular: true
-                          #           align: left
-                          #       - type: component.text
-                          #         options: 
-                          #           text: =@ctx.datasources.forum[1].thumbs
-                          #           align: left
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: xSmall
+                              hasBackground: false
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: ''
+                                    # text: =@ctx.datasources.reactions[3].reaction
+                                    # text: =@ctx.datasources.forum[1].thumbs = 0 ? ' ':@ctx.datasources.reactions[3].reaction
+                                    # isHeaderRegular: true
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: ''
+                                    # text: =@ctx.datasources.forum[2].thumbs = 0 ? ' ':@ctx.datasources.forum[2].thumbs
+                                    align: left
     
                     ## REACT AND REPLY BUTTON ##
                     - type: component.layout
@@ -529,7 +622,7 @@ children:
                               hasBackground: true 
                               backgroundColor: 
                                 - when: true 
-                                  color: color9
+                                  color: color14
                               padding: xSmall
                               children: 
                                 - type: component.text
@@ -548,7 +641,7 @@ children:
                               hasBackground: true 
                               backgroundColor: 
                                 - when: true 
-                                  color: color9
+                                  color: color14
                               padding: xSmall
                               children: 
                                 - type: component.text
@@ -558,9 +651,252 @@ children:
                                     align: center
                                     justifyContent: center
 
+### QUESTION FOUR ###
+  ## Container for Avatar and whole question section
+  - type: component.layout
+    options:
+      isRow: true
+      justifyContent: flex-start
+      gap: small
+      flex: 0
+      flexChildren: 0
+      hasBackground: false
+      # backgroundColor: 
+      #   - when: true 
+      #     color: color3
+      padding: none
+      children:
+        ## avatar ##
+        - type: component.avatar
+          options:
+            text: sdf
+            uri: =@ctx.datasources.forum[3].avatar
+            # align: center
+            size: 40
+        ## container for question and reaction section ##
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            isRow: false
+            flex: 1
+            flexChildren: 1
+            children:
+              - type: component.layout
+                options:
+                  padding: none
+                  hasBackground: false
+                  isRow: false
+                  gap: none
+                  children:
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.forum[3].displayName
+                        isBold: true
+                    - type: component.text
+                      options:
+                        text: =@ctx.datasources.forum[3].question
+              ## Reaction and React Button Container ## 
+              - type: component.layout
+                options:
+                  isRow: true
+                  hasBackground: false
+                  padding: none
+                  # gap: none
+                  # align: left
+                  children: 
+                    - type: component.layout
+                      options: 
+                        isRow: true 
+                        padding: none
+                        flex: 0
+                        flexChildren: 0
+                        hasBackground: false
+                        gap: small
+                        children: 
+                          ## laugh ##
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: xSmall
+                              hasBackground: false
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: ''
+                                    # text: =@ctx.datasources.reactions[0].reaction
+                                    isHeaderRegular: false
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: ''
+                                    # text: =@ctx.datasources.forum[2].laugh
+                                    align: left
+                          ## like ##         
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: xSmall
+                              hasBackground: false
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: ''
+                                    # text: =@ctx.datasources.reactions[1].reaction
+                                    isHeaderRegular: false
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: ''
+                                    # text: =@ctx.datasources.forum[2].like
+                                    # fontSize: tiny
+                          ## thumbs up ## 
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: xSmall
+                              hasBackground: false
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: ''
+                                    # text: =@ctx.datasources.reactions[3].reaction
+                                    # text: =@ctx.datasources.forum[1].thumbs = 0 ? ' ':@ctx.datasources.reactions[3].reaction
+                                    # isHeaderRegular: true
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: ''
+                                    # text: =@ctx.datasources.forum[2].thumbs = 0 ? ' ':@ctx.datasources.forum[2].thumbs
+                                    align: left
+    
+                    ## REACT AND REPLY BUTTON ##
+                    - type: component.layout
+                      options:
+                        isRow: true
+                        padding: none
+                        hasBackground: false
+                        justifyContent: flex-bottom
+                        borderRadium: large
+                        align: right
+                        gap: xSmall
+                        children:
+                          - type: component.layout
+                            options:
+                              isRow: false 
+                              hasBackground: true 
+                              backgroundColor: 
+                                - when: true 
+                                  color: color14
+                              padding: xSmall
+                              children: 
+                                - type: component.text
+                                  options:
+                                    text: React 
+                                    # isHeaderRegular: true
+                                    align: center
+                                    # justifyContent: center
+                          - type: component.layout
+                            options:
+                              onPress: 
+                                type: action.go-to
+                                options:
+                                  linkTo: reply-forum
+                              isRow: false 
+                              hasBackground: true 
+                              backgroundColor: 
+                                - when: true 
+                                  color: color14
+                              padding: xSmall
+                              children: 
+                                - type: component.text
+                                  options:
+                                    text: Reply
+                                    # isHeaderRegular: true
+                                    align: center
+                                    justifyContent: center
+
+### REPLY TWO ###
+  ## Container for Avatar and whole question section
+  - type: component.layout
+    options:
+      isRow: true
+      justifyContent: flex-start
+      gap: small
+      flex: 1
+      flexChildren: 0
+      hasBackground: false
+      padding: none
+      children:
+        ## container for question and reaction section ##
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            isRow: false
+            flex: 1
+            flexChildren: 1
+            gap: xSmall
+            children:
+              - type: component.layout
+                options:
+                  padding: small
+                  hasBackground: true
+                  borderRadius: small
+                  isRow: false
+                  gap: none
+                  children:
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reply[1].qDisplayName
+                        isBold: true
+                        isSubtle: true
+                    - type: component.text
+                      options:
+                        text: =@ctx.datasources.reply[1].question
+                        isSubtle: true
+       
+              - type: component.layout
+                options:
+                  padding: xSmall
+                  hasBackground: false
+                  isRow: false
+                  gap: none
+                  children:
+                    # - type: component.text
+                    #   options: 
+                    #     text: '|'
+                    #     isBold: false
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reply[1].rDisplayName
+                        isBold: true
+                    - type: component.text
+                      options:
+                        text: =@ctx.datasources.reply[1].reply
+        ## avatar ##
+        - type: component.avatar
+          options:
+            text: sdf
+            uri: =@ctx.datasources.reply[1].rAvatar
+            # align: center
+            size: 40                                
+
 actions:
   - children:
       - type: action.go-to
         options:
-          title: Ask Question
+          title: Type a new message
           linkTo: forum-question
