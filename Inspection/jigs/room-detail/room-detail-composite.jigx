@@ -13,4 +13,7 @@ header:
 
 children:
   - jigId: room-detail-img
+    inputs:
+      roomId: =@ctx.jig.inputs.roomId
+      room: =@ctx.jig.inputs.room
   - jigId: room-detail

@@ -1,4 +1,4 @@
-title: Maldives Resort
+title: =@ctx.datasources.hotels.name
 type: jig.default
 
 
@@ -11,8 +11,8 @@ header:
       options:
         source:
           uri: https://images.unsplash.com/photo-1573843981267-be1999ff37cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bWFsZGl2ZXMlMjBob3RlbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60
-        title: Maldives Resort
-        subtitle: Addu City, Maldives
+        title: =@ctx.datasources.hotels.name
+        subtitle: =@ctx.datasources.hotels.address
 
 
 children: 
@@ -38,11 +38,11 @@ children:
                   size: 24
               - type: component.text
                 options:
-                  text: 4.7 (1508)
+                  text: =@ctx.datasources.hotels.overallRating & ' (' & @ctx.datasources.hotels.numReviews & ')'
                   isHeaderBig: true
         - type: component.text
           options:
-            text: Fabulous
+            text: =$number(@ctx.datasources.hotels.overallRating) > 4 ? 'Fabulous':'Very good'
             align: center
   - type: component.layout
     options:
@@ -65,7 +65,7 @@ children:
                     color: color9
             - type: component.text
               options:
-                text: 4.8
+                text: =@ctx.datasources.hotels.staffRating
                 align: center
         - type: component.layout
           options:
@@ -82,7 +82,7 @@ children:
                     color: color9
               - type: component.text
                 options:
-                  text: 4.7
+                  text: =@ctx.datasources.hotels.locationRating
                   align: center
         - type: component.layout
           options:
@@ -99,7 +99,7 @@ children:
                     color: color9
               - type: component.text
                 options:
-                  text: 4.4
+                  text: =@ctx.datasources.hotels.cleanlinessRating
                   align: center
              
   - type: component.layout
@@ -118,15 +118,15 @@ children:
         - type: component.entity-field
           options:
             label: Number of rooms
-            value: 25
+            value: =@ctx.datasources.hotels.numRooms
         - type: component.entity-field
           options:
             label: Last reviewed
-            value: =$fromMillis(1510067557121, '[M01]/[D01]/[Y0001]')
+            value: =$fromMillis($toMillis($now()) - 86400000, '[M01]/[D01]/[Y0001]')
         - type: component.entity-field
           options:
             label: Main issues
-            value: Cleanliness
+            value: =@ctx.datasources.hotels.mainIssueArea
             
   - type: component.layout
     options:
@@ -144,7 +144,7 @@ children:
       children: 
         - type: component.text
           options:
-            text: 93JX+3GM, Addu City, Maldives
+            text: =@ctx.datasources.hotels.address & ', Maldives'
             align: left
             isSubtle: true
   - type: component.layout
@@ -153,7 +153,7 @@ children:
       children:
         - type: component.location
           options:
-            address: 93JX+3GM, Addu City, Maldives
+            address: =@ctx.datasources.hotels.address
             isAnimationDisabled: true
             zoomLevel: 13
   - type: component.layout
@@ -169,8 +169,7 @@ children:
       onPress: 
         type: action.open-url
         options:
-          url: 'https://www.google.com/maps/dir/C3CQ+7XG, Addu City, Maldives/93JX+3GM, Addu City, Maldives/'
-          # url: ='https://www.google.com/maps/dir/' & @ctx.datasources.current-delivery-with-address.lStreetFrom & ', ' & @ctx.datasources.current-delivery-with-address.lCountyFrom & '/' & @ctx.datasources.current-delivery-with-address.lStreetTo & ', ' & @ctx.datasources.current-delivery-with-address.lCountyTo & '/'
+          url: ='https://www.google.com/maps/search/' & @ctx.datasources.hotels.address & '/'
       children:
         - type: component.text 
           options:

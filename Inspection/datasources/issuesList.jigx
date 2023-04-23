@@ -1,0 +1,17 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/issuesList
+
+  query: |
+    SELECT 
+      id, 
+      '$.category', 
+      '$.floor',
+      '$.image', 
+      '$.room',
+      '$.roomId'
+    FROM [default/issuesList] 
+    ORDER BY '$.floor'

@@ -1,0 +1,24 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/hotels
+
+  query: |
+    SELECT 
+      id, 
+      '$.address', 
+      '$.cleanlinessRating',
+      '$.imageUrl',
+      '$.locationRating',
+      '$.mainIssueArea',
+      '$.name',
+      '$.numIssues',
+      '$.overallRating',
+      '$.staffRating',
+      '$.numReviews',
+      '$.numRooms'
+    FROM [default/hotels]
+    ORDER BY '$.name'
+    LIMIT 1

@@ -1,27 +1,54 @@
 title: Home Hub
 type: jig.default
 
+datasources:
+  chartFirstSerie:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+      entities:
+        - entity: default/issuesChart
+      query: | 
+        SELECT 
+          id, 
+          json_extract(data, '$.seriesy') as y, 
+          '$.color', 
+          '$.category', 
+          json_extract(data, '$.seriesx') as x
+        FROM [default/issuesChart] WHERE '$.category' = "chart1" ORDER BY x
+  chartSecondSerie:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+      entities:
+        - entity: default/issuesChart
+      query: |
+        SELECT 
+          id, 
+          json_extract(data, '$.seriesy') as y, 
+          '$.color', 
+          '$.category', 
+          json_extract(data, '$.seriesx') as x
+        FROM [default/issuesChart] WHERE '$.category' = "chart2" ORDER BY x
+
 children:
   - type: component.image
     options:
       source:
-        uri:  https://images.unsplash.com/photo-1573843981267-be1999ff37cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bWFsZGl2ZXMlMjBob3RlbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60
-      title: Maldives Resort
-      subtitle: Addu City, Maldives
+        uri:  =@ctx.datasources.hotels.imageUrl
+      title: =@ctx.datasources.hotels.name
+      subtitle: =@ctx.datasources.hotels.address
       height: 200
       onPress: 
         type: action.go-to
         options:
-          linkTo: hotel-preview
+          linkTo: hotel-detail
           
   - type: component.layout
     options:
       gap: small
       
       hasBackground: true
-      # backgroundColor: 
-      #   - when: true
-      #     color: color14
       children:
         - type: component.layout
           options:
@@ -36,11 +63,11 @@ children:
                   size: 24
               - type: component.text
                 options:
-                  text: 4.7 / 5
+                  text: =@ctx.datasources.hotels.overallRating & ' / 5'
                   isHeaderBig: true
         - type: component.text
           options:
-            text: 'Reviews: 1508'
+            text: ='Reviews:' & ' ' & @ctx.datasources.hotels.numReviews
             align: center
 
               
@@ -51,7 +78,7 @@ children:
       children:
         - type: component.text
           options:
-            text: Last weeks issue overview
+            text: Last month issues overview
             align: center
             isBold: true
             spaceTop: large             
@@ -63,11 +90,14 @@ children:
       onPress: 
         type: action.go-to
         options:
-          linkTo: issue-list-with-filter
+          linkTo: issue-list
       children:
         - type: component.line-chart
           options:
             
+            chart:
+              height: 200
+              width: 200
             yAxis:
               max: 10
               min: 0
@@ -78,14 +108,14 @@ children:
                 - 3
                 - 4
             series:
-              - data: =[{"x":"", "y":2, "color":"color9"}, {"x":"", "y":4, "color":"color9"}, {"x":"", "y":6, "color":"color9"}, {"x":"", "y":3, "color":"color9"}]
+              - data: =@ctx.datasources.chartFirstSerie
                 name: Cleanliness
                 animation:
                     direction: left-to-right
                 layout: area-gradient
                 dataLabels:
                   - isEnabled: true
-              - data: =[{"x":"", "y":1, "color":"color3"}, {"x":"", "y":6, "color":"color3"}, {"x":"", "y":2, "color":"color3"}, {"x":"", "y":3, "color":"color3"}]
+              - data: =@ctx.datasources.chartSecondSerie
                 name: Maintenance
                 animation:
                     direction: left-to-right
@@ -94,8 +124,6 @@ children:
                   - isEnabled: true      
             legend:
               isHidden: false
-    
-        
         
   - type: component.layout
     options:
@@ -105,7 +133,7 @@ children:
           options:
             preset: primary
             
-            title: Start inspection
+            title: Start an inspection
             style:
               isPrimary: true
   

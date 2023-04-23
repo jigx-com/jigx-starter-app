@@ -30,5 +30,4 @@ children:
           options:
             label: Description
             value: =@ctx.solution.state.issueDescription
-            
-            
+            isMultiline: true

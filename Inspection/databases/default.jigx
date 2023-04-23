@@ -1,1 +1,5 @@
-# tables:
+tables:
+  ? hotels
+  ? issuesList
+  ? roomDetail
+  ? issuesChart

@@ -1,0 +1,83 @@
+title: Issues List
+type: jig.list
+icon: contact
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children: 
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1602002418153-3e900b530e7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fG1hbGRpdmVzJTIwaG90ZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60
+
+datasources:
+  issuesList:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/issuesList
+
+      query: |
+        SELECT 
+          id, 
+          '$.category', 
+          '$.floor',
+          '$.image', 
+          '$.room',
+          '$.roomId'
+        FROM [default/issuesList] WHERE '$.category' LIKE @filter or @filter IS NULL
+        ORDER BY '$.floor'
+        
+      queryParameters:
+        filter: =@ctx.jig.state.filter
+filter: 
+  - title: All
+    value: ''
+  - title: Cleanliness
+    value: Cleanliness
+  - title: Maintenance
+    value: Maintenance
+
+
+data: =@ctx.datasources.issuesList
+item:
+  type: component.list-item
+  options:
+    title: =@ctx.current.item.room
+    leftElement: 
+      element: image
+      text: ''
+      uri: =@ctx.current.item.image
+    subtitle: =@ctx.current.item.floor & '.floor'
+    label:
+      title: =@ctx.current.item.category
+      color:
+        - when: =@ctx.current.item.category = 'Cleanliness'
+          color: color6
+        - when: =@ctx.current.item.category = 'Maintenance'
+          color: color9
+    onPress: 
+      type: action.action-list
+      options:
+        actions:
+          - type: action.go-to
+            options:
+              linkTo: room-detail-composite
+              parameters:
+                roomId: =@ctx.current.item.roomId
+                room: =@ctx.current.item.room
+          - type: action.reset-state
+            options:
+              state: =@ctx.solution.state.issueCategory
+
+    
+
+
+
+
+
+
