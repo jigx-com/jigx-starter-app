@@ -18,10 +18,30 @@ datasources:
           '$.name',
           '$.description',
           '$.area',
-          '$.image'
-        FROM [default/roomDetail] WHERE '$.roomId' = @roomDetailId
+          '$.image',
+          '$.room',
+          '$.recordCategory'
+        FROM [default/roomDetail] 
+        WHERE '$.roomId' = @roomDetailId AND '$.recordCategory' = 'general'
+        UNION
+        SELECT 
+          id, 
+          '$.roomId', 
+          '$.xCoord', 
+          '$.yCoord',
+          '$.category',
+          '$.name',
+          '$.description',
+          '$.area',
+          '$.image',
+          '$.room',
+          '$.recordCategory'
+        FROM [default/roomDetail] 
+        WHERE '$.roomId' = @roomDetailId AND '$.email' = @userEmail
+       
       queryParameters:
         roomDetailId: =@ctx.jig.inputs.roomId
+        userEmail: =@ctx.user.email
 
 children:
   - type: component.interactive-image

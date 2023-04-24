@@ -1,0 +1,123 @@
+title: Room checklist
+type: jig.default
+
+actions:
+  - children:
+      - type: action.go-to
+        options:
+          title: Report an issue
+          linkTo: issue-report
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children: 
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1602002418153-3e900b530e7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fG1hbGRpdmVzJTIwaG90ZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60
+          
+datasources:
+  option:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          option: Guest room
+        - id: 2
+          option: Meeting room
+          
+  guestRoom:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/roomChecklist
+  
+      query: |
+        SELECT 
+          id, 
+          '$.category', 
+          '$.items',
+          '$.roomTag',
+          '$.description'
+        FROM [default/roomChecklist] 
+        WHERE '$.roomTag' = 'guest room'
+  meetingRoom:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/roomChecklist
+  
+      query: |
+        SELECT 
+          id, 
+          '$.category', 
+          '$.items',
+          '$.roomTag',
+          '$.description'
+        FROM [default/roomChecklist] 
+        WHERE '$.roomTag' = 'meeting room'
+
+children: 
+  - type: component.layout
+    options:
+      padding: minimal
+      children:
+        - type: component.text
+          options:
+            text: =@ctx.components.roomSelection.state.selected.option != null ? "":'Please start by selecting the type of room you will be inspecting'
+            isSubtle: true
+            fontSize: small
+  - type: component.form
+    instanceId: form
+    options:
+      # isDiscardChangesAlertEnabled: false
+      children:
+        - type: component.dropdown
+          instanceId: roomSelection
+          options:
+            label: Choose the type of room
+            data: =@ctx.datasources.option
+            item:
+              type: component.dropdown-item
+              options:
+                title: =@ctx.current.item.option
+                value: =@ctx.current.item.option
+  - type: component.list
+    options:
+
+        
+      data: =@ctx.components.roomSelection.state.selected.option != null ? @ctx.components.roomSelection.state.selected.option = 'Guest room' ? @ctx.datasources.guestRoom:@ctx.datasources.meetingRoom:""
+      
+      maximumItemsToRender: 30
+      item: 
+        type: component.list-item
+        options:
+          title: =@ctx.current.item.items
+          subtitle: =@ctx.current.item.description
+          description: =@ctx.current.item.category
+          divider: solid
+          # progress: 1
+          color:
+            - when: =@ctx.current.item.category = 'Cleanliness'
+              color: color6
+            - when: =@ctx.current.item.category = 'Maintenance'
+              color: color9
+
+          leftElement: 
+            element: checkbox
+            initialValue: false
+          # label:
+          #   title: =@ctx.current.item.category
+          #   color:
+          #     - when: =@ctx.current.item.category = 'Cleanliness'
+          #       color: color6
+          #     - when: =@ctx.current.item.category = 'Maintenance'
+          #       color: color9
+      
+            

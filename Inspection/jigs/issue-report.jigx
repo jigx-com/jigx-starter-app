@@ -1,0 +1,169 @@
+title: Issue form
+type: jig.default
+
+actions:
+  - children:
+      - type: action.submit-form
+        options:
+          formId: reportIssueForm
+          provider: DATA_PROVIDER_DYNAMIC
+          title: Create the issue
+          entity: default/roomDetail
+          method: create
+          goBack: home
+          onSuccess: 
+            title: Success
+            description: The issue was sucessfully created
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children: 
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1602002418153-3e900b530e7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fG1hbGRpdmVzJTIwaG90ZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60
+          
+datasources:
+  issuesList:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/issuesList
+
+      query: |
+        SELECT 
+          id, 
+          '$.category', 
+          '$.floor',
+          '$.image', 
+          '$.room',
+          '$.roomId',
+          '$.roomTag'
+        FROM [default/issuesList]
+        ORDER BY '$.floor'
+  areaDropdown:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          area: Bedroom area
+        - id: 2
+          area: Living room area
+        - id: 3
+          area: Bathroom area
+  areaMeetingDropdown:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          area: Meeting room area
+  categoryDropdown:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          category: Cleanliness
+        - id: 2
+          category: Maintenance
+
+children:
+  - type: component.form
+    instanceId: dropdown
+    options:
+      isDiscardChangesAlertEnabled: false
+      children:
+        - type: component.dropdown
+          instanceId: roomSelection
+          options:
+            label: Choose the room with issues
+            data: =@ctx.datasources.issuesList
+            item:
+              type: component.dropdown-item
+              options:
+                title: =@ctx.current.item.room
+                value: =@ctx.current.item.roomId
+  - type: component.image
+    options:
+      source:
+        uri: =@ctx.components.roomSelection.state.selected.image
+             
+  - type: component.form
+    instanceId: reportIssueForm
+    options:
+      isDiscardChangesAlertEnabled: false
+      children:
+        - type: component.text-field
+          instanceId: name
+          options:
+            label: Issue
+        - type: component.text-field
+          instanceId: description
+          options:
+            label: Description
+            isMultiline: true  
+        - type: component.dropdown
+          instanceId: area
+          options:
+            label: Area
+            data: =@ctx.components.roomSelection.state.selected.roomTag = 'guest room' ? @ctx.datasources.areaDropdown:@ctx.datasources.areaMeetingDropdown
+            item:
+              type: component.dropdown-item
+              options:
+                title: =@ctx.current.item.area
+                value: =@ctx.current.item.area
+        - type: component.dropdown
+          instanceId: category
+          options:
+            label: Category
+            data: =@ctx.datasources.categoryDropdown
+            item:
+              type: component.dropdown-item
+              options:
+                title: =@ctx.current.item.category
+                value: =@ctx.current.item.category
+                
+        # Hidden fields
+        - type: component.number-field
+          instanceId: xCoord
+          options:
+            label: xCoord
+            value: 45
+            isHidden: true
+        - type: component.number-field
+          instanceId: yCoord
+          options:
+            label: zCoord
+            value: 80
+            isHidden: true
+        - type: component.text-field
+          instanceId: email
+          options:
+            label: Email
+            value: =@ctx.user.email
+            isHidden: true
+        - type: component.text-field
+          instanceId: image
+          options:
+            label: Image
+            value: =@ctx.components.roomSelection.state.selected.image
+            isHidden: true
+        - type: component.text-field
+          instanceId: room
+          options:
+            label: Room
+            value: =@ctx.components.roomSelection.state.selected.room
+            isHidden: true
+        - type: component.text-field
+          instanceId: roomId
+          options:
+            label: Room id
+            value: =@ctx.components.roomSelection.state.selected.roomId
+            isHidden: true
+
+    
+            
+        

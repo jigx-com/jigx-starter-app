@@ -136,4 +136,8 @@ children:
             title: Start an inspection
             style:
               isPrimary: true
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: inspection
   

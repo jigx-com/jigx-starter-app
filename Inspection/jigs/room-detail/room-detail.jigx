@@ -28,6 +28,10 @@ children:
             value: =@ctx.solution.state.issueArea
         - type: component.entity-field
           options:
+            label: Issue
+            value: =@ctx.solution.state.issueName
+        - type: component.entity-field
+          options:
             label: Description
             value: =@ctx.solution.state.issueDescription
             isMultiline: true
