@@ -47,7 +47,10 @@ children:
   - type: component.layout
     options:
       gap: small
-      
+      onPress: 
+        type: action.go-to
+        options:
+          linkTo: reviews
       hasBackground: true
       children:
         - type: component.layout

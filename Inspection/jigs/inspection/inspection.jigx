@@ -5,7 +5,7 @@ actions:
   - children:
       - type: action.go-to
         options:
-          title: Report an issue
+          title: Report issue
           linkTo: issue-report
 
 header:

@@ -86,6 +86,8 @@ children:
               options:
                 title: =@ctx.current.item.room
                 value: =@ctx.current.item.roomId
+                 # title: =@ctx.jig.inputs.room != null ? @ctx.jig.inputs.room :@ctx.current.item.room
+                # value: =@ctx.jig.inputs.roomId != null ? @ctx.jig.inputs.roomId :@ctx.current.item.roomId
   - type: component.image
     options:
       source:
