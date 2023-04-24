@@ -5,6 +5,8 @@ category: business
 widgets:
   - size: "1x1"
     jigId: hotel-detail
+  - size: "1x1"
+    jigId: hotel-list
     
 home:
   - instanceId: Home_hub

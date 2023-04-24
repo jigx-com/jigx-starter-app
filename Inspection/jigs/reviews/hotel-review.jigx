@@ -1,0 +1,459 @@
+title: =@ctx.jig.inputs.hotelname
+description: Hotel Reviews
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+datasources:
+  reviews: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/hotelReviews
+  
+      query: |
+        SELECT 
+          id, 
+          '$.cleanlinessRating', 
+          '$.hotelId',
+          '$.overallRating',
+          '$.review',
+          '$.reviewerName',
+          '$.room',
+          '$.title' 
+        FROM [default/hotelReviews] 
+        WHERE hotelId LIKE @hotel
+        ORDER BY '$.overallRating' ASC
+      queryParameters:
+        hotel: =@ctx.jig.inputs.id
+
+children:
+### REVIEW ONE ###
+  ## Container for Avatar and whole review section
+  - type: component.layout
+    options:
+      isRow: true
+      justifyContent: flex-start
+      gap: small
+      flex: 1
+      flexChildren: 0
+      hasBackground: false
+      padding: xSmall
+      children:
+        ## avatar ##
+        - type: component.avatar
+          options:
+            text: =$substring(@ctx.datasources.reviews[0].reviewerName, 0, 1)
+            # align: center
+            size: 40
+        ## container for review ##
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            borderRadius: small
+            isRow: false
+            flex: 1
+            flexChildren: 1
+            children:
+              - type: component.layout
+                options:
+                  padding: none
+                  hasBackground: false
+                  isRow: false
+                  gap: none
+                  children:
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reviews[0].reviewerName
+                        isBold: true
+                    - type: component.text
+                      options: 
+                        text: ='Room:' & ' ' & @ctx.datasources.reviews[0].room
+                        isBold: false
+                        isSubtle: true
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reviews[0].title
+                        isBold: true
+                    - type: component.text
+                      options:
+                        text: =@ctx.datasources.reviews[0].review
+              ## Review and Report button Container ## 
+              - type: component.layout
+                options:
+                  isRow: true
+                  hasBackground: false
+                  padding: none
+                  children: 
+                    - type: component.layout
+                      options: 
+                        isRow: true
+                        padding: none
+                        flex: 0
+                        flexChildren: 0
+                        hasBackground: false
+                        gap: small
+                        children: 
+                          ## rating ##
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: small
+                              hasBackground: true
+                              backgroundColor:
+                                - when: true 
+                                  color: negative
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: 'Cleanliness rating:'
+                                    isHeaderRegular: false
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: =@ctx.datasources.reviews[0].cleanlinessRating & '/5'
+                                    align: left
+                          ## rating ##         
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: small
+                              hasBackground: true
+                              backgroundColor:
+                                - when: true 
+                                  color: warning
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: 'Overall rating:'
+                                    isHeaderRegular: false
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: =@ctx.datasources.reviews[0].overallRating & '/5'
+                                    # fontSize: tiny
+    
+              ## REPORT BUTTON ##
+              - type: component.layout
+                options:
+                  isRow: true
+                  padding: none
+                  hasBackground: false
+                  borderRadium: large
+                  align: right
+                  gap: xSmall
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true 
+                        backgroundColor: 
+                          - when: true 
+                            color: color14
+                        padding: small
+                        children: 
+                          - type: component.text
+                            options:
+                              text: Report Issue
+                              # isHeaderRegular: true
+                              align: center
+                              # justifyContent: center
+
+### REVIEW TWO ###
+  ## Container for Avatar and whole review section
+  - type: component.layout
+    options:
+      isRow: true
+      justifyContent: flex-start
+      gap: small
+      flex: 1
+      flexChildren: 0
+      hasBackground: false
+      padding: none
+      children:
+        ## avatar ##
+        - type: component.avatar
+          options:
+            text: =$substring(@ctx.datasources.reviews[1].reviewerName, 0, 1)
+            # align: center
+            size: 40
+        ## container for review ##
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            borderRadius: small
+            isRow: false
+            flex: 1
+            flexChildren: 1
+            children:
+              - type: component.layout
+                options:
+                  padding: none
+                  hasBackground: false
+                  isRow: false
+                  gap: none
+                  children:
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reviews[1].reviewerName
+                        isBold: true
+                    - type: component.text
+                      options: 
+                        text: ='Room:' & ' ' & @ctx.datasources.reviews[1].room
+                        isBold: false
+                        isSubtle: true
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reviews[1].title
+                        isBold: true
+                    - type: component.text
+                      options:
+                        text: =@ctx.datasources.reviews[1].review
+              ## Review and Report button Container ## 
+              - type: component.layout
+                options:
+                  isRow: true
+                  hasBackground: false
+                  padding: none
+                  children: 
+                    - type: component.layout
+                      options: 
+                        isRow: true
+                        padding: none
+                        flex: 0
+                        flexChildren: 0
+                        hasBackground: false
+                        gap: small
+                        children: 
+                          ## rating ##
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: small
+                              hasBackground: true
+                              backgroundColor:
+                                - when: true 
+                                  color: positive
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: 'Cleanliness rating:'
+                                    isHeaderRegular: false
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: =@ctx.datasources.reviews[1].cleanlinessRating & '/5'
+                                    align: left
+                          ## rating ##         
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: small
+                              hasBackground: true
+                              backgroundColor:
+                                - when: true 
+                                  color: positive
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: 'Overall rating:'
+                                    isHeaderRegular: false
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: =@ctx.datasources.reviews[1].overallRating & '/5'
+                                    # fontSize: tiny
+    
+              ## REPORT BUTTON ##
+              - type: component.layout
+                options:
+                  isRow: true
+                  padding: none
+                  hasBackground: false
+                  borderRadium: large
+                  align: right
+                  gap: xSmall
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true 
+                        backgroundColor: 
+                          - when: true 
+                            color: color14
+                        padding: small
+                        children: 
+                          - type: component.text
+                            options:
+                              text: Report Issue
+                              # isHeaderRegular: true
+                              align: center
+                              # justifyContent: center
+                              
+### REVIEW THREE ###
+  ## Container for Avatar and whole review section
+  - type: component.layout
+    options:
+      isRow: true
+      justifyContent: flex-start
+      gap: small
+      flex: 1
+      flexChildren: 0
+      hasBackground: false
+      padding: none
+      children:
+        ## avatar ##
+        - type: component.avatar
+          options:
+            text: =$substring(@ctx.datasources.reviews[2].reviewerName, 0, 1)
+            # align: center
+            size: 40
+        ## container for review ##
+        - type: component.layout
+          options:
+            padding: small
+            hasBackground: true
+            borderRadius: small
+            isRow: false
+            flex: 1
+            flexChildren: 1
+            children:
+              - type: component.layout
+                options:
+                  padding: none
+                  hasBackground: false
+                  isRow: false
+                  gap: none
+                  children:
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reviews[2].reviewerName
+                        isBold: true
+                    - type: component.text
+                      options: 
+                        text: ='Room:' & ' ' & @ctx.datasources.reviews[2].room
+                        isBold: false
+                        isSubtle: true
+                    - type: component.text
+                      options: 
+                        text: =@ctx.datasources.reviews[2].title
+                        isBold: true
+                    - type: component.text
+                      options:
+                        text: =@ctx.datasources.reviews[2].review
+              ## Review and Report button Container ## 
+              - type: component.layout
+                options:
+                  isRow: true
+                  hasBackground: false
+                  padding: none
+                  children: 
+                    - type: component.layout
+                      options: 
+                        isRow: true
+                        padding: none
+                        flex: 0
+                        flexChildren: 0
+                        hasBackground: false
+                        gap: small
+                        children: 
+                          ## rating ##
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: small
+                              hasBackground: true
+                              backgroundColor:
+                                - when: true 
+                                  color: warning
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: 'Cleanliness rating:'
+                                    isHeaderRegular: false
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: =@ctx.datasources.reviews[2].cleanlinessRating & '/5'
+                                    align: left
+                          ## rating ##         
+                          - type: component.layout
+                            options:
+                              isRow: true
+                              padding: small
+                              hasBackground: true
+                              backgroundColor:
+                                - when: true 
+                                  color: warning
+                              borderRadius: large
+                              flex: 0
+                              flexChildren: 0
+                              gap: small
+                              children:
+                                - type: component.text 
+                                  options:
+                                    text: 'Overall rating:'
+                                    isHeaderRegular: false
+                                    align: left
+                                - type: component.text
+                                  options: 
+                                    text: =@ctx.datasources.reviews[2].overallRating & '/5'
+                                    # fontSize: tiny
+    
+              ## REPORT BUTTON ##
+              - type: component.layout
+                options:
+                  isRow: true
+                  padding: none
+                  hasBackground: false
+                  borderRadium: large
+                  align: right
+                  gap: xSmall
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true 
+                        backgroundColor: 
+                          - when: true 
+                            color: color14
+                        padding: small
+                        children: 
+                          - type: component.text
+                            options:
+                              text: Report Issue
+                              # isHeaderRegular: true
+                              align: center
+                              # justifyContent: center

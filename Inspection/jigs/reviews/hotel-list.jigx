@@ -1,0 +1,693 @@
+title: Hotels
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1509512658157-a8f3e5536669?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Ymx1ZSUyMGxhZ29vbiUyMGJlYWNofGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60
+
+datasources:
+  hotels: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/hotels
+  
+      query: |
+        SELECT 
+          id, 
+          '$.address', 
+          '$.cleanlinessRating',
+          '$.imageUrl',
+          '$.locationRating',
+          '$.mainIssueArea',
+          '$.name',
+          '$.numIssues',
+          '$.overallRating',
+          '$.staffRating',
+          '$.numReviews',
+          '$.numRooms'
+        FROM [default/hotels]
+        ORDER BY '$.name'
+
+children:
+### HOTEL 1 ###
+  - type: component.layout
+    options:
+      onPress:
+        type: action.go-to
+        options:
+          linkTo: hotel-review
+          parameters:
+            id: =@ctx.datasources.hotels[0].id
+            hotelname: =@ctx.datasources.hotels[0].name
+      isRow: false
+      hasBackground: true
+      borderRadius: small
+      children:
+        ## IMAGE ##
+        - type: component.image
+          options:
+            source:
+              uri: =@ctx.datasources.hotels[0].imageUrl
+            height: 150
+            resizeMode: cover
+        ## TITLE ##
+        - type: component.layout
+          options:
+            isRow: false
+            padding: none
+            children:
+              - type: component.text 
+                options:
+                  isHeaderRegular: true
+                  text: =@ctx.datasources.hotels[0].name
+                  isBold: true
+        ## INFORMATION CONTAINER ##
+        - type: component.layout
+          options:
+            isRow: true
+            padding: none
+            hasBackground: false
+            children:
+            ## ADDRESS AND RATING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: false
+                  hasBackground: false
+                  padding: none
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: false 
+                        padding: none
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[0].address
+                              align: left 
+                              isSubtle: true 
+                              fontSize: regular
+                          - type: component.layout
+                            options:
+                              isRow: true 
+                              padding: none
+                              gap: none
+                              children: 
+                                - type: component.text 
+                                  options:
+                                    text: ⭐⭐⭐⭐
+                                    align: left 
+                                    fontSize: regular
+                                - type: component.text 
+                                  options:
+                                    text: =@ctx.datasources.hotels[0].overallRating
+                                    align: left 
+                                    fontSize: regular
+                                    isSubtle: true
+              ## RIGHT PRICCING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: true
+                  hasBackground: false
+                  padding: xSmall
+                  gap: small
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[0].numRooms
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Rooms
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true     
+
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[0].numIssues
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Issues
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true   
+                  
+### HOTEL 2 ###
+  - type: component.layout
+    options:
+      onPress:
+        type: action.go-to
+        options:
+          linkTo: hotel-review
+          parameters:
+            id: =@ctx.datasources.hotels[0].id
+            hotelname: =@ctx.datasources.hotels[0].name
+      isRow: false
+      hasBackground: true
+      borderRadius: small
+      children:
+        ## IMAGE ##
+        - type: component.image
+          options:
+            source:
+              uri: https://blueflower.la/images/holidays/widgetkit/maldives/glm_crusoe-residence-exterior-view-from-hammock.jpg
+              # uri: =@ctx.datasources.hotels[1].imageUrl
+            height: 150
+            resizeMode: cover
+        ## TITLE ##
+        - type: component.layout
+          options:
+            isRow: false
+            padding: none
+            children:
+              - type: component.text 
+                options:
+                  isHeaderRegular: true
+                  text: =@ctx.datasources.hotels[1].name
+                  isBold: true
+        ## INFORMATION CONTAINER ##
+        - type: component.layout
+          options:
+            isRow: true
+            padding: none
+            hasBackground: false
+            children:
+            ## ADDRESS AND RATING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: false
+                  hasBackground: false
+                  padding: none
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: false 
+                        padding: none
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[1].address
+                              align: left 
+                              isSubtle: true 
+                              fontSize: regular
+                          - type: component.layout
+                            options:
+                              isRow: true 
+                              padding: none
+                              gap: none
+                              children: 
+                                - type: component.text 
+                                  options:
+                                    text: ⭐⭐⭐⭐
+                                    align: left 
+                                    fontSize: regular
+                                - type: component.text 
+                                  options:
+                                    text: =@ctx.datasources.hotels[1].overallRating
+                                    align: left 
+                                    fontSize: regular
+                                    isSubtle: true
+              ## RIGHT PRICCING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: true
+                  hasBackground: false
+                  padding: xSmall
+                  gap: small
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[1].numRooms
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Rooms
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true     
+
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[1].numIssues
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Issues
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true   
+                              
+### HOTEL 3 ###
+  - type: component.layout
+    options:
+      onPress:
+        type: action.go-to
+        options:
+          linkTo: hotel-review
+          parameters:
+            id: =@ctx.datasources.hotels[0].id
+            hotelname: =@ctx.datasources.hotels[0].name
+      isRow: false
+      hasBackground: true
+      borderRadius: small
+      children:
+        ## IMAGE ##
+        - type: component.image
+          options:
+            source:
+              uri: https://cococollection.com/images/uploads/headers/_medium/Offer-Packages-Coco-Bodu-Hithi.jpg
+              # uri: =@ctx.datasources.hotels[2].imageUrl
+            height: 150
+            resizeMode: cover
+        ## TITLE ##
+        - type: component.layout
+          options:
+            isRow: false
+            padding: none
+            children:
+              - type: component.text 
+                options:
+                  isHeaderRegular: true
+                  text: =@ctx.datasources.hotels[2].name
+                  isBold: true
+        ## INFORMATION CONTAINER ##
+        - type: component.layout
+          options:
+            isRow: true
+            padding: none
+            hasBackground: false
+            children:
+            ## ADDRESS AND RATING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: false
+                  hasBackground: false
+                  padding: none
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: false 
+                        padding: none
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[2].address
+                              align: left 
+                              isSubtle: true 
+                              fontSize: regular
+                          - type: component.layout
+                            options:
+                              isRow: true 
+                              padding: none
+                              gap: none
+                              children: 
+                                - type: component.text 
+                                  options:
+                                    text: ⭐⭐⭐⭐⭐
+                                    align: left 
+                                    fontSize: regular
+                                - type: component.text 
+                                  options:
+                                    text: =@ctx.datasources.hotels[2].overallRating
+                                    align: left 
+                                    fontSize: regular
+                                    isSubtle: true
+              ## RIGHT PRICCING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: true
+                  hasBackground: false
+                  padding: xSmall
+                  gap: small
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[2].numRooms
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Rooms
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true     
+
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[2].numIssues
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Issues
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true   
+                              
+### HOTEL 4 ###
+  - type: component.layout
+    options:
+      onPress:
+        type: action.go-to
+        options:
+          linkTo: hotel-review
+          parameters:
+            id: =@ctx.datasources.hotels[0].id
+            hotelname: =@ctx.datasources.hotels[0].name
+      isRow: false
+      hasBackground: true
+      borderRadius: small
+      children:
+        ## IMAGE ##
+        - type: component.image
+          options:
+            source:
+              uri: https://www.leisureopportunities.co.uk/images/2022/SOCIAL349243_417016_888422.jpg
+              # uri: =@ctx.datasources.hotels[3].imageUrl
+            height: 150
+            resizeMode: cover
+        ## TITLE ##
+        - type: component.layout
+          options:
+            isRow: false
+            padding: none
+            children:
+              - type: component.text 
+                options:
+                  isHeaderRegular: true
+                  text: =@ctx.datasources.hotels[3].name
+                  isBold: true
+        ## INFORMATION CONTAINER ##
+        - type: component.layout
+          options:
+            isRow: true
+            padding: none
+            hasBackground: false
+            children:
+            ## ADDRESS AND RATING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: false
+                  hasBackground: false
+                  padding: none
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: false 
+                        padding: none
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[3].address
+                              align: left 
+                              isSubtle: true 
+                              fontSize: regular
+                          - type: component.layout
+                            options:
+                              isRow: true 
+                              padding: none
+                              gap: none
+                              children: 
+                                - type: component.text 
+                                  options:
+                                    text: ⭐⭐⭐⭐⭐
+                                    align: left 
+                                    fontSize: regular
+                                - type: component.text 
+                                  options:
+                                    text: =@ctx.datasources.hotels[3].overallRating
+                                    align: left 
+                                    fontSize: regular
+                                    isSubtle: true
+              ## RIGHT PRICCING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: true
+                  hasBackground: false
+                  padding: xSmall
+                  gap: small
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[3].numRooms
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Rooms
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true     
+
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[3].numIssues
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Issues
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true    
+                              
+### HOTEL 5 ###
+  - type: component.layout
+    options:
+      onPress:
+        type: action.go-to
+        options:
+          linkTo: hotel-review
+          parameters:
+            id: =@ctx.datasources.hotels[0].id
+            hotelname: =@ctx.datasources.hotels[0].name
+      isRow: false
+      hasBackground: true
+      borderRadius: small
+      children:
+        ## IMAGE ##
+        - type: component.image
+          options:
+            source:
+              uri: https://www.goworldtravel.com/wp-content/uploads/2020/09/maldives-resort-hut-beach.jpg
+              # uri: =@ctx.datasources.hotels[4].imageUrl
+            height: 150
+            resizeMode: cover
+        ## TITLE ##
+        - type: component.layout
+          options:
+            isRow: false
+            padding: none
+            children:
+              - type: component.text 
+                options:
+                  isHeaderRegular: true
+                  text: =@ctx.datasources.hotels[4].name
+                  isBold: true
+        ## INFORMATION CONTAINER ##
+        - type: component.layout
+          options:
+            isRow: true
+            padding: none
+            hasBackground: false
+            children:
+            ## ADDRESS AND RATING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: false
+                  hasBackground: false
+                  padding: none
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: false 
+                        padding: none
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[4].address
+                              align: left 
+                              isSubtle: true 
+                              fontSize: regular
+                          - type: component.layout
+                            options:
+                              isRow: true 
+                              padding: none
+                              gap: none
+                              children: 
+                                - type: component.text 
+                                  options:
+                                    text: ⭐⭐⭐⭐
+                                    align: left 
+                                    fontSize: regular
+                                - type: component.text 
+                                  options:
+                                    text: =@ctx.datasources.hotels[4].overallRating
+                                    align: left 
+                                    fontSize: regular
+                                    isSubtle: true
+              ## RIGHT PRICCING CONTAINER ##
+              - type: component.layout
+                options:
+                  isRow: true
+                  hasBackground: false
+                  padding: xSmall
+                  gap: small
+                  children:
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[4].numRooms
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Rooms
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true     
+
+                    - type: component.layout
+                      options:
+                        isRow: false 
+                        hasBackground: true
+                        backgroundColor: 
+                          - when: true
+                            color: color12
+                        padding: xSmall
+                        gap: none
+                        children:   
+                          - type: component.text 
+                            options:
+                              text: =@ctx.datasources.hotels[4].numIssues
+                              align: center
+                              isSubtle: false
+                              fontSize: regular
+                          - type: component.text 
+                            options:
+                              text: Issues
+                              align: center
+                              fontSize: regular  
+                              isSubtle: true  
