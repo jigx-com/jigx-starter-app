@@ -4,5 +4,5 @@ children:
     options:
       
       value: ='Hello, ' & $substringBefore(@ctx.user.displayName, ' ')
-      weight: bold
+      weight: extra-bold
       size: large

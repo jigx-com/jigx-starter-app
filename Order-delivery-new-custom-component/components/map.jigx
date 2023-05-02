@@ -12,39 +12,44 @@ children:
         - type: component.view
           options:
             style:
-              justifyContent: space-around
               flex: 
                 direction: row
-              padding: 
-                horizontal: regular
-                vertical: small
+                grow: 1
+              gap: medium
+              alignItems: center
+
             children:
               - type: component.icon
                 options:
                   icon: calendar
-                  size: 22
+                  size: medium
                   color: color14
+                  type: duotone
+                  shape: rounded
               - type: component.view
                 options:
                   style:
                     flex: 
                       direction: column
-                    gap: small
+                      grow: 1
+                      shrink: 1
+                    gap: minimal
                   children:
                     - type: component.text
                       options:
                         value: =@ctx.datasources.current-delivery-with-address.dTrackingId
                         weight: bold
-                        # size: regular
                     - type: component.text
                       options:
                         value: =@ctx.datasources.current-delivery-with-address.dCustomerName
                         emphasis: medium
+                        size: small
                         
-                    - type: component.text
-                      options:
-                        value: =$fromMillis($toMillis(@ctx.datasources.current-delivery-with-address.dDeliveryTime), '[h#1]:[m01][P]')
-                        weight: bold
+              - type: component.text
+                options:
+                  value: =$fromMillis($toMillis(@ctx.datasources.current-delivery-with-address.dDeliveryTime), '[h#1]:[m01][P]')
+                  weight: bold
+                  align: right
         - type: component.location
           options:
             address: =@ctx.datasources.current-delivery-with-address.lStreetTo & ", " & @ctx.datasources.current-delivery-with-address.lCountyTo
@@ -53,20 +58,19 @@ children:
         - type: component.view
           options:
             style: 
-              justifyContent: space-between
               alignItems: center
               flex: 
                 direction: row
-              
+                grow: 1             
             children:
             
               - type: component.view
                 options:
                   style:
                     gap: minimal
-                    padding: 
-                      horizontal: regular
-                      
+                    flex: 
+                      grow: 1
+                      shrink: 1
                   children:
                     - type: component.text
                       options:
@@ -82,16 +86,16 @@ children:
                   style:
                     flex:
                       direction: row
-                    padding: medium
                   children:
                     - type: component.button
                       options:
                         title: Navigate
                         type: primary
+                        isCompact: true
                         onPress: 
                           type: action.go-to
                           options:
-                            linkTo: ='www.google.com'
+                            linkTo: =@ctx.inputs.url
                               # ='https://www.google.com/maps/dir/' & @ctx.datasources.current-delivery-with-address.lStreetFrom & ', ' & @ctx.datasources.current-delivery-with-address.lCountyFrom & '/' & @ctx.datasources.current-delivery-with-address.lStreetTo & ', ' & @ctx.datasources.current-delivery-with-address.lCountyTo & '/'
 
             

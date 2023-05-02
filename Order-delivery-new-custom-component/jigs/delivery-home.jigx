@@ -86,6 +86,7 @@ datasources:
         - default/deliveries
         - default/locations
   
+      url: 
       query: |
         SELECT 
           a.id as deliveryId,
@@ -105,6 +106,7 @@ datasources:
         WHERE json_extract(a.data, '$.category') = 'In Progress' 
         ORDER BY json_extract(a.data, '$.deliveryTime')
         LIMIT 1
+        
 
 
 
@@ -120,6 +122,7 @@ children:
   - type: component.section
     options:
       title: =$count(@ctx.datasources.current-delivery-with-address.deliveryId) > 0 ? "Current delivery":""
+      
       children:
      
     
@@ -128,6 +131,8 @@ children:
           options: {}
           componentId: map
           when: =$exists(@ctx.datasources.current-delivery-with-address.deliveryId)
+          inputs:
+            url: deliveries-list        
 
                            
   #             - type: component.layout
