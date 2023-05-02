@@ -1,0 +1,65 @@
+title: Name
+description: Description of your Jig
+type: jig.default
+
+children:
+  
+  
+  - type: component.layout
+    options:
+      isRow:              false             # true / false  
+      padding:            regular           # xLarge / large / medium / regular / small / minimal / none     
+      gap:                medium            # xLarge / large / medium / small / none
+      
+      borderRadius:       large             # large / regular / medium / small / tiny
+               
+      hasBackground:      true              # true / false
+      backgroundColor:
+        - when:           true              # true / false
+          color:          positive          # color1 - color14 / primary / positive / negative, warning
+      backgroundEmphasis: color             # color / high / medium / lowMedium / low / extraLow
+
+      # ADVANCED
+      flex:               1                 # number
+      flexChildren:       1                 # number
+      justifyContent:     start             # start / center / space-between / space-around / space-evenly
+      alignItems:         start             # flex-start / flex-end / center / stretch / baseline 
+      onPress:                              # expression
+      children:   
+            
+
+  - type: component.icon
+    options:
+      align:              right             # left / center / right
+      size:               24                # number
+      icon:               checkbox-checked  # list of icons
+      color:  
+        - when:           true              # true / false / expression
+          color:          color3            # color1 - color14 / primary / positive / negative, warning
+
+          
+  - type: component.text
+    options: 
+      text: Text              
+      fontSize:           regular           # tiny / small / regular / large
+      isHeaderRegular:    false             # true / false (Its only the font size)
+      isHeaderBig:        false             # true / false (Its only the font size)
+      isBold:             false             # true / false
+      isSubtle:           false             # true / false
+      align:              left              # left / center / right
+      color: 
+        - when:           true              # true / false / expression
+          color:          color1            # color1 - color14 / primary / positive / negative, warning\
+
+
+  - type: component.image
+    options:
+      source:
+        uri:              www.aaa.com/a.jpg # url of the image
+      height:             56                # number
+      width:              56                # number
+      resizeMode:         center            # center / contain / cover / stretch
+      subtitle:           text              # text
+      title:              text              # text
+      onPress:                              # expression  
+      

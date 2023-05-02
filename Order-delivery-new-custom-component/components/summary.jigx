@@ -1,0 +1,49 @@
+type: component.default
+
+children:
+  - type: component.card
+    options:
+      color: color9
+      
+    
+
+      children:    
+        - type: component.view
+          options:
+            style:
+              alignContent: center
+              justifyContent: center
+              gap: small
+              margin: small
+              padding: medium
+              flex: 
+                direction: row
+              
+            children:
+             
+              - type: component.icon
+                options:
+                  icon: delivery-truck-5
+                  type: duotone
+                  shape: rounded
+              - type: component.text
+                options:
+                  align: center
+                  value:  =$count(@ctx.datasources.all-deliveries[dCategory = "In Progress"].deliveryId) != 1 ? $count(@ctx.datasources.all-deliveries[dCategory = "In Progress"].deliveryId) = 0 ? "You have completed all the deliveries for today" :"You have " & $count(@ctx.datasources.all-deliveries[dCategory = "In Progress"].deliveryId) &" deliveries scheduled for today" :"You have " & $count(@ctx.datasources.all-deliveries[dCategory = "In Progress"].deliveryId) &" delivery scheduled for today"
+        - type: component.view
+          options:
+            style: 
+              justifyContent: center
+              alignItems: center
+              flex: 
+                grow: 0
+            children:
+              - type: component.button
+                options:
+                  title: =$exists(@ctx.datasources.current-delivery-with-address.deliveryId) ? 'Show all' :'Enjoy the rest of your day'
+                  type: primary
+                  isCompact: true
+                  onPress: 
+                    type: action.go-to
+                    options:
+                      linkTo: deliveries-list

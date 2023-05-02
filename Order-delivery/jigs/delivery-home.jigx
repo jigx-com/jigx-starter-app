@@ -20,6 +20,17 @@ onRefresh:
   type: action.action-list
   options:
     actions:
+      # - type: action.execute-entities
+      #   options:
+      #     provider: DATA_PROVIDER_DYNAMIC
+      #     entity: default/deliveries
+      #     method: update
+      #     goBack: stay
+      #     data: '=@ctx.datasources.current-delivery-with-address.{"id":deliveryId, "category":"In Progress"}[]'
+            # =$map(@ctx.datasources.current-delivery-with-address, function($v) {"id":$v.deliveryId, "category":'In Progress',"photo":'', "signature":''})
+            # =@ctx.datasources.current-delivery-with-address.{id: deliveryId, category: 'In Progress', photo: '', signature: ''}[]
+            
+            # '=@ctx.datasources.selected-promotion-items.{ "id": $uuid_v4(), "promotion_id": promotion_id, "promotion_title": promotion_title, "product_id": product_id, "material_number": material_number, "material_description": promotion_title, "image_url": image_url, "thumbnail" : thumbnail, "sales_unit": sales_unit, "total_net_price": total_net_price, "total_tax": total_tax, "total_gross_price": total_gross_price, "quantity": selected_quantity, "unit_price": $round(total_net_price / quantity, 2), "unit_tax": $round(total_tax / quantity, 2), "currency": currency, "sap_calculated": 0 }[]'
       - type: action.execute-entity
         options:
           provider: DATA_PROVIDER_DYNAMIC

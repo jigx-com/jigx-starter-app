@@ -1,0 +1,98 @@
+type: component.default
+children:
+  - type: component.card
+    options:
+      onPress:
+        type: action.go-to
+        options:
+          linkTo: delivery-detail
+          parameters:
+            deliveryId: =@ctx.datasources.current-delivery-with-address.deliveryId
+      children:
+        - type: component.view
+          options:
+            style:
+              justifyContent: space-around
+              flex: 
+                direction: row
+              padding: 
+                horizontal: regular
+                vertical: small
+            children:
+              - type: component.icon
+                options:
+                  icon: calendar
+                  size: 22
+                  color: color14
+              - type: component.view
+                options:
+                  style:
+                    flex: 
+                      direction: column
+                    gap: small
+                  children:
+                    - type: component.text
+                      options:
+                        value: =@ctx.datasources.current-delivery-with-address.dTrackingId
+                        weight: bold
+                        # size: regular
+                    - type: component.text
+                      options:
+                        value: =@ctx.datasources.current-delivery-with-address.dCustomerName
+                        emphasis: medium
+                        
+                    - type: component.text
+                      options:
+                        value: =$fromMillis($toMillis(@ctx.datasources.current-delivery-with-address.dDeliveryTime), '[h#1]:[m01][P]')
+                        weight: bold
+        - type: component.location
+          options:
+            address: =@ctx.datasources.current-delivery-with-address.lStreetTo & ", " & @ctx.datasources.current-delivery-with-address.lCountyTo
+            isAnimationDisabled: true
+            zoomLevel: 12
+        - type: component.view
+          options:
+            style: 
+              justifyContent: space-between
+              alignItems: center
+              flex: 
+                direction: row
+              
+            children:
+            
+              - type: component.view
+                options:
+                  style:
+                    gap: minimal
+                    padding: 
+                      horizontal: regular
+                      
+                  children:
+                    - type: component.text
+                      options:
+                        value: =@ctx.datasources.current-delivery-with-address.lStreetTo & ", " & @ctx.datasources.current-delivery-with-address.lCountyTo
+                        weight: bold
+                    - type: component.text
+                      options:
+                        value: Delivery address
+                        emphasis: medium
+                        size: small
+              - type: component.view
+                options:
+                  style:
+                    flex:
+                      direction: row
+                    padding: medium
+                  children:
+                    - type: component.button
+                      options:
+                        title: Navigate
+                        type: primary
+                        onPress: 
+                          type: action.go-to
+                          options:
+                            linkTo: ='www.google.com'
+                              # ='https://www.google.com/maps/dir/' & @ctx.datasources.current-delivery-with-address.lStreetFrom & ', ' & @ctx.datasources.current-delivery-with-address.lCountyFrom & '/' & @ctx.datasources.current-delivery-with-address.lStreetTo & ', ' & @ctx.datasources.current-delivery-with-address.lCountyTo & '/'
+
+            
+                      

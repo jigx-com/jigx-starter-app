@@ -1,0 +1,8 @@
+type: component.default
+children:
+  - type: component.text
+    options:
+      
+      value: ='Hello, ' & $substringBefore(@ctx.user.displayName, ' ')
+      weight: bold
+      size: large

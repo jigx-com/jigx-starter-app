@@ -1,0 +1,11 @@
+name: starter-app-delivery-new
+title: starter-app-delivery-new
+category: business
+              
+widgets:
+  - size: 1x1 
+    jigId: delivery-home
+
+home:
+  - instanceId: delivery-home
+    jigId: delivery-home
