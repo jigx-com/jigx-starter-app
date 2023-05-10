@@ -11,9 +11,6 @@ header:
         source:
           uri: https://builder.jigx.com/assets/images/header.jpg
 
-# datasources:
-#   mydata: 
-
 children:
   - type: component.form
     instanceId: forumMessage

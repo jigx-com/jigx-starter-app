@@ -56,6 +56,7 @@ children:
                 options:
                   isRow: true
                   gap: none
+                  padding: small
                   children:
                     - type: component.layout
                       options:

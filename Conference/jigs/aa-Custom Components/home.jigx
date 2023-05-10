@@ -1,0 +1,224 @@
+title: home
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+onFocus: 
+  type: action.action-list
+  when: =@ctx.datasources.countMySeminar.count < 3
+  options:
+    actions:
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/seminarAttendees
+          method: create
+          goBack: stay
+          data:
+            attendeeEmail: =@ctx.user.email
+            attendeeId: =@ctx.user.id
+            attendeeName: =@ctx.user.displayName
+            seminarId: '06'
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/seminarAttendees
+          method: create
+          goBack: stay
+          data:
+            attendeeEmail: =@ctx.user.email
+            attendeeId: =@ctx.user.id
+            attendeeName: =@ctx.user.displayName
+            seminarId: '07'
+      - type: action.execute-entity
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entity: default/seminarAttendees
+          method: create
+          goBack: stay
+          data:
+            attendeeEmail: =@ctx.user.email
+            attendeeId: =@ctx.user.id
+            attendeeName: =@ctx.user.displayName
+            seminarId: '08'
+
+datasources:        
+  upcomingSeminars: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/calendar
+        - default/seminarAttendees
+        - default/seminarRooms
+  
+      query: |
+        SELECT 
+          C.id as Cid,
+          R.id as Rid,
+          DATE('now') AS calcDate,
+          json_extract(C.data, '$.seminarTitle') as seminarTitle,
+          json_extract(C.data, '$.seminarDescription') as seminarDescription,
+          json_extract(C.data, '$.speakerName') as speakerName,
+          json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
+          json_extract(C.data, '$.fromTime') as fromTime,
+          json_extract(C.data, '$.toTime') as toTime,
+          json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
+          json_extract(SA.data, '$.seminarId') as seminarId,
+          json_extract(SA.data, '$.attendeeEmail') as attendeeEmail,
+          json_extract(R.data, '$.seminarRoom') as serminarRoom
+        FROM [default/calendar] as C
+        JOIN [default/seminarAttendees] as SA on Cid = seminarId
+        JOIN [default/seminarRooms] as R on Rid = seminarRoomId
+        WHERE (attendeeEmail = @userEmail)
+        ORDER BY fromTime
+      queryParameters:
+        userEmail: =@ctx.user.email     
+
+  banner:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'banner'
+
+  image:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'poi'
+        
+  options:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          linkto: calendar
+          icon: calendar-3
+        - id: 2
+          linkto: attendees
+          icon: person
+        - id: 3
+          linkto: fix
+          icon: pin
+        - id: 4
+          linkto: merch
+          icon: shopping-cart-empty-1
+  
+  options-2:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          icon: calendar
+          text: Agenda
+          linkTo: agenda
+        - id: 2
+          icon: feedback
+          text: Feedback
+          linkTo: eventFeedback
+        - id: 3
+          icon: chat
+          text: Forum
+          linkTo: forum
+
+children:
+  ## name ##
+  - type: component.custom-component
+    options:
+      {}
+    componentId: name-title
+  
+  ## 4x2 ##
+  - type: component.custom-component
+    options:
+      {}
+    componentId: event-details
+    inputs:
+      img: =@ctx.datasources.banner.images
+      
+  ### bar-1 ###
+  - type: component.list
+    options:
+      data: =@ctx.datasources.options
+      maximumItemsToRender: 8
+      isHorizontal: true
+      isHorizontalScrollIndicatorHidden: true
+      item: 
+        type: component.custom-component
+        options:
+          {}
+        componentId: bar-1
+        inputs:
+          icon: =@ctx.current.item.icon
+          linkto: =@ctx.current.item.linkto
+  
+  ## My Day ##
+  - type: component.custom-component
+    options:
+      {}
+    componentId: sub-header
+    inputs:
+      text: My Day
+      
+  - type: component.custom-component
+    options:
+      {}
+    componentId: my-day
+    inputs:
+      img: https://images.unsplash.com/photo-1567954970774-58d6aa6c50dc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2064&q=80
+
+  ## bar-2 ##
+  - type: component.list
+    options:
+      data: =@ctx.datasources.options-2
+      maximumItemsToRender: 8
+      isHorizontal: true
+      isHorizontalScrollIndicatorHidden: true
+      item: 
+        type: component.custom-component
+        options:
+          {}
+        componentId: bar-2
+        inputs:
+          text: =@ctx.current.item.text
+          icon: =@ctx.current.item.icon
+          linkTo: =@ctx.current.item.linkTo
+  
+  ## sub-header
+  - type: component.custom-component
+    options:
+      {}
+    componentId: sub-header
+    inputs:
+      text: Things to do in Seattle
+  
+  ## POI ##
+  - type: component.custom-component
+    options:
+      {}
+    componentId: POI-card
+    inputs:
+      img: =@ctx.datasources.image.images
+    
+          

@@ -1,0 +1,69 @@
+type: component.default
+children:
+  - type: component.view
+    options:
+      style:
+        flex: 
+          direction: row
+        alignContent: stretch
+        justifyContent: space-between
+        padding: none
+        margin: 
+          left: none
+          right: none
+          top: large
+          bottom: none
+      children:
+        - type: component.view
+          options:
+            style:
+              flex: 
+                grow: 10
+            children:
+              - type: component.form
+                instanceId: chat-box
+                options:
+                  isDiscardChangesAlertEnabled: false
+                  children:
+                    - type: component.text-field
+                      instanceId: message
+                      options:
+                        label: Type a new Message
+                        isOptionalLabelHidden: true
+                        isRequired: false
+                        isMultiline: true
+                        textArea: dynamic
+        - type: component.view
+          options:
+            style:
+              justifyContent: space-evenly
+            children:
+              - type: component.icon
+                options:
+                  icon: send-email-3
+                  onPress: 
+                    type: action.action-list
+                    options:
+                      isSequential: true
+                      actions:
+                        - type: action.execute-entity
+                          options:
+                            provider: DATA_PROVIDER_DYNAMIC
+                            entity: default/forum
+                            method: create
+                            goBack: stay
+                            data:
+                              avatar: =@ctx.user.avatarUrl
+                              displayName: =@ctx.user.displayName
+                              email: =@ctx.user.email
+                              question: =@ctx.components.message.state.value
+                              laugh: '0'
+                              love: '0'
+                              like: '0'
+                              timeStamps: =$now()
+                        - type: action.reset-state
+                          options:
+                            state: =@ctx.components.message.state.value
+                        
+                    
+                  

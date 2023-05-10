@@ -1,0 +1,17 @@
+type: component.default
+children:
+### name ###
+  - type: component.view
+    options:
+      style:
+        flex: 
+          direction: row
+        margin: 
+          bottom: none
+      children:
+        - type: component.text
+          options:
+            text: ='Hello, ' & $substringBefore(@ctx.user.displayName, ' ')
+            value: ='Hello, ' & $substringBefore(@ctx.user.displayName, ' ')
+            weight: extraBold
+            size: large

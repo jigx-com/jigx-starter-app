@@ -1,0 +1,97 @@
+title: Chat v2
+# description: =@ctx.solution.state.laugh
+type: jig.default
+isHomeButtonVisible: false
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1528638728766-d3b32415c65d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fHdpbGQlMjBmbG93ZXJzfGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=400&q=60
+
+datasources:
+  forum: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/forum
+  
+      query: |
+        SELECT 
+          id, 
+          '$.displayName', 
+          '$.email',
+          '$.avatar',
+          '$.question',
+          '$.like',
+          '$.love',
+          '$.laugh',
+          '$.timeStamps'
+        FROM [default/forum] 
+        ORDER BY '$.timeStamps'
+      
+  reactions:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          reaction: 😄
+        - id: 2
+          reaction: ❤️
+        - id: 3
+          reaction: 👍
+  
+  reply:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/replyForum
+  
+      query: |
+        SELECT
+          F.id AS Fid,
+          json_extract(F.data, '$.displayName') AS qDisplayName,
+          json_extract(F.data, '$.question') AS question,
+          json_extract(RF.data, '$.avatar') AS rAvatar,
+          json_extract(RF.data, '$.qId') AS qId,
+          json_extract(RF.data, '$.reply') AS reply,
+          json_extract(RF.data, '$.displayName') AS rDisplayName,
+          json_extract(RF.data, '$.timeStamps') AS rtimeStamps
+        FROM
+          [default/forum] AS F
+          JOIN [default/replyForum] AS RF ON Fid = qId
+
+children:
+  - type: component.list
+    options:
+      data: =@ctx.datasources.forum
+      maximumItemsToRender: 8
+      item: 
+        type: component.custom-component
+        options:
+          {}
+        componentId: chat
+        inputs:
+          avatar: =@ctx.current.item.avatar 
+          displayName: =@ctx.current.item.displayName
+          content: =@ctx.current.item.question
+          laugh: =@ctx.datasources.reactions[0].reaction
+          love: =@ctx.datasources.reactions[1].reaction
+          like: =@ctx.datasources.reactions[2].reaction
+          laughCount: =@ctx.current.item.laugh
+          loveCount: =@ctx.current.item.love
+          likeCount: =@ctx.current.item.like
+          id: =@ctx.current.item.id
+          
+  - type: component.custom-component
+    options:
+      {}
+    componentId: type-bar

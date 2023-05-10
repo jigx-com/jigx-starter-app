@@ -1,0 +1,18 @@
+type: component.default
+children:
+### name ###
+  - type: component.view
+    options:
+      style:
+        flex: 
+          direction: row
+        margin: 
+          bottom: none
+          top: small
+      children:
+        - type: component.text
+          options:
+            text: =@ctx.inputs.text
+            value: =@ctx.inputs.text
+            weight: extraBold
+            size: medium

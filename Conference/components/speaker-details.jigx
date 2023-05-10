@@ -1,0 +1,88 @@
+type: component.default
+children:
+  - type: component.view
+    options:
+      style:
+        flex: 
+          direction: column 
+        padding: none
+        margin: none
+        # width: 340
+      children:  
+        - type: component.card
+          options:
+            direction: column
+            children:
+              ## CONTAINER FOR TEXT ##
+              - type: component.view
+                options:
+                  style:
+                    padding: none
+                    margin: 
+                      top: none
+                      bottom: small
+                    flex: 
+                      direction: row
+                  children: 
+                    - type: component.icon
+                      options:
+                        icon: calendar-3
+                        color: color14
+                    - type: component.view
+                      options:
+                        style:
+                          flex: 
+                            direction: column
+                            grow: 1
+                          padding: none
+                          margin: 
+                            left: medium
+                        children:
+                          - type: component.text
+                            options:
+                              value: =@ctx.inputs.speaker
+                              text: =@ctx.inputs.speaker
+                              weight: semi-bold
+                              size: medium
+                          - type: component.view
+                            options:
+                              style:
+                                flex: 
+                                  direction: row
+                                width: 
+                                  max: 230
+                                  min: 230
+                                justifyContent: space-between
+                                padding: none
+                              children:
+                                - type: component.text
+                                  options:
+                                    value: ='Time:' & ' ' & @ctx.inputs.from & ' - ' & @ctx.inputs.to
+                                    text: ='Time:' & ' ' & @ctx.inputs.from & ' - ' & @ctx.inputs.to
+                                    align: left
+                                    emphasis: medium
+                                    size: small
+                                - type: component.text
+                                  options:
+                                    value: =' Seminar Room' & ':' & ' ' & @ctx.inputs.seminarRoom
+                                    text: =' Seminar Room' & ':' & ' ' & @ctx.inputs.seminarRoom
+                                    emphasis: medium
+                                    size: small
+                    # - type: component.text
+                    #   options:
+                    #     value: Day 2
+                    #     size: small
+                    #     align: left
+                    #     emphasis: medium
+                    # - type: component.text
+                    #   options:
+                    #     value: Exploring the Cutting-Edge of AI
+                    #     size: medium
+                    #     align: left
+                    #     weight: regular
+              ## IMAGE ##
+              - type: component.image
+                options:
+                  source:
+                    uri: =@ctx.inputs.avatar
+                  height: 150

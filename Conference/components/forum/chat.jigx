@@ -1,0 +1,278 @@
+type: component.default
+children:
+  # - type: component.view
+  #   options:
+  #     style:
+  #       flex: 
+  #         direction: column
+  #       # justifyContent: space-between
+  #       background:
+  #         color: color1
+      # children:
+  - type: component.view
+    options:
+      style:
+        flex: 
+          direction: row
+          grow: 0
+          shrink: 0
+          basis: 0
+        justifyContent: flex-start
+        padding: none
+        margin: 
+          left: small
+          bottom: small
+          right: small
+      children:
+        - type: component.view
+          options:
+            style:
+              margin: 
+                right: small
+            children:
+              - type: component.avatar
+                options:
+                  title: =$substring($substringBefore(@ctx.inputs.displayName, ' '), 0, 1) & $substring($substringAfter(@ctx.inputs.displayName, ' '), 0, 1)
+                  uri: =@ctx.inputs.avatar
+        - type: component.view
+          options:
+            style:
+              padding: none
+              flex: 
+                grow: 1
+                shrink: 1
+                basis: 0
+            children:
+              - type: component.card
+                options:
+                  direction: column
+                  children:
+                    - type: component.view
+                      options:
+                        style:
+                          padding: none
+                        children:
+                          - type: component.text
+                            options:
+                              value: =@ctx.inputs.displayName
+                              size: regular
+                              weight: bold
+                          - type: component.text
+                            options:
+                              value: =@ctx.inputs.content
+                              
+                    ## REACTIONS AND BUTTONS ##
+                    - type: component.view
+                      options:
+                        style:
+                          flex: 
+                            direction: row
+                          justifyContent: space-between
+                          padding: none
+                          # background:
+                          #   color: color3
+                        children:
+                          ## REACTIONS ###
+                          - type: component.view
+                            options:
+                              style:
+                                # background:
+                                #   color: color4
+                                flex: 
+                                  direction: row
+                                padding: 
+                                  top: minimal
+                              children:
+                                ## Laugh ##
+                                - type: component.view
+                                  options:
+                                    style:
+                                      flex: 
+                                        direction: row
+                                      gap: small
+                                      padding: 
+                                        right: medium
+                                    children:
+                                      - type: component.text
+                                        options:
+                                          value: =@ctx.inputs.laugh
+                                          align: left
+                                          size: medium
+                                          # onPress: 
+                                          #   type: action.set-state
+                                          #   options:
+                                          #     state: =@ctx.solution.state.laugh
+                                          #     value: true
+                                          onPress: 
+                                            type: action.execute-entity
+                                            options:
+                                              provider: DATA_PROVIDER_DYNAMIC
+                                              entity: default/forum
+                                              method: update
+                                              goBack: stay
+                                              data:
+                                                id: =@ctx.inputs.id
+                                                laugh: =$number(@ctx.inputs.laughCount) + 1
+                                      - type: component.text
+                                        options:
+                                          value: =@ctx.inputs.laughCount = '0' ? '':@ctx.inputs.laughCount
+                                          align: left
+                                          
+                                ## love ##
+                                - type: component.view
+                                  options:
+                                    style:
+                                      flex: 
+                                        direction: row
+                                      gap: small
+                                      padding: 
+                                        right: medium
+                                    children:
+                                      - type: component.text
+                                        options:
+                                          value: =@ctx.inputs.love
+                                          align: left     
+                                          size: medium
+                                          onPress: 
+                                            type: action.execute-entity
+                                            options:
+                                              provider: DATA_PROVIDER_DYNAMIC
+                                              entity: default/forum
+                                              method: update
+                                              goBack: stay
+                                              data:
+                                                id: =@ctx.inputs.id
+                                                laugh: =$number(@ctx.inputs.loveCount) + 1 
+                                      - type: component.text
+                                        options:
+                                          value: =@ctx.inputs.loveCount = '0' ? '':@ctx.inputs.loveCount
+                                          align: left
+                                ## like ##
+                                - type: component.view
+                                  options:
+                                    style:
+                                      flex: 
+                                        direction: row
+                                      gap: small
+                                      padding: 
+                                        right: medium
+                                    children:
+                                      - type: component.text
+                                        options:
+                                          value: =@ctx.inputs.like
+                                          align: left  
+                                          size: medium
+                                          onPress: 
+                                            type: action.execute-entity
+                                            options:
+                                              provider: DATA_PROVIDER_DYNAMIC
+                                              entity: default/forum
+                                              method: update
+                                              goBack: stay
+                                              data:
+                                                id: =@ctx.inputs.id
+                                                laugh: =$number(@ctx.inputs.likeCount) + 1
+                                      - type: component.text
+                                        options:
+                                          value: =@ctx.inputs.likeCount = '0' ? '':@ctx.inputs.likeCount
+                                          align: left
+                                                
+                                ## BUTTONS ##
+                          - type: component.view
+                            options:
+                              style:
+                                flex: 
+                                  direction: row
+                                padding: none
+                                # background:
+                                #   color: color1
+                              children:
+                                - type: component.view
+                                  options:
+                                    style:
+                                      background:
+                                        color: color14
+                                      radius: large
+                                      padding: 
+                                        left: large
+                                        right: large
+                                        top: small
+                                        bottom: small
+                                      margin: 
+                                        left: small
+                                    children:
+                                      - type: component.text
+                                        options:
+                                          value: Reply
+                                          align: center
+                                          onPress: 
+                                            type: action.set-state
+                                            options:
+                                              state: =@ctx.solution.state.reply
+                                              value: true
+        # - type: component.view
+        #   options:
+        #     style:
+        #       justifyContent: flex-end
+        #       background:
+        #         color: color4
+        #     children:
+        #       - type: component.view
+        #         options:
+        #           style:
+        #             flex: 
+        #               direction: row
+        #             alignContent: stretch
+        #             justifyContent: space-between
+        #             padding: none
+        #           children:
+        #             - type: component.view
+        #               options:
+        #                 style:
+        #                   flex: 
+        #                     grow: 10
+        #                 children:
+        #                   - type: component.form
+        #                     instanceId: chat-box
+        #                     options:
+        #                       isDiscardChangesAlertEnabled: false
+        #                       children:
+        #                         - type: component.text-field
+        #                           instanceId: message
+        #                           options:
+        #                             label: Type a new Message
+        #                             isOptionalLabelHidden: true
+        #                             isRequired: false
+        #                             isMultiline: true
+        #                             textArea: dynamic
+        #             - type: component.view
+        #               options:
+        #                 style:
+        #                   justifyContent: space-evenly
+        #                 children:
+        #                   - type: component.icon
+        #                     options:
+        #                       icon: send-email-3
+        #                       onPress: 
+        #                         type: action.action-list
+        #                         options:
+        #                           isSequential: true
+        #                           actions:
+        #                             - type: action.execute-entity
+        #                               options:
+        #                                 provider: DATA_PROVIDER_DYNAMIC
+        #                                 entity: default/forum
+        #                                 method: create
+        #                                 goBack: stay
+        #                                 data:
+        #                                   avatar: =@ctx.user.avatarUrl
+        #                                   displayName: =@ctx.user.displayName
+        #                                   email: =@ctx.user.email
+        #                                   question: =@ctx.components.message.state.value
+        #                                   laugh: '0'
+        #                                   love: '0'
+        #                                   taugh: '0'
+        #                                   timeStamps: =$now()
+        #                             - type: action.reset-state
+        #                               options:
+        #                                 state: =@ctx.components.message.state.value

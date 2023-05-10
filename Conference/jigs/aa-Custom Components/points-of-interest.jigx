@@ -1,0 +1,559 @@
+title: Points of Interest
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.datasources.image.images
+
+datasources:
+  POI: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/pointsOfInterest
+  
+      query: |
+        SELECT 
+        id, 
+        '$.image', 
+        '$.address',
+        '$.name',
+        '$.price',
+        '$.rating',
+        '$.stars',
+        '$.navigate'
+        FROM [default/pointsOfInterest] 
+        ORDER BY '$.name'
+  
+  image:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/images
+  
+      query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+      queryParameters:
+        jig: 'poi'
+
+children:
+  - type: component.list
+    options:
+      data: =@ctx.datasources.POI
+      maximumItemsToRender: 8
+      item: 
+        type: component.custom-component
+        options:
+          {}
+        componentId: view-POI
+        inputs:
+          info: =@ctx.current.item
+          # name: =@ctx.current.item.name
+          # image: =@ctx.current.item.image
+          # address: =@ctx.current.item.address
+          # stars: =@ctx.current.item.stars
+          # rating: =@ctx.current.item.rating
+          
+# ### POI 1 ###
+#   - type: component.layout
+#     options:
+#       onPress:
+#         type: action.open-url
+#         options:
+#           url: =@ctx.datasources.POI[0].navigate
+#       isRow: false
+#       hasBackground: true
+#       borderRadius: small
+#       children:
+#         ## IMAGE ##
+#         - type: component.image
+#           options:
+#             source:
+#               uri: =@ctx.datasources.POI[0].image
+#             height: 150
+#             resizeMode: cover
+#         ## TITLE ##
+#         - type: component.layout
+#           options:
+#             isRow: false
+#             padding: none
+#             children:
+#               - type: component.text 
+#                 options:
+#                   isHeaderRegular: true
+#                   text: =@ctx.datasources.POI[0].name
+#                   isBold: true
+#         ## INFORMATION CONTAINER ##
+#         - type: component.layout
+#           options:
+#             isRow: true
+#             padding: none
+#             children:
+#             ## ADDRESS AND RATING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[0].address
+#                               align: left 
+#                               isSubtle: true 
+#                               fontSize: regular
+#                           - type: component.layout
+#                             options:
+#                               isRow: true 
+#                               padding: none
+#                               gap: none
+#                               children: 
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[0].stars
+#                                     align: left 
+#                                     fontSize: regular
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[0].rating
+#                                     align: left 
+#                                     fontSize: regular
+#                                     isSubtle: true
+#               ## RIGHT PRICCING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[0].price
+#                               align: right
+#                               isSubtle: false
+#                               fontSize: regular
+#                           - type: component.text 
+#                             options:
+#                               text: Entry
+#                               align: right
+#                               fontSize: regular  
+#                               isSubtle: true      
+                  
+# ### POI 2 ###
+#   - type: component.layout
+#     options:
+#       onPress:
+#         type: action.open-url
+#         options:
+#           url: =@ctx.datasources.POI[1].navigate
+#       isRow: false
+#       hasBackground: true
+#       borderRadius: small
+#       children:
+#         ## IMAGE ##
+#         - type: component.image
+#           options:
+#             source:
+#               uri: =@ctx.datasources.POI[1].image
+#             height: 150
+#             resizeMode: cover
+#         ## TITLE ##
+#         - type: component.layout
+#           options:
+#             isRow: false
+#             padding: none
+#             children:
+#               - type: component.text 
+#                 options:
+#                   isHeaderRegular: true
+#                   text: =@ctx.datasources.POI[1].name
+#                   isBold: true
+#         ## INFORMATION CONTAINER ##
+#         - type: component.layout
+#           options:
+#             isRow: true
+#             padding: none
+#             children:
+#             ## ADDRESS AND RATING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[1].address
+#                               align: left 
+#                               isSubtle: true 
+#                               fontSize: regular
+#                           - type: component.layout
+#                             options:
+#                               isRow: true 
+#                               padding: none
+#                               gap: none
+#                               children: 
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[1].stars
+#                                     align: left 
+#                                     fontSize: regular
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[1].rating
+#                                     align: left 
+#                                     fontSize: regular
+#                                     isSubtle: true
+#               ## RIGHT PRICCING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[1].price
+#                               align: right
+#                               isSubtle: false
+#                               fontSize: regular
+#                           - type: component.text 
+#                             options:
+#                               text: Entry
+#                               align: right
+#                               fontSize: regular    
+#                               isSubtle: true 
+                              
+# ### POI 3 ###
+#   - type: component.layout
+#     options:
+#       onPress:
+#         type: action.open-url
+#         options:
+#           url: =@ctx.datasources.POI[2].navigate
+#       isRow: false
+#       hasBackground: true
+#       borderRadius: small
+#       children:
+#         ## IMAGE ##
+#         - type: component.image
+#           options:
+#             source:
+#               uri: =@ctx.datasources.POI[2].image
+#             height: 150
+#             resizeMode: cover
+#         ## TITLE ##
+#         - type: component.layout
+#           options:
+#             isRow: false
+#             padding: none
+#             children:
+#               - type: component.text 
+#                 options:
+#                   isHeaderRegular: true
+#                   text: =@ctx.datasources.POI[2].name
+#                   isBold: true
+#         ## INFORMATION CONTAINER ##
+#         - type: component.layout
+#           options:
+#             isRow: true
+#             padding: none
+#             children:
+#             ## ADDRESS AND RATING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[2].address
+#                               align: left 
+#                               isSubtle: true 
+#                               fontSize: regular
+#                           - type: component.layout
+#                             options:
+#                               isRow: true 
+#                               padding: none
+#                               gap: none
+#                               children: 
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[2].stars
+#                                     align: left 
+#                                     fontSize: regular
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[2].rating
+#                                     align: left 
+#                                     fontSize: regular
+#                                     isSubtle: true
+#               ## RIGHT PRICCING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[2].price
+#                               align: right
+#                               isSubtle: false
+#                               fontSize: regular
+#                           - type: component.text 
+#                             options:
+#                               text: Entry
+#                               align: right
+#                               fontSize: regular    
+#                               isSubtle: true 
+                              
+# ### POI 4 ###
+#   - type: component.layout
+#     options:
+#       onPress:
+#         type: action.open-url
+#         options:
+#           url: =@ctx.datasources.POI[3].navigate
+#       isRow: false
+#       hasBackground: true
+#       borderRadius: small
+#       children:
+#         ## IMAGE ##
+#         - type: component.image
+#           options:
+#             source:
+#               uri: =@ctx.datasources.POI[3].image
+#             height: 150
+#             resizeMode: cover
+#         ## TITLE ##
+#         - type: component.layout
+#           options:
+#             isRow: false
+#             padding: none
+#             children:
+#               - type: component.text 
+#                 options:
+#                   isHeaderRegular: true
+#                   text: =@ctx.datasources.POI[3].name
+#                   isBold: true
+#         ## INFORMATION CONTAINER ##
+#         - type: component.layout
+#           options:
+#             isRow: true
+#             padding: none
+#             children:
+#             ## ADDRESS AND RATING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[3].address
+#                               align: left 
+#                               isSubtle: true 
+#                               fontSize: regular
+#                           - type: component.layout
+#                             options:
+#                               isRow: true 
+#                               padding: none
+#                               gap: none
+#                               children: 
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[3].stars
+#                                     align: left 
+#                                     fontSize: regular
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[3].rating
+#                                     align: left 
+#                                     fontSize: regular
+#                                     isSubtle: true
+#               ## RIGHT PRICCING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[3].price
+#                               align: right
+#                               isSubtle: false
+#                               fontSize: regular
+#                           - type: component.text 
+#                             options:
+#                               text: Entry
+#                               align: right
+#                               fontSize: regular  
+#                               isSubtle: true   
+                              
+# ### POI 5 ###
+#   - type: component.layout
+#     options:
+#       onPress:
+#         type: action.open-url
+#         options:
+#           url: =@ctx.datasources.POI[4].navigate
+#       isRow: false
+#       hasBackground: true
+#       borderRadius: small
+#       children:
+#         ## IMAGE ##
+#         - type: component.image
+#           options:
+#             source:
+#               uri: =@ctx.datasources.POI[4].image
+#             height: 150
+#             resizeMode: cover
+#         ## TITLE ##
+#         - type: component.layout
+#           options:
+#             isRow: false
+#             padding: none
+#             children:
+#               - type: component.text 
+#                 options:
+#                   text: =@ctx.datasources.POI[4].name
+#                   isBold: true
+#                   isHeaderRegular: true
+#         ## INFORMATION CONTAINER ##
+#         - type: component.layout
+#           options:
+#             isRow: true
+#             padding: none
+#             children:
+#             ## ADDRESS AND RATING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[4].address
+#                               align: left 
+#                               isSubtle: true 
+#                               fontSize: regular
+#                           - type: component.layout
+#                             options:
+#                               isRow: true 
+#                               padding: none
+#                               gap: none
+#                               children: 
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[4].stars
+#                                     align: left 
+#                                     fontSize: regular
+#                                 - type: component.text 
+#                                   options:
+#                                     text: =@ctx.datasources.POI[4].rating
+#                                     align: left 
+#                                     fontSize: regular
+#                                     isSubtle: true
+#               ## RIGHT PRICCING CONTAINER ##
+#               - type: component.layout
+#                 options:
+#                   isRow: false
+#                   hasBackground: false
+#                   padding: none
+#                   children:
+#                     - type: component.layout
+#                       options:
+#                         isRow: false 
+#                         hasBackground: false 
+#                         padding: none
+#                         gap: none
+#                         children:   
+#                           - type: component.text 
+#                             options:
+#                               text: =@ctx.datasources.POI[4].price
+#                               align: right
+#                               isSubtle: false
+#                               fontSize: regular
+#                           - type: component.text 
+#                             options:
+#                               text: Entry
+#                               align: right
+#                               fontSize: regular 
+#                               isSubtle: true

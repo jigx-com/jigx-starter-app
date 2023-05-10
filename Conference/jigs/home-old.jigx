@@ -110,169 +110,169 @@ datasources:
 
           
 children:
-  - type: component.layout
-    options:
-      isRow: true
-      padding: none  
-      gap: medium
-      flexChildren: 0
-## user name ###
-      children:
-        - type: component.layout
-          options:
-            isRow: false
-            padding: none  
-            gap: xSmall
-            flex: 1
-            children:
-              - type: component.text
-                options:
-                  isHeaderBig: true
-                  text: ='Hello, ' & $substringBefore(@ctx.user.displayName, ' ')
-              - type: component.text
-                options:
-                  isHeaderBig: false
-                  text: 'Welcome to AI Horizon'
-                  fontSize: regular
+#   - type: component.layout
+#     options:
+#       isRow: true
+#       padding: none  
+#       gap: medium
+#       flexChildren: 0
+# ## user name ###
+#       children:
+#         - type: component.layout
+#           options:
+#             isRow: false
+#             padding: none  
+#             gap: xSmall
+#             flex: 1
+#             children:
+#               - type: component.text
+#                 options:
+#                   isHeaderBig: true
+#                   text: ='Hello, ' & $substringBefore(@ctx.user.displayName, ' ')
+#               - type: component.text
+#                 options:
+#                   isHeaderBig: false
+#                   text: 'Welcome to AI Horizon'
+#                   fontSize: regular
 
 ## 4x2 ##            
-  - type: component.layout
-    options:
-      onPress:
-        type: action.go-to
-        options:
-          linkTo: conference-details
-      isRow: false
-      justifyContent: stretch 
-      padding: small
-      hasBackground: true
-      # backgroundColor: 
-      #   - when: true
-      #     color: color6
-      borderRadius: small
-      gap: small
-      children:
-        - type: component.image
-          options:
-            source:
-              uri: =@ctx.datasources.banner.images
-            height: 150
-        - type: component.layout
-          options:
-            isRow: false
-            justifyContent: flex-start 
-            padding: small
-            gap: none
-            children:
-              - type: component.text 
-                options:
-                  text: Conference Day 2
-                  isSubtle: true
-              - type: component.text 
-                options:
-                  text: Exploring the Cutting-Edge of AI
-                  isSubtle: false
-                  isBold: false
-              # - type: component.text 
-              #   options:
-              #     text: Other Info? TBD
-              #     isSubtle: true
+  # - type: component.layout
+  #   options:
+  #     onPress:
+  #       type: action.go-to
+  #       options:
+  #         linkTo: conference-details
+  #     isRow: false
+  #     justifyContent: stretch 
+  #     padding: small
+  #     hasBackground: true
+  #     # backgroundColor: 
+  #     #   - when: true
+  #     #     color: color6
+  #     borderRadius: small
+  #     gap: small
+  #     children:
+  #       - type: component.image
+  #         options:
+  #           source:
+  #             uri: =@ctx.datasources.banner.images
+  #           height: 150
+  #       - type: component.layout
+  #         options:
+  #           isRow: false
+  #           justifyContent: flex-start 
+  #           padding: small
+  #           gap: none
+  #           children:
+  #             - type: component.text 
+  #               options:
+  #                 text: Conference Day 2
+  #                 isSubtle: true
+  #             - type: component.text 
+  #               options:
+  #                 text: Exploring the Cutting-Edge of AI
+  #                 isSubtle: false
+  #                 isBold: false
+  #             # - type: component.text 
+  #             #   options:
+  #             #     text: Other Info? TBD
+  #             #     isSubtle: true
           
-## bar 1##
-  - type: component.layout
-    options:
-      isRow: true
-      # justifyContent: stretch 
-      padding: xSmall
-      hasBackground: false
-      # backgroundColor: 
-      #   - when: true
-      #     color: color6
-      borderRadius: small
-      gap: small
-      children: 
-        - type: component.layout
-          options:
-            padding: small
-            hasBackground: true
-            backgroundColor: 
-              - when: true
-                color: color11
-            borderRadius: small
-            gap: small
-            onPress: 
-              type: action.go-to
-              options:
-                linkTo: calendar
-            children:
-              - type: component.icon
-                options:
-                  icon: calendar-3
-                  isDuotone: true
-                  isContained: true
-                  size: 30
-        - type: component.layout
-          options:
-            padding: small
-            hasBackground: true
-            backgroundColor: 
-              - when: true
-                color: color11
-            borderRadius: small
-            gap: small
-            onPress: 
-              type: action.go-to
-              options:
-                linkTo: attendees
-            children:
-              - type: component.icon
-                options:
-                  icon: person
-                  isDuotone: true
-                  isContained: true
-                  size: 30         
-        - type: component.layout
-          options:
-            padding: small
-            hasBackground: true
-            backgroundColor: 
-              - when: true
-                color: color11
-            borderRadius: small
-            gap: small
-            onPress: 
-              type: action.open-url
-              options:
-                url: https://www.google.com/maps/dir//2600+International+Pkwy,+Virginia+Beach,+VA+23452
-            children:
-              - type: component.icon
-                options:
-                  icon: pin
-                  isDuotone: true
-                  isContained: true
-                  size: 30          
-        - type: component.layout
-          options:
-            padding: small
-            hasBackground: true
-            backgroundColor: 
-              - when: true
-                color: color11
-            borderRadius: small
-            gap: small
-            onPress: 
-              type: action.go-to
-              options:
-                linkTo: merch
-            children:
-              - type: component.icon
-                options:
-                  icon: shopping-cart-empty-1
-                  isDuotone: true
-                  isContained: true
-                  size: 30          
+# ## bar 1##
+#   - type: component.layout
+#     options:
+#       isRow: true
+#       # justifyContent: stretch 
+#       padding: xSmall
+#       hasBackground: false
+#       # backgroundColor: 
+#       #   - when: true
+#       #     color: color6
+#       borderRadius: small
+#       gap: small
+#       children: 
+#         - type: component.layout
+#           options:
+#             padding: small
+#             hasBackground: true
+#             backgroundColor: 
+#               - when: true
+#                 color: color11
+#             borderRadius: small
+#             gap: small
+#             onPress: 
+#               type: action.go-to
+#               options:
+#                 linkTo: calendar
+#             children:
+#               - type: component.icon
+#                 options:
+#                   icon: calendar-3
+#                   isDuotone: true
+#                   isContained: true
+#                   size: 30
+#         - type: component.layout
+#           options:
+#             padding: small
+#             hasBackground: true
+#             backgroundColor: 
+#               - when: true
+#                 color: color11
+#             borderRadius: small
+#             gap: small
+#             onPress: 
+#               type: action.go-to
+#               options:
+#                 linkTo: attendees
+#             children:
+#               - type: component.icon
+#                 options:
+#                   icon: person
+#                   isDuotone: true
+#                   isContained: true
+#                   size: 30         
+#         - type: component.layout
+#           options:
+#             padding: small
+#             hasBackground: true
+#             backgroundColor: 
+#               - when: true
+#                 color: color11
+#             borderRadius: small
+#             gap: small
+#             onPress: 
+#               type: action.open-url
+#               options:
+#                 url: https://www.google.com/maps/dir//2600+International+Pkwy,+Virginia+Beach,+VA+23452
+#             children:
+#               - type: component.icon
+#                 options:
+#                   icon: pin
+#                   isDuotone: true
+#                   isContained: true
+#                   size: 30          
+#         - type: component.layout
+#           options:
+#             padding: small
+#             hasBackground: true
+#             backgroundColor: 
+#               - when: true
+#                 color: color11
+#             borderRadius: small
+#             gap: small
+#             onPress: 
+#               type: action.go-to
+#               options:
+#                 linkTo: merch
+#             children:
+#               - type: component.icon
+#                 options:
+#                   icon: shopping-cart-empty-1
+#                   isDuotone: true
+#                   isContained: true
+#                   size: 30          
                   
-## My Day ##
+# ## My Day ##
   - type: component.layout
     options: 
       isRow: false 
@@ -284,10 +284,10 @@ children:
             isBold: true
             isHeaderRegular: true
 
-  # - type: component.section
-  #   options:
-  #     title: My Day
-  #     children:
+  - type: component.section
+    options:
+      title: My Day
+      children:
   - type: component.layout
     options:
       hasBackground: false
@@ -295,6 +295,8 @@ children:
       padding: none
       gap: small
       children:
+    
+    
       ## LEFT - Keynote Speaker ##
         - type: component.layout
           options:
@@ -522,81 +524,81 @@ children:
                         align: center
                         isBold: false
 
-  ## bar 2 ##
-  - type: component.layout
-    options:
-      isRow: true
-      padding: xSmall
-      hasBackground: false
-      borderRadius: small
-      gap: small
-      children: 
-        - type: component.layout
-          options:
-            padding: small
-            hasBackground: true
-            borderRadius: small
-            gap: small
-            onPress: 
-              type: action.go-to
-              options:
-                linkTo: agenda
-            children:
-              - type: component.icon
-                options:
-                  icon: calendar
-                  isDuotone: true
-                  isContained: true
-                  size: 30
-              - type: component.text 
-                options:
-                  text: Agenda
-                  fonsize: small 
-                  align: center
-        - type: component.layout
-          options:
-            padding: small
-            hasBackground: true
-            borderRadius: small
-            gap: small
-            onPress: 
-              type: action.go-to
-              options:
-                linkTo: eventFeedback
-            children:
-              - type: component.icon
-                options:
-                  icon: feedback
-                  isDuotone: true
-                  isContained: true
-                  size: 30       
-              - type: component.text 
-                options:
-                  text: Feedback
-                  fonsize: small   
-                  align: center
-        - type: component.layout
-          options:
-            padding: small
-            hasBackground: true
-            borderRadius: small
-            gap: small
-            onPress: 
-              type: action.go-to
-              options:
-                linkTo: forum
-            children:
-              - type: component.icon
-                options:
-                  icon: chat
-                  isDuotone: true
-                  isContained: true
-                  size: 30  
-              - type: component.text 
-                options:
-                  text: Forum
-                  fonsize: small     
-                  align: center
+  # ## bar 2 ##
+  # - type: component.layout
+  #   options:
+  #     isRow: true
+  #     padding: xSmall
+  #     hasBackground: false
+  #     borderRadius: small
+  #     gap: small
+  #     children: 
+  #       - type: component.layout
+  #         options:
+  #           padding: small
+  #           hasBackground: true
+  #           borderRadius: small
+  #           gap: small
+  #           onPress: 
+  #             type: action.go-to
+  #             options:
+  #               linkTo: agenda
+  #           children:
+  #             - type: component.icon
+  #               options:
+  #                 icon: calendar
+  #                 isDuotone: true
+  #                 isContained: true
+  #                 size: 30
+  #             - type: component.text 
+  #               options:
+  #                 text: Agenda
+  #                 fonsize: small 
+  #                 align: center
+  #       - type: component.layout
+  #         options:
+  #           padding: small
+  #           hasBackground: true
+  #           borderRadius: small
+  #           gap: small
+  #           onPress: 
+  #             type: action.go-to
+  #             options:
+  #               linkTo: eventFeedback
+  #           children:
+  #             - type: component.icon
+  #               options:
+  #                 icon: feedback
+  #                 isDuotone: true
+  #                 isContained: true
+  #                 size: 30       
+  #             - type: component.text 
+  #               options:
+  #                 text: Feedback
+  #                 fonsize: small   
+  #                 align: center
+  #       - type: component.layout
+  #         options:
+  #           padding: small
+  #           hasBackground: true
+  #           borderRadius: small
+  #           gap: small
+  #           onPress: 
+  #             type: action.go-to
+  #             options:
+  #               linkTo: forum
+  #           children:
+  #             - type: component.icon
+  #               options:
+  #                 icon: chat
+  #                 isDuotone: true
+  #                 isContained: true
+  #                 size: 30  
+  #             - type: component.text 
+  #               options:
+  #                 text: Forum
+  #                 fonsize: small     
+  #                 align: center
 
 
 ## 4x2 ##   
@@ -629,39 +631,39 @@ children:
   #                   uri: https://images.unsplash.com/photo-1589481169991-40ee02888551?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80
   #                 height: 150
 
-  - type: component.layout
-    options: 
-      isRow: false 
-      padding: xSmall
-      children:
-        - type: component.text 
-          options: 
-            text: Things to do in Seattle
-            isBold: true
-            isHeaderRegular: true
+  # - type: component.layout
+  #   options: 
+  #     isRow: false 
+  #     padding: xSmall
+  #     children:
+  #       - type: component.text 
+  #         options: 
+  #           text: Things to do in Seattle
+  #           isBold: true
+  #           isHeaderRegular: true
 
         
-  - type: component.layout
-    options:
-      onPress: 
-        type: action.go-to
-        options:
-          linkTo: points-of-interest
-      isRow: false
-      justifyContent: stretch 
-      padding: small
-      hasBackground: true
-      borderRadius: small
-      gap: small
-      children:
-        # - type: component.text 
-        #   options:
-        #     text: Things to do in Seattle
-        #     align: left
-        #     isBold: true
-        #     isHeaderRegular: true
-        - type: component.image
-          options:
-            source:
-              uri: =@ctx.datasources.image.images
-            height: 150
+  # - type: component.layout
+  #   options:
+  #     onPress: 
+  #       type: action.go-to
+  #       options:
+  #         linkTo: points-of-interest
+  #     isRow: false
+  #     justifyContent: stretch 
+  #     padding: small
+  #     hasBackground: true
+  #     borderRadius: small
+  #     gap: small
+  #     children:
+  #       # - type: component.text 
+  #       #   options:
+  #       #     text: Things to do in Seattle
+  #       #     align: left
+  #       #     isBold: true
+  #       #     isHeaderRegular: true
+  #       - type: component.image
+  #         options:
+  #           source:
+  #             uri: =@ctx.datasources.image.images
+  #           height: 150

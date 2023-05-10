@@ -1,0 +1,55 @@
+type: component.default
+children:
+  - type: component.view
+    options:
+      style:
+        margin: 
+          left: small
+          top: none
+      children:
+        - type: component.card
+          options:
+            direction: column
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: =@ctx.inputs.linkto           
+            color: color11
+            children:
+              - type: component.view
+                options:
+                  style:
+                    padding: none
+                    flex: 
+                      direction: column
+                    width: 
+                      max: 59
+                      min: 59
+                    height: 
+                      max: 25
+                      min: 25
+                    alignItems: center        
+                    justifyContent: center
+                  children:
+                    - type: component.view
+                      options:
+                        style:
+                          padding: none
+                          margin: 
+                            bottom: small
+                        children:
+                          - type: component.icon
+                            options:
+                              icon: =@ctx.inputs.icon
+                    # - type: component.view
+                    #   options:
+                    #     style:
+                    #       padding: none
+                    #       # margin: 
+                    #       #   bottom: small
+                    #     children:
+                    #       - type: component.text
+                    #         options:
+                    #           value: =@ctx.inputs.title
+                    #           numberOfLines: 2
+                    #           align: center

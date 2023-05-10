@@ -1,0 +1,133 @@
+type: component.default
+children:
+  - type: component.view
+    options:
+      style:
+        background:
+          color: color1
+        flex: 
+          direction: row
+        justifyContent: space-between
+        padding: none
+      children:
+      ### LEFT - keynote speaker ###
+        - type: component.card
+          options:
+            direction: column
+            children:
+              - type: component.view
+                options:
+                  style:
+                    width: 
+                      min: 150
+                    alignItems: center
+                    justifyContent: center
+                    flex: 
+                      direction: column
+                    background:
+                      color: color3
+                  children:
+                    - type: component.text
+                      options:
+                        value: Keynote Speaker
+                        text: Keynote Speaker
+                        align: center
+                    - type: component.image
+                      options:
+                        source:
+                          uri: =@ctx.inputs.img
+                        height: 130
+                    - type: component.text
+                      options:
+                        value: Keynote Speaker
+                        text: Keynote Speaker
+                        align: center
+              # - type: component.text
+              #   options:
+              #     value: Keynote Speaker
+              #     text: Keynote Speaker
+              #     align: center
+              # - type: component.image
+              #   options:
+              #     source:
+              #       uri: =@ctx.inputs.img
+              #     height: 150
+              
+        # - type: component.view
+        #   options:
+        #     style:
+        #       background:
+        #         color: color2
+        #       flex: 
+        #         direction: column
+        #       padding: small
+        #       width: 150
+        #     children:
+        #       - type: component.card
+        #         options:
+        #           direction: column
+        #           children:
+        #             ## IMAGE ##
+        #             - type: component.view
+        #               options:
+        #                 style:
+        #                   flex: 
+        #                     direction: column
+        #                 children:
+        #                   - type: component.image
+        #                     options:
+        #                       source:
+        #                         uri: =@ctx.inputs.img
+        #                       height: 160
+              # - type: component.card
+              #   options:
+              #     children:
+              #       - type: component.view
+              #         options:
+              #           style:
+              #             flex: 
+              #               direction: column
+              #             padding: none
+              #             # width: 
+              #             #   min: 150
+              #             alignItems: center
+                          
+              #           children:
+              #             # - type: component.text
+              #             #   options:
+              #             #     value: Keynote Speaker
+              #             #     text: Keynote Speaker
+              #             #     align: center
+              #             - type: component.view
+              #               options:
+              #                 style:
+              #                   background:
+              #                     color: color5
+              #                   alignContent: center
+              #                 children:
+              #                   # - type: component.text
+              #                   #   options:
+              #                   #     value: what
+              #                   #     text: what
+              #                   - type: component.image
+              #                     options:
+              #                       source:
+              #                         uri: =@ctx.inputs.img
+              #                       height: 150
+                                    
+                              
+      ### RIGHT - next 2 upcoming ###
+        - type: component.view
+          options:
+            style:
+              background:
+                color: color3
+              flex: 
+                direction: column
+              padding: none
+            children:
+              - type: component.text
+                options:
+                  value: check back soon
+                  text: check back soon
+            

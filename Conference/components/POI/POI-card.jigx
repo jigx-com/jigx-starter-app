@@ -1,0 +1,16 @@
+type: component.default
+children:
+  - type: component.card
+    options:
+      direction: column
+      onPress: 
+        type: action.go-to
+        options:
+          linkTo: points-of-interest
+      children:
+        ## IMAGE ##
+        - type: component.image
+          options:
+            source:
+              uri: =@ctx.inputs.img
+            height: 150

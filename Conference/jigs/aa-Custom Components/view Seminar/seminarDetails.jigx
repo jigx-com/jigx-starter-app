@@ -1,0 +1,68 @@
+title: Speaker
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+onFocus:
+  type: action.action-list
+  options:
+    actions:
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_DYNAMIC
+          entities:
+            - entity: default/calendar
+            - entity: default/seminarRooms
+
+datasources:
+  seminarDetails: 
+    type: datasource.sqlite
+    options:
+      isDocument: true
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/calendar
+        - default/seminarRooms
+  
+      query: |
+        SELECT 
+          C.id as Cid,
+          R.id as Rid,
+          DATE('now') AS calcDate,
+          json_extract(C.data, '$.seminarTitle') as seminarTitle,
+          json_extract(C.data, '$.seminarDescription') as seminarDescription,
+          json_extract(C.data, '$.speakerName') as speakerName,
+          json_extract(C.data, '$.speakerAvatar') as speakerAvatar,
+          json_extract(C.data, '$.fromTime') as fromTime,
+          json_extract(C.data, '$.toTime') as toTime,
+          json_extract(C.data, '$.seminarRoomId') as seminarRoomId,
+          json_extract(R.data, '$.seminarRoom') as serminarRoom
+        FROM
+          [default/calendar] as C
+          JOIN [default/seminarRooms] as R on Rid = seminarRoomId
+        WHERE Cid = @seminarId
+        ORDER BY fromTime
+      queryParameters:
+        seminarId: =@ctx.jig.inputs.seminarId
+
+children:
+  - type: component.custom-component
+    options:
+      {}
+    componentId: speaker-details
+    inputs:
+      avatar: =@ctx.datasources.seminarDetails.speakerAvatar
+      speaker: =@ctx.datasources.seminarDetails.speakerName
+      from: =@ctx.datasources.seminarDetails.fromTime
+      to: =@ctx.datasources.seminarDetails.toTime
+      seminarRoom: =@ctx.datasources.seminarDetails.serminarRoom
+  

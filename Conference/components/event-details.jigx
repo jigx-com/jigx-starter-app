@@ -1,0 +1,43 @@
+type: component.default
+children:
+  - type: component.view
+    options:
+      style:
+        flex: 
+          direction: column 
+        padding: 
+          bottom: small
+          top: none
+        # width: 340
+      children:  
+        - type: component.card
+          options:
+            direction: column
+            children:
+              ## IMAGE ##
+              - type: component.image
+                options:
+                  source:
+                    uri: =@ctx.inputs.img
+                  height: 150
+                  
+              ## CONTAINER FOR TEXT ##
+              - type: component.view
+                options:
+                  style:
+                    padding: none
+                    margin: 
+                      top: small
+                  children: 
+                    - type: component.text
+                      options:
+                        value: Day 2
+                        size: small
+                        align: left
+                        emphasis: medium
+                    - type: component.text
+                      options:
+                        value: Exploring the Cutting-Edge of AI
+                        size: medium
+                        align: left
+                        weight: regular

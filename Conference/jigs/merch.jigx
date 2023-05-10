@@ -1,4 +1,4 @@
-title: Event Merchandise
+title: =$contains(@ctx.datasources.cart, @ctx.user.id)
 type: jig.list
 icon: contact
 
@@ -11,7 +11,26 @@ header:
       options:
         source:
           uri: =@ctx.datasources.image.images
-
+          
+onFocus: 
+  type: action.execute-entity
+  when: =@ctx.datasources.cart.userId != @ctx.user.id
+  options:
+    provider: DATA_PROVIDER_DYNAMIC
+    entity: default/cart
+    method: create
+    goBack: stay
+    data:
+      userId: =@ctx.user.id
+      mugId: '76a076f3-00d1-4709-a656-ac363747f0ed'
+      crewId: '3656e020-4923-4bbf-95aa-d2581740bd32'
+      hatId: '65d1aadc-67f4-4059-a57f-add305fb01b3'
+      shirtId: '7d8aaaad-52be-4cb9-9b2a-cf13d930d639'
+      mugAmount: 0
+      crewAmount: 0
+      hatAmount: 0
+      shirtAmount: 0
+      
 datasources:
   merch: 
     type: datasource.sqlite
@@ -30,6 +49,27 @@ datasources:
           '$.amount'
         FROM [default/merchandise] 
         ORDER BY '$.title'
+        
+  cart:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/cart
+  
+      query: |
+        SELECT 
+          id, 
+          '$.userId', 
+          '$.mugId',
+          '$.crewId',
+          '$.hatId',
+          '$.shirtId'
+        FROM [default/cart] 
+        WHERE '$.userId' = @myId
+      queryParameters:
+        myId: =@ctx.user.id
         
   image:
     type: datasource.sqlite
@@ -92,6 +132,87 @@ actions:
             total: =($sum([@ctx.datasources.merch.amount].$number())) * 10
           onSuccess: 
             title: Purchase Successful
+
+# datasources:
+#   merch: 
+#     type: datasource.sqlite
+#     options:
+#       provider: DATA_PROVIDER_DYNAMIC
+    
+#       entities:
+#         - default/merchandise
+    
+#       query: |
+#         SELECT 
+#           id, 
+#           '$.title', 
+#           '$.image',
+#           '$.price',
+#           '$.amount'
+#         FROM [default/merchandise] 
+#         ORDER BY '$.title'
+        
+#   image:
+#     type: datasource.sqlite
+#     options:
+#       provider: DATA_PROVIDER_DYNAMIC
+  
+#       entities:
+#         - default/images
+  
+#       query: SELECT id, '$.images', '$.jig' FROM [default/images] WHERE '$.jig' = @jig
+#       queryParameters:
+#         jig: 'merch'
+        
+# data: =@ctx.datasources.merch
+# item:
+#   type: component.product-item
+#   options:
+#     title: =@ctx.current.item.title
+#     image:
+#       uri: =@ctx.current.item.image
+#     price:
+#       value: =@ctx.current.item.price
+#       format:
+#         numberStyle: currency
+#     amountControl:
+#       value: =@ctx.current.item.amount
+#       onChange: 
+#         type: action.execute-entity
+#         options:
+#           provider: DATA_PROVIDER_DYNAMIC
+#           entity: default/merchandise
+#           method: update
+#           data:
+#             id: =@ctx.current.item.id
+#             amount: =@ctx.current.state.amount
+#           goBack: stay
+          
+# summary:
+#   children:
+#     type: component.summary
+#     options: 
+#       layout: default
+#       leftIcon:
+#         element: icon
+#         name: shopping-cart-empty-1
+#       title: Purchase Total
+#       subtitle: ='$' & ($sum([@ctx.datasources.merch.amount].$number())) * 10
+  
+# actions:
+#   - children:
+#       - type: action.execute-entity
+#         options:
+#           title: Purchase Merchandise
+#           provider: DATA_PROVIDER_DYNAMIC
+#           entity: default/merchPurchases
+#           method: create
+#           goBack: previous
+#           data:
+#             userEmail: =@ctx.user.email
+#             total: =($sum([@ctx.datasources.merch.amount].$number())) * 10
+#           onSuccess: 
+#             title: Purchase Successful
             
             
       
