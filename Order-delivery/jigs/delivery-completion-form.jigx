@@ -3,18 +3,16 @@ type: jig.default
 
 actions:
   - children:
-      - type: action.execute-entity
+      - type: action.submit-form
         options:
-          title: Complete delivery
+          formId: complete-delivery-form
           provider: DATA_PROVIDER_DYNAMIC
+          title: Complete delivery
           entity: default/deliveries
           method: update
-          goBack: previous
-          data:
-            id: =@ctx.components.id.state.value
-            category: =@ctx.components.category.state.value
-            photo: =@ctx.components.photo.state.base64
-            signature: =@ctx.components.signature.state.base64
+          recordId: =@ctx.components.id.state.value
+          goBack: home
+
             
 children:
     - type: component.layout

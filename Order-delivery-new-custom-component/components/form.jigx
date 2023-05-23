@@ -1,0 +1,38 @@
+type: component.default
+children:
+  - type: component.view
+    options:
+      style:
+        margin: medium 
+        justifyContent: center
+        alignItems: center
+      children:
+        - type: component.text
+          options:
+            value: ="Tracking id:" 
+        - type: component.text
+          options:
+            value: =@ctx.datasources.all-deliveries[deliveryId = @ctx.jig.inputs.deliveryId].dTrackingId
+            weight: bold
+  - type: component.card
+    options:
+      color: color14
+      children:
+        - type: component.view
+          options:
+            style:
+              padding: medium
+              gap: large
+              justifyContent: center
+              alignItems: center
+              flex: 
+                direction: row
+            children:
+              - type: component.icon
+                options:
+                  icon: pencil-2
+              - type: component.text
+                options:
+                  value:  Please add following details to complete the delivery
+          
+                    
